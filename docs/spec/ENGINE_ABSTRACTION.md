@@ -1,7 +1,7 @@
-# Engine Abstraction Specification (STAGE 3 SPEC — PROPOSED)
+# Engine Abstraction Specification (OWNER DECISION O01/O03/O04/O10)
 
 One interface for native and external engines, without leaking process details
-into the domain. All PROPOSED.
+into the domain.
 
 ## 1. Identity & metadata (every engine exposes)
 
@@ -14,22 +14,32 @@ into the domain. All PROPOSED.
 ## 2. Call contract
 
 - `pair(request) -> RoundPairing` where request = (players, round, ruleset,
-  constraints, seed-or-none, timeout, diagnostics-level). Pure for native;
-  supervised-subprocess for external (timeout → typed error; non-zero exit →
-  mapped error code à la BBP 0–5; malformed output → typed error with raw
-  capture for diagnosis).
+  constraints, seed-or-none, timeout{wall_clock, step_budget}, cancellation
+  token, diagnostics-level). Pure-bounded for native (step budget enforced at
+  bracket-boundary checkpoints; wall-clock polled, never inside tight matching
+  loops); supervised-subprocess for external (timeout → typed error; non-zero
+  exit → mapped error code à la BBP 0–5; malformed output → typed error with raw
+  capture for diagnosis). No partial pairings on any failure path (O02).
 - Determinism contract: same request → byte-identical result; seed semantics
   declared per engine (native: no randomness; BBP RTG-seed vs pairing
   determinism distinguished; JaVaFo: hash-seeded R1 colour documented).
 - Diagnostics: per-call (criteria costs where applicable, warnings, engine
   stdout/stderr capture for external, TRF round-trip echo).
 
-## 3. Registry & selection
+## 3. Registry, selection, defaults, fallback (O03 FINAL)
 
-Named lookup + capability filtering; default engine per ruleset (native Dutch
-when conformant, else explicit fallback policy — OWNER DECISION REQUIRED for
-defaults). Version-mismatch between requested and available engine/ruleset is
-a typed error, never silent substitution.
+Three distinct request modes: (1) **default engine** — resolved ONLY for
+demonstrated-conformant (engine, ruleset) pairs via a versioned default table;
+unsupported systems resolve to typed `UnsupportedCapability`, never to a guess;
+(2) **explicitly selected engine** — used as requested or typed error (incl.
+version mismatch); (3) **explicit fallback** — caller pre-authorises an ordered
+standby list; any fallback records requested engine, actual engine, fallback
+reason, both versions, ruleset, and reproducibility info in the envelope, and
+surfaces a `fallback_occurred` warning. There is NO code path for unconfigured
+fallback: "native failed → silently run BBP → return success" is
+architecturally unrepresentable. Capability filtering answers the Stage-4
+capability model (system/ruleset/version/bye/colour-via-ruleset/constraints/
+seed/team/RR/TRF).
 
 ## 4. Conformance obligations
 

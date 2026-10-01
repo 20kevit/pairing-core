@@ -13,7 +13,8 @@ Registration, pairing-number assignment policy, payments, accounts, ratings
 database, result entry UI, standings publication, notifications, scheduling,
 venues, money/prizes, admin workflows, arbiter judgment calls (incl. FIDE
 "arbiter shall decide" impossibilities — core reports, human decides),
-tie-break computation (Handbook 07, adjacent), rating reports.
+general tie-break computation (Handbook 07, adjacent — future tiebreak-core;
+O05/O09), rating reports.
 
 ## 3. Shared seams (contracts, not code)
 

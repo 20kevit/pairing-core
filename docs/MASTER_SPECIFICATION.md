@@ -47,7 +47,9 @@ pure roll-forward helper. See `docs/spec/DOMAIN_MODEL.md`.
 ## 8. Architecture
 
 Domain → provider interface + registry → native / external adapters; validation
-sidecar; reproducibility envelope; core stdlib-only. See `docs/spec/ARCHITECTURE.md`.
+sidecar; reproducibility envelope; core stdlib-only; bounded execution
+(step budget + wall-clock timeout, O10); explicit engine configuration, never
+silent fallback (O03). See `docs/spec/ARCHITECTURE.md`.
 
 ## 9. Engine abstraction
 
@@ -79,7 +81,9 @@ API-compat. Every bug becomes a regression test.
 ## 14. Conformance
 
 BBP first oracle (Dutch-2025 scope), JaVaFo second; checker-mode agreement;
-mismatch triage discipline (rule-gap/oracle-bug/spec-gap).
+mismatch triage discipline (rule-gap/oracle-bug/spec-gap); 7-class comparison
+taxonomy (exact / reordered-equivalent / valid-alternative / violation /
+implementation-specific / unsupported / oracle-disagreement).
 
 ## 15. Reproducibility
 
@@ -88,8 +92,8 @@ numbering fingerprint) + `replay()` equality.
 
 ## 16. Compatibility
 
-v0.1.0 behavioural goldens; semver + 5 independent versions; deprecation
-windows; API tiers; implicit-surface decisions pending (O08).
+v0.1.0 permanent behavioural goldens; semver + 5 independent versions;
+two-minor deprecation window (O08); API tiers; no partial results (O02).
 
 ## 17. Performance
 
@@ -99,7 +103,14 @@ hangs; budgets published from data, none invented.
 ## 18. Security
 
 Pure-library posture; strict input boundary; isolated adapters; linear TRF
-grammar + fuzz; no secrets/surface by design.
+grammar + fuzz; bounded execution; no secrets/surface by design.
+
+## 18b. Tie-break architecture (O05/O09)
+
+General tie-break calculation is OUT (future independent tiebreak-core:
+`docs/spec/TIEBREAK_ARCHITECTURE.md`); pairing consumes only narrow
+ranking/index inputs where formal rules require (Burstein); one-way
+dependency; no tournament-core.
 
 ## 19. Licensing
 
@@ -113,16 +124,18 @@ endorsement prep. Proposal, not authorisation.
 
 ## 21. Decisions
 
-`docs/DECISIONS.md` (D-process decided; D10–D20 proposed/rejected/deferred;
-O01–O08 owner-required).
+`docs/DECISIONS.md` — O01–O10 FINAL owner direction (strategy D, no partials,
+explicit fallback, JaVaFo BYO, tie-break boundary, MIT, roadmap, compat,
+tiebreak-core, timeout); D17–D19 rejections stand.
 
 ## 22. Open questions
 
-`docs/OPEN_QUESTIONS.md` (grouped owner-input items incl. repeat-bye tension,
-retrieval debts, budgets, policies).
+`docs/OPEN_QUESTIONS.md` — only genuinely unresolved items (retrieval debts,
+oracle pin, tiering detail, budgets); O01–O10 decided.
 
 ## 23. Documentation map
 
 `docs/audit/` (Stage 1 + readiness + final report), `docs/research/`
-(Stage 2, 13 docs), `docs/spec/` (Stage 3, 16 docs + endorsement readiness),
+(Stage 2, 13 docs), `docs/spec/` (19 docs: Stage 3 suite + endorsement readiness + tiebreak
+architecture + foundation blueprint),
 root: MASTER_SPECIFICATION, DECISIONS, OPEN_QUESTIONS.

@@ -107,3 +107,18 @@ parked with a resolution path), requirements carry acceptance criteria,
 compatibility/licensing/FIDE positions are understood — but owner decisions
 O01–O08 remain. NOT "ready for development" (architecture unadopted by owner);
 NOT "not ready" (no blocking information gap for review). No development starts.
+
+## 9. Addendum — final architectural decisions recorded (no code changed)
+
+O01–O10 are now FINAL owner direction (`docs/DECISIONS.md`): Strategy D,
+no-partial-results, explicit fallback with metadata, JaVaFo BYO-binary,
+tie-break boundary + tiebreak-core contract, MIT retention, refined 10-phase
+roadmap (seam-in-Foundation, non-conformant-Dutch guard), permanent golden
+harness + two-minor deprecation, timeout/cancellation bounds. Verification
+against all prior docs found NO contradictions (refinements only: O03 envelope
+fields, O07/O08 exactness). New requirements R-TIME-01/R-CANCEL-01/
+R-FALLBACK-01/TB-IF-01 extend the traceability matrix above. Remaining opens
+are retrieval debts + measurement-first values, none blocking Foundation.
+**Recommended posture: READY FOR DEVELOPMENT OF FOUNDATION PHASE ONLY, subject
+to explicit owner implementation approval** — Dutch-conformance and later
+phases retain their own retrieval/measurement gates. Implementation has NOT started.

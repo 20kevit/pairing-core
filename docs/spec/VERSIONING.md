@@ -16,7 +16,9 @@ Five independent versions (mission §3.13), never conflated:
 5. **Input format version**: TRF dialect + revision (`TRF16`, `TRF26`, `TRFx`
    + extension set); strict parser matrix per dialect.
 
-Policy: changelog entries cite all five where relevant; deprecation windows
-≥1 minor for behavioural/API change; safety fixes may break immediately with a
+Policy: changelog entries cite all five where relevant; **two-minor-release
+deprecation window for normal public API/behaviour deprecations** (O08 FINAL;
+documented security/critical exceptions only, with advisory); safety fixes may
+break immediately with a
 security advisory. `__version__` reports library version only; the rest is
 queryable (`versions()` report) and envelope-recorded.

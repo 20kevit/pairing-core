@@ -1,16 +1,20 @@
-# Roadmap (STAGE 3 SPEC — PROPOSED, not authorised)
+# Roadmap (OWNER DECISION O07 — FINAL, authorisation of phases still required)
 
 Ordered by chess-manager value → FIDE importance → dependencies → risk →
 ecosystem value. Phase exit = acceptance criteria (ACCEPTANCE_CRITERIA.md).
 
 1. **Foundation**: typed errors, input-validation boundary, explicit API tiers,
    versioning/changelog/release policy, licence hygiene, determinism suite,
-   v0.1.0 compat harness. (Unblocks everything; de-risks silently-absorbed input.)
+   v0.1.0 compat harness, **integration-seam design + seam tests with
+   chess-manager** (so architectural mismatches surface early, not in Phase 3),
+   timeout/cancellation + explicit engine configuration + harness skeleton.
+   (Unblocks everything; de-risks silently-absorbed input.)
 2. **Dutch production/conformance**: dated rulesets (`dutch-till2026` pinned to
    current behaviour + `dutch-2026` criteria work), played-only colours,
    win-PAB config, C2-forfeit exclusion, topscorer handling, TRF-2026 subset,
    BBP oracle differential + first adapter (BYO binary), validator as
-   checker-mode. (chess-manager integration target.)
+   checker-mode. (chess-manager integration target.) **Guard: non-conformant
+   Dutch is NEVER promoted to production to satisfy schedule.**
 3. **chess-manager integration**: seam contracts, roll-forward helper, error→UX
    mapping, replay envelopes, migration off embedded pairing.
 4. **Additional Swiss**: Dubov → Burstein → Lim (each: spec slice, oracle,

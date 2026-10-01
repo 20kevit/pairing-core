@@ -8,7 +8,9 @@ value); engine id + version (+ binary build where external); ConstraintSet
 digest (forced/forbidden/bye directives); seed (or explicit `none`);
 pairing-number assignment fingerprint (order + numbers, since ranking is
 caller-owned); software version pins (library, adapter, TRF dialect);
-timestamp (informational only, never an input).
+timestamp (informational only, never an input); request mode
+(default/explicit/fallback) + requested vs actual engine + fallback reason;
+timeout budgets (wall-clock + step) applying to the run.
 
 ## 2. Guarantees
 
@@ -17,6 +19,16 @@ replay valid to the extent the engine self-identifies (JaVaFo build-coupled
 seeds documented as a caveat). Initial-colour lots: only via declared seed;
 hash-seeded defaults (JaVaFo-style) are allowed ONLY if disclosed in the
 envelope.
+
+## 3. Timeout, fallback, and replay limits (O03/O10 FINAL)
+
+Step-budget exhaustion replays deterministically (same budget → same
+`TimeoutError` frontier, VERIFIED by construction once implemented — gate it
+with a test). Wall-clock timeouts do NOT replay to success: the envelope
+records budget + outcome so a timeout is *explainable*, and re-running with a
+larger budget is an explicit new request, not a replay. Fallback runs replay
+against the ACTUAL engine recorded, with the original request mode preserved
+for audit.
 
 ## 3. Retention & audit
 

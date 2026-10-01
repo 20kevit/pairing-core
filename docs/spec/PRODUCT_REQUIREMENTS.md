@@ -48,6 +48,22 @@ source, dependencies, acceptance criteria, status (PROPOSED).
   Accept: callers can branch programmatically (tests per category).
 - **R-EXT-01** (P1): external-engine failure model (timeout/crash/malformed
   output/version mismatch → typed errors + diagnostics). Depends on adapters.
+- **R-TIME-01** (P0, source: O10 + existing 2M-step cap): native execution
+  bounded by step budget (primary, deterministic) + wall-clock timeout
+  (secondary, polled at bracket boundaries); `TimeoutError` carries budget,
+  elapsed, search frontier summary, bracket context. Accept: pathological
+  fixtures terminate with typed errors inside budget; step-budget replay
+  deterministic.
+- **R-CANCEL-01** (P1, source: O10): cooperative cancellation token honoured at
+  the same checkpoints; cancelled runs raise typed `CancelledError`, never
+  partial results. Accept: cancel-mid-search tests on large brackets.
+- **R-FALLBACK-01** (P0, source: O03): default/explicit/fallback request modes;
+  fallback metadata + warning; no unconfigured-fallback code path (verified by
+  test that disables all standbys and asserts typed failure, not substitution).
+- **TB-IF-01** (P1, source: O05/O09): narrow tie-break-derived input contract
+  (vectors, versioned) consumed by Burstein path; typed
+  unsupported-capability when unavailable. Accept: contract tests with stub
+  provider; no pairing-core tie-break implementation.
 
 ## Performance / security / observability
 

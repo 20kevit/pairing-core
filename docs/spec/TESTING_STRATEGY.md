@@ -18,7 +18,14 @@ oracle anchor. Suites (all PROPOSED, phased by ROADMAP.md):
 5. **Cross-engine differential**: seeded corpora (RTG-style generator owned by
    repo; BBP `-s`/JaVaFo seed for external mass) comparing native vs BBP
    (Dutch-2025 scope) then native vs JaVaFo; mismatches triaged as
-   rule-gap/oracle-bug/spec-gap with labels.
+   rule-gap/oracle-bug/spec-gap with labels. Engines are NEVER assumed
+   byte-identical: every comparison is classified into exactly one of —
+   exact-equivalent / rule-equivalent-but-reordered / valid-alternative /
+   genuine-rule-violation / implementation-specific / unsupported-feature /
+   oracle-disagreement-requiring-investigation — with normalization rules
+   (board-order-insensitive, colour-orientation-aware) fixed per comparison
+   profile. Disagreements open investigation records; regression storage keeps
+   corpus + both outputs + engine pins + triage label.
 6. **Property-based**: absolute bars hold over generated tournaments
    (no-rematch, colour limits, float caps, exactly-≤1-bye, completeness);
    determinism over input permutation; id-typed (hypothesis-style; library TBD
