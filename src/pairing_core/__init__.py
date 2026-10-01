@@ -26,6 +26,32 @@ except ImportError:  # pragma: no cover
 from pairing_core.engine import pair_round, SwissEngine
 from pairing_core.validator import validate_round, ValidationReport, Finding
 from pairing_core.api import PairingRequest, PairingEngine, NativeDutchEngine
+from pairing_core.api import (
+    EngineRequest,
+    pair,
+    validate_request,
+    versions,
+)
+from pairing_core.errors import (
+    CancelledError,
+    DuplicatePlayerIdError,
+    EngineTimeoutError,
+    EngineUnavailableError,
+    ImpossiblePairingError,
+    InternalError,
+    InvalidPlayerError,
+    InvalidRequestError,
+    PairingError,
+    UnsupportedCapabilityError,
+    UnsupportedRulesetError,
+    VersionMismatchError,
+)
+from pairing_core.rulesets import (
+    DUTCH_TILL2026_COMPAT,
+    ConstraintSet,
+    RulesetId,
+    resolve_ruleset,
+)
 
 __version__ = "0.1.0"
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
@@ -43,6 +69,26 @@ __all__ = [
     "validate_round",
     "ValidationReport",
     "Finding",
+    "EngineRequest",
+    "pair",
+    "validate_request",
+    "versions",
+    "RulesetId",
+    "ConstraintSet",
+    "resolve_ruleset",
+    "DUTCH_TILL2026_COMPAT",
+    "PairingError",
+    "InvalidRequestError",
+    "InvalidPlayerError",
+    "DuplicatePlayerIdError",
+    "ImpossiblePairingError",
+    "EngineTimeoutError",
+    "CancelledError",
+    "EngineUnavailableError",
+    "UnsupportedCapabilityError",
+    "UnsupportedRulesetError",
+    "VersionMismatchError",
+    "InternalError",
     "__version__",
     "__fide_reference__",
 ]
