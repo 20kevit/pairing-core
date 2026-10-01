@@ -15,6 +15,7 @@ from pairing_core.adapters.trf import (
     parse_pairing_output,
     parse_trf,
 )
+from pairing_core.adapters import bbp, javafo, trf
 from pairing_core.adapters.bbp import (
     BBPConfig,
     BBPPairing,
@@ -23,6 +24,9 @@ from pairing_core.adapters.bbp import (
 )
 
 __all__ = [
+    "bbp",
+    "javafo",
+    "trf",
     "TournamentInput",
     "TrfPlayer",
     "TrfRound",
