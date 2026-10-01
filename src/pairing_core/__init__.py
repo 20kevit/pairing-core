@@ -29,6 +29,7 @@ from pairing_core.api import PairingRequest, PairingEngine, NativeDutchEngine
 from pairing_core.api import (
     EngineRequest,
     pair,
+    pair_detailed,
     validate_request,
     versions,
 )
@@ -52,6 +53,7 @@ from pairing_core.rulesets import (
     RulesetId,
     resolve_ruleset,
 )
+from pairing_core.envelope import Pairing, RoundPairing
 
 __version__ = "0.1.0"
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
@@ -71,12 +73,15 @@ __all__ = [
     "Finding",
     "EngineRequest",
     "pair",
+    "pair_detailed",
     "validate_request",
     "versions",
     "RulesetId",
     "ConstraintSet",
     "resolve_ruleset",
     "DUTCH_TILL2026_COMPAT",
+    "Pairing",
+    "RoundPairing",
     "PairingError",
     "InvalidRequestError",
     "InvalidPlayerError",

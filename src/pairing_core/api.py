@@ -247,9 +247,43 @@ def versions() -> Dict[str, object]:
         },
         "rulesets": describe_known_rulesets(),
         "external": {"status": "not-implemented",
-                     "note": "F3+ adapters (BBP, JaVaFo); bring-your-own-binary"},
+                     "note": "later-phase adapters (BBP, JaVaFo); "
+                             "bring-your-own-binary"},
         "formats": {"TRF16": "not-implemented",
                     "TRF26": "not-implemented",
                     "TRFx": "not-implemented",
                     "note": "adapter edge; Dutch phase"},
     }
+
+
+def pair_detailed(request: EngineRequest) -> object:
+    """PUBLIC. Validated pairing with result envelope (F3 seam).
+
+    Same kernel and validation as pair(), but returns a RoundPairing:
+    complete pairings + engine/ruleset/version metadata + input digest +
+    validator warning codes. Validator ERRORs become InternalError via
+    from_kernel (O02: success results are never illegal). No seed, budgets,
+    modes, fallback, or criteria costs — those belong to F4/F5.
+    """
+    from pairing_core import __version__ as lib_version
+    from pairing_core.envelope import from_kernel, input_digest
+    from pairing_core.validator import validate_round
+
+    resolved = validate_request(request)
+    result = pair(request)
+    players = list(request.players)
+    rep = validate_round(result, players)
+    errors = tuple(sorted(f.rule for f in rep.errors))
+    warnings = tuple(sorted(
+        f.rule for f in rep.findings if f.level in ("WARNING", "INFO")))
+    return from_kernel(
+        result,
+        engine_id="native-dutch",
+        engine_version=lib_version,
+        ruleset=resolved,
+        library_version=lib_version,
+        input_digest_hex=input_digest(players, request.round_number,
+                                      resolved),
+        warnings=warnings,
+        validator_errors=errors,
+    )
