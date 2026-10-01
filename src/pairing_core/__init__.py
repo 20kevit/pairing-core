@@ -30,6 +30,7 @@ from pairing_core.api import (
     EngineRequest,
     pair,
     pair_detailed,
+    pair_via,
     validate_request,
     versions,
 )
@@ -54,6 +55,13 @@ from pairing_core.rulesets import (
     resolve_ruleset,
 )
 from pairing_core.envelope import Pairing, RoundPairing
+from pairing_core.provider import (
+    Capability,
+    EngineMetadata,
+    EngineProvider,
+    NativeDutchProvider,
+)
+from pairing_core.registry import Registry, create_default_registry
 
 __version__ = "0.1.0"
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
@@ -74,6 +82,7 @@ __all__ = [
     "EngineRequest",
     "pair",
     "pair_detailed",
+    "pair_via",
     "validate_request",
     "versions",
     "RulesetId",
@@ -82,6 +91,12 @@ __all__ = [
     "DUTCH_TILL2026_COMPAT",
     "Pairing",
     "RoundPairing",
+    "EngineProvider",
+    "NativeDutchProvider",
+    "Capability",
+    "EngineMetadata",
+    "Registry",
+    "create_default_registry",
     "PairingError",
     "InvalidRequestError",
     "InvalidPlayerError",

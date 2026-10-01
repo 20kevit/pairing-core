@@ -287,3 +287,30 @@ def pair_detailed(request: EngineRequest) -> object:
         warnings=warnings,
         validator_errors=errors,
     )
+
+
+def pair_via(provider_id: str, request: EngineRequest,
+             registry: object = None) -> object:
+    """PUBLIC. Explicit provider path (F4): resolve + execute, no fallback.
+
+    Resolution is explicit (unknown id/ruleset/capability -> typed errors,
+    never substitution). The provider result must be a RoundPairing;
+    anything else is an InternalError (seam guard against invalid
+    provider results). registry=None builds the default registry.
+    """
+    from pairing_core.envelope import RoundPairing
+    from pairing_core.errors import InternalError
+    from pairing_core.registry import Registry, create_default_registry
+
+    reg = registry if registry is not None else create_default_registry()
+    if not isinstance(reg, Registry):
+        from pairing_core.errors import InvalidRequestError
+
+        raise InvalidRequestError("registry must be a Registry.")
+    provider = reg.resolve(request, provider_id)
+    result = provider.pair(request)
+    if not isinstance(result, RoundPairing):
+        raise InternalError(
+            f"provider {provider_id!r} returned "
+            f"{type(result).__name__}, not RoundPairing.")
+    return result
