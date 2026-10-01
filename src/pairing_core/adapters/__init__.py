@@ -15,6 +15,12 @@ from pairing_core.adapters.trf import (
     parse_pairing_output,
     parse_trf,
 )
+from pairing_core.adapters.bbp import (
+    BBPConfig,
+    BBPPairing,
+    pair_tournament,
+    probe_version,
+)
 
 __all__ = [
     "TournamentInput",
@@ -24,4 +30,8 @@ __all__ = [
     "from_engine_request",
     "parse_pairing_output",
     "parse_trf",
+    "BBPConfig",
+    "BBPPairing",
+    "pair_tournament",
+    "probe_version",
 ]
