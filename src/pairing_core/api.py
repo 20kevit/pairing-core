@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 from pairing_core.models import PlayerData, RoundResult
+from pairing_core.controls import CancelToken, ExecutionBudgets
 
 
 @dataclass(frozen=True)
@@ -66,14 +67,17 @@ class EngineRequest:
     """PUBLIC. Explicit single-round pairing request (F2).
 
     Unlike PairingRequest, the ruleset is MANDATORY (O03: no silent default
-    drift) and constraints are a ConstraintSet. Budgets/seeds/modes arrive in
-    F4–F5; RoundPairing+envelope arrive with F4 — this wrapper returns the
-    v0.1.0 RoundResult so F1 goldens keep applying byte-for-byte.
+    drift) and constraints are a ConstraintSet. Optional F5 execution
+    controls (budgets/cancel_token, both defaulting to legacy behavior).
+    This wrapper returns the v0.1.0 RoundResult so F1 goldens keep applying
+    byte-for-byte.
     """
     players: List[PlayerData] = field(default_factory=list)
     ruleset: object = None  # RulesetId | str alias; validated, never defaulted
     round_number: int = 1
     constraints: object = None  # ConstraintSet; None == empty
+    budgets: Optional[ExecutionBudgets] = None  # F5; None == legacy caps
+    cancel_token: Optional[CancelToken] = None  # F5; None == no cancel
 
 
 def _is_int(value: object) -> bool:
@@ -198,6 +202,12 @@ def validate_request(request: object) -> object:
         raise UnsupportedCapabilityError(
             "bye directives are not honoured by the v0.1.0 kernel "
             "(refusing, not ignoring).")
+    if request.budgets is not None and \
+            not isinstance(request.budgets, ExecutionBudgets):
+        raise InvalidRequestError("budgets must be an ExecutionBudgets.")
+    if request.cancel_token is not None and \
+            not isinstance(request.cancel_token, CancelToken):
+        raise InvalidRequestError("cancel_token must be a CancelToken.")
     return resolved
 
 
@@ -222,6 +232,8 @@ def pair(request: EngineRequest) -> RoundResult:
             players=list(request.players),
             round_number=request.round_number,
             locked_pairs=locked,
+            budgets=request.budgets,
+            cancel_token=request.cancel_token,
         ).generate()
     except ValueError as exc:
         raise translate_kernel_error(

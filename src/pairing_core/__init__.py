@@ -55,6 +55,7 @@ from pairing_core.rulesets import (
     resolve_ruleset,
 )
 from pairing_core.envelope import Pairing, RoundPairing
+from pairing_core.controls import CancelToken, ExecutionBudgets
 from pairing_core.provider import (
     Capability,
     EngineMetadata,
@@ -91,6 +92,8 @@ __all__ = [
     "DUTCH_TILL2026_COMPAT",
     "Pairing",
     "RoundPairing",
+    "ExecutionBudgets",
+    "CancelToken",
     "EngineProvider",
     "NativeDutchProvider",
     "Capability",

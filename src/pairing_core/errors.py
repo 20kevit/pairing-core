@@ -105,11 +105,15 @@ def translate_kernel_error(exc: ValueError, *,
     """Map a v0.1.0 kernel ``ValueError`` to the typed taxonomy.
 
     Mapping (by stable message fragment; full original text preserved):
+      - already-typed PairingError -> returned as-is (never re-wrapped)
       - ``Locked pair #``        -> InvalidRequestError
       - ``No legal FIDE Dutch``  -> ImpossiblePairingError
-      - ``Pairing complexity``    -> EngineTimeoutError (legacy 2M-step cap)
+      - ``Pairing complexity``    -> EngineTimeoutError (step cap)
+      - ``Pairing time budget``   -> EngineTimeoutError (wall-clock cap)
       - anything else            -> InternalError
     """
+    if isinstance(exc, PairingError):
+        return exc
     text = str(exc)
     if text.startswith("Locked pair #"):
         mapped: PairingError = InvalidRequestError(text)
@@ -117,7 +121,8 @@ def translate_kernel_error(exc: ValueError, *,
         mapped = ImpossiblePairingError(text)
         mapped.ruleset = ruleset  # type: ignore[attr-defined]
         mapped.round_number = round_number  # type: ignore[attr-defined]
-    elif text.startswith("Pairing complexity"):
+    elif text.startswith("Pairing complexity") or \
+            text.startswith("Pairing time budget"):
         mapped = EngineTimeoutError(text)
     else:
         mapped = InternalError(f"unexpected kernel failure: {text}")

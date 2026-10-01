@@ -49,6 +49,10 @@ def pair_all_brackets(
     brackets: List[Bracket],
     played_map: Dict[int, Set[int]],
     round_number: int,
+    *,
+    max_steps: Optional[int] = None,
+    deadline: Optional[float] = None,
+    cancel_token: Optional[object] = None,
 ) -> Optional[List[PairingCard]]:
     """
     Pair all score brackets using the FIDE Dutch algorithm.
@@ -58,11 +62,19 @@ def pair_all_brackets(
         Pass 2: Relaxed float constraints
 
     Absolute constraints are never relaxed.
+
+    Execution controls (F5, all optional, defaults preserve legacy):
+        max_steps: node cap (None -> legacy 2,000,000).
+        deadline: monotonic timestamp for wall-clock bound (None -> none).
+        cancel_token: CancelToken polled at checkpoints (None -> none).
     """
     ctx = _PairingContext(
         brackets=brackets,
         played_map=played_map,
         round_number=round_number,
+        max_steps=max_steps,
+        deadline=deadline,
+        cancel_token=cancel_token,
     )
 
     # Pass 1: strict float rules
@@ -96,6 +108,8 @@ class _PairingContext:
         "local_impossible_cache",
         "search_steps",
         "max_search_steps",
+        "deadline",
+        "cancel_token",
     )
 
     def __init__(
@@ -103,6 +117,9 @@ class _PairingContext:
         brackets: List[Bracket],
         played_map: Dict[int, Set[int]],
         round_number: int,
+        max_steps: Optional[int] = None,
+        deadline: Optional[float] = None,
+        cancel_token: Optional[object] = None,
     ):
         self.brackets = brackets
         self.played_map = played_map
@@ -121,7 +138,39 @@ class _PairingContext:
             Tuple[Tuple[Tuple[int, int, int], ...], bool]
         ] = set()
         self.search_steps = 0
-        self.max_search_steps = 2000000
+        self.max_search_steps = max_steps if max_steps is not None else 2000000
+        self.deadline = deadline
+        self.cancel_token = cancel_token
+
+    def check_limits(self) -> None:
+        """Enforce step/cancel/wall-clock bounds (F5 checkpoints).
+
+        Step counter is O(1) per node and deterministic; wall-clock is
+        polled sparsely (every 1024 nodes) plus at bracket entries so it
+        cannot perturb within-budget results. Raises EngineTimeoutError or
+        CancelledError (both ValueError subclasses: legacy isinstance
+        compatibility holds).
+        """
+        token = self.cancel_token
+        if token is not None and token.cancelled:
+            from pairing_core.errors import CancelledError
+
+            raise CancelledError("pairing run cancelled.")
+        self.search_steps += 1
+        if self.search_steps > self.max_search_steps:
+            from pairing_core.errors import EngineTimeoutError
+
+            raise EngineTimeoutError(
+                f"Pairing complexity exceeded limit ({self.max_search_steps} "
+                f"nodes). Bracket is too complex.")
+        if self.deadline is not None and (self.search_steps & 1023) == 0:
+            from pairing_core.controls import now_monotonic
+            from pairing_core.errors import EngineTimeoutError
+
+            if now_monotonic() > self.deadline:
+                raise EngineTimeoutError(
+                    "Pairing time budget exceeded "
+                    f"(deadline {self.deadline}).")
 
     def have_played(self, p1: EnginePlayer, p2: EnginePlayer) -> bool:
         """
@@ -163,6 +212,26 @@ class _Pair:
         return f"Pair(W={self.white.pno}, B={self.black.pno})"
 
 # ═══════════════════════════════════════════════════════════════════
+#  Execution checkpoints (F5: cancel + wall-clock at bracket entries;
+#  no step increment here, so legacy step counts are bit-identical)
+# ═══════════════════════════════════════════════════════════════════
+
+def _check_bracket_entry(ctx: "_PairingContext") -> None:
+    token = ctx.cancel_token
+    if token is not None and token.cancelled:
+        from pairing_core.errors import CancelledError
+
+        raise CancelledError("pairing run cancelled.")
+    if ctx.deadline is not None:
+        from pairing_core.controls import now_monotonic
+        from pairing_core.errors import EngineTimeoutError
+
+        if now_monotonic() > ctx.deadline:
+            raise EngineTimeoutError(
+                f"Pairing time budget exceeded (deadline {ctx.deadline}).")
+
+
+# ═══════════════════════════════════════════════════════════════════
 #  Recursive Bracket Solver
 # ═══════════════════════════════════════════════════════════════════
 
@@ -174,6 +243,7 @@ def _solve_bracket(
     """
     Recursively solve pairing from bracket_idx downward.
     """
+    _check_bracket_entry(ctx)
     state_key = (
         bracket_idx,
         tuple(sorted(p.id for p in incoming)),
@@ -363,9 +433,7 @@ def _iter_bracket_pairings(
     from pairing_core.exchange import generate_exchanges
 
     for new_s1, new_s2 in generate_exchanges(s1_original, s2_original):
-        ctx.search_steps += 1
-        if ctx.search_steps > ctx.max_search_steps:
-            raise ValueError(f"Pairing complexity exceeded limit ({ctx.max_search_steps} nodes). Bracket is too complex.")
+        ctx.check_limits()
         for pairs in _iter_transposition_pairings(ctx, new_s1, new_s2):
             yielded_any = True
             yield pairs
@@ -413,9 +481,7 @@ def _iter_transposition_pairings(
     feasible_cache: Dict[Tuple[int, int], bool] = {}
 
     def dfs(i: int, used_mask: int) -> Generator[List[_Pair], None, None]:
-        ctx.search_steps += 1
-        if ctx.search_steps > ctx.max_search_steps:
-            raise ValueError(f"Pairing complexity exceeded limit ({ctx.max_search_steps} nodes). Bracket is too complex.")
+        ctx.check_limits()
         state = (i, used_mask)
         if state in dead_states:
             return

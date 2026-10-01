@@ -61,10 +61,16 @@ class SwissEngine:
         players: List[PlayerData],
         round_number: int,
         locked_pairs: Optional[List[Tuple[int, int]]] = None,
+        *,
+        budgets: Optional[object] = None,
+        cancel_token: Optional[object] = None,
     ):
         self.round_number = round_number
         self.locked_pairs: List[Tuple[int, int]] = list(locked_pairs or [])
         self._raw_players = self._normalize_input(players)
+        # F5 execution controls (additive; None preserves legacy behavior).
+        self._budgets = budgets
+        self._cancel_token = cancel_token
 
     def generate(self) -> RoundResult:
         """
@@ -223,6 +229,24 @@ class SwissEngine:
     # ═════════════════════════════════════════════════════════
     #  Internal Pairing Helpers
     # ═════════════════════════════════════════════════════════
+    def _search_limits(self) -> Tuple[Optional[int], Optional[float],
+                                      Optional[object]]:
+        """Resolve F5 controls to pairer arguments (deadline computed here
+        so the search sees a single fixed bound)."""
+        max_steps: Optional[int] = None
+        deadline: Optional[float] = None
+        if self._budgets is not None:
+            max_steps = self._budgets.max_steps
+            if self._budgets.wall_clock_seconds is not None:
+                from pairing_core.controls import (
+                    deadline_from,
+                    now_monotonic,
+                )
+
+                deadline = deadline_from(
+                    self._budgets.wall_clock_seconds, now_monotonic())
+        return max_steps, deadline, self._cancel_token
+
     def _pair_without_bye(
         self,
         engine_players: List[EnginePlayer],
@@ -230,10 +254,14 @@ class SwissEngine:
     ) -> RoundResult:
         """Pair all players (even count, no bye)."""
         brackets = build_brackets(engine_players)
+        max_steps, deadline, cancel_token = self._search_limits()
         pairing_cards = pair_all_brackets(
             brackets=brackets,
             played_map=played_map,
             round_number=self.round_number,
+            max_steps=max_steps,
+            deadline=deadline,
+            cancel_token=cancel_token,
         )
         if pairing_cards is None:
             raise ValueError(
@@ -277,10 +305,14 @@ class SwissEngine:
                     bye_player_id=bye_player.id,
                 )
             brackets = build_brackets(pairing_players)
+            max_steps, deadline, cancel_token = self._search_limits()
             pairing_cards = pair_all_brackets(
                 brackets=brackets,
                 played_map=played_map,
                 round_number=self.round_number,
+                max_steps=max_steps,
+                deadline=deadline,
+                cancel_token=cancel_token,
             )
             if pairing_cards is not None:
                 _, bye_card = create_bye_card(bye_player, board_number=0)
