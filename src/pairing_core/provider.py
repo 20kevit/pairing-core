@@ -106,3 +106,54 @@ class EngineProvider(ABC):
         F2 taxonomy; providers MUST NOT substitute other engines/rulesets.
         """
         raise NotImplementedError
+
+
+class NativeDutchProvider(EngineProvider):
+    """PUBLIC. The frozen v0.1.0 kernel as an EngineProvider (F4-S2).
+
+    A thin guarded wrapper — NOT a second pairing implementation (F4 rule 2):
+    support-gating here, execution delegated to the F3 seam (pair_detailed),
+    which runs the unmodified kernel. Ruleset identity stays honest:
+    dutch-till2026-compat only, never relabelled (F4 boundary).
+    """
+
+    @property
+    def metadata(self) -> EngineMetadata:
+        from pairing_core import __version__ as lib_version
+
+        return EngineMetadata(provider_id="native-dutch",
+                              engine_version=lib_version)
+
+    @property
+    def capabilities(self) -> Capability:
+        from pairing_core.rulesets import (
+            DUTCH_TILL2026_COMPAT,
+            resolve_ruleset,
+        )
+
+        return Capability(
+            rulesets=(resolve_ruleset(DUTCH_TILL2026_COMPAT),),
+            supports_forced_pairs=True,
+            supports_forbidden_pairs=False,
+            supports_bye_directives=False,
+            deterministic=True,
+        )
+
+    def pair(self, request: object) -> RoundPairing:
+        from pairing_core.api import EngineRequest, pair_detailed
+        from pairing_core.errors import UnsupportedCapabilityError
+        from pairing_core.rulesets import ConstraintSet, resolve_ruleset
+
+        if not isinstance(request, EngineRequest):
+            # Delegate: F2 boundary raises the precise InvalidRequestError.
+            return pair_detailed(request)
+        constraints = request.constraints
+        if constraints is None:
+            constraints = ConstraintSet()
+        if isinstance(constraints, ConstraintSet):
+            resolved = resolve_ruleset(request.ruleset)
+            if not self.supports(resolved, constraints):
+                raise UnsupportedCapabilityError(
+                    "native-dutch cannot honour these constraints "
+                    "(refusing, not ignoring).")
+        return pair_detailed(request)
