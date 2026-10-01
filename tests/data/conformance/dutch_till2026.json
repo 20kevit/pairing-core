@@ -1,0 +1,786 @@
+{
+ "meta": {
+  "conf": "dutch-till2026-compat",
+  "tool": "harness/corpus.py (W4)",
+  "note": "Inputs hand-designed from Stage-2 adversarial sets; expectations are outcome classes + independent-validator verdicts, never recorded pairings."
+ },
+ "cases": [
+  {
+   "id": "B1",
+   "category": "bracket",
+   "desc": "top-triple cross-rematches force cascade",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "opponents": [
+      2,
+      4
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "opponents": [
+      1,
+      5
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 1.0,
+     "opponents": [
+      6
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.0,
+     "opponents": [
+      1
+     ]
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600,
+     "points": 0.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1500,
+     "points": 0.0,
+     "opponents": [
+      3
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "B2",
+   "category": "bracket",
+   "desc": "three odd groups chain floats",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 2.0,
+     "opponents": [
+      4,
+      2
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 2.0,
+     "opponents": [
+      5,
+      1
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 2.0,
+     "opponents": [
+      6
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 1.0,
+     "opponents": [
+      1,
+      5
+     ]
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600,
+     "points": 1.0,
+     "opponents": [
+      2,
+      4
+     ]
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1500,
+     "points": 0.0,
+     "opponents": [
+      3,
+      7
+     ]
+    },
+    {
+     "id": 7,
+     "pairing_no": 7,
+     "rating": 1400,
+     "points": 0.0,
+     "opponents": [
+      6
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "B3",
+   "category": "bracket",
+   "desc": "single leader with colour-blocked followers",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 2.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "color_hist": "ww",
+     "opponents": [
+      1,
+      3
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 1.0,
+     "color_hist": "bb",
+     "opponents": [
+      2,
+      4
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 1.0,
+     "opponents": [
+      3,
+      5
+     ]
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600,
+     "points": 1.0,
+     "opponents": [
+      4
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "F1",
+   "category": "float",
+   "desc": "DD histories must avoid third downfloat",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "float_hist": "DD",
+     "opponents": [
+      3
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "float_hist": "DD",
+     "opponents": [
+      4
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 0.0,
+     "opponents": [
+      1
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.0,
+     "opponents": [
+      2
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "F2",
+   "category": "float",
+   "desc": "D- streak-break semantics",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "float_hist": "D-",
+     "opponents": [
+      3
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "opponents": [
+      4
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 0.0,
+     "opponents": [
+      1
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.0,
+     "opponents": [
+      2
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "F3",
+   "category": "float",
+   "desc": "prior downfloaters meeting across scores",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.5,
+     "float_hist": "D-",
+     "opponents": [
+      4
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "float_hist": "D-",
+     "opponents": [
+      3
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 1.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.5,
+     "opponents": [
+      1
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "C1",
+   "category": "colour",
+   "desc": "ww-vs-ww conflict resolved by rank",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "color_hist": "ww"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "color_hist": "ww"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "C2",
+   "category": "colour",
+   "desc": "opposite absolutes both granted",
+   "round": 4,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "color_hist": "wwwb"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "color_hist": "bbbw"
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "C3",
+   "category": "colour",
+   "desc": "strong-vs-strong same direction",
+   "round": 4,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "color_hist": "wbw"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "color_hist": "wbw"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "R1",
+   "category": "rematch",
+   "desc": "score-group triangle forces floats",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "opponents": [
+      2,
+      3
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "opponents": [
+      1,
+      3
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 1.0,
+     "opponents": [
+      1,
+      2
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.0
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600,
+     "points": 0.0
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1500,
+     "points": 0.0
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "R2",
+   "category": "rematch",
+   "desc": "one-sided memory rejected by strict boundary",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0
+    }
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "InvalidPlayerError"
+   }
+  },
+  {
+   "id": "R3",
+   "category": "rematch",
+   "desc": "locked rematch rejected",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "opponents": [
+      1
+     ]
+    }
+   ],
+   "forced": [
+    [
+     1,
+     2
+    ]
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "InvalidRequestError"
+   }
+  },
+  {
+   "id": "Y1",
+   "category": "bye",
+   "desc": "fresh odd field, lowest-ranked bye",
+   "round": 1,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600
+    }
+   ],
+   "expect": {
+    "outcome": "valid",
+    "bye": 5
+   }
+  },
+  {
+   "id": "Y2",
+   "category": "bye",
+   "desc": "single fresh player takes bye",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "received_bye": true
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "received_bye": true
+    }
+   ],
+   "expect": {
+    "outcome": "valid",
+    "bye": 2
+   }
+  },
+  {
+   "id": "Y3",
+   "category": "bye",
+   "desc": "all-bye field repeats a bye",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "received_bye": true
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "received_bye": true
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "received_bye": true
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "I1",
+   "category": "impossible",
+   "desc": "fully-played field",
+   "round": 4,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "opponents": [
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "opponents": [
+      1,
+      3,
+      4
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "opponents": [
+      1,
+      2,
+      4
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "opponents": [
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "ImpossiblePairingError"
+   }
+  },
+  {
+   "id": "I2",
+   "category": "impossible",
+   "desc": "colour-locked field",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "color_hist": "ww"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "color_hist": "ww"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "color_hist": "ww"
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "color_hist": "ww"
+    }
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "ImpossiblePairingError"
+   }
+  },
+  {
+   "id": "I3",
+   "category": "impossible",
+   "desc": "two-player rematch-only field",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "opponents": [
+      1
+     ]
+    }
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "ImpossiblePairingError"
+   }
+  }
+ ]
+}
