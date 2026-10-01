@@ -14,5 +14,7 @@ measurement, or later-phase decisions — none blocks Foundation.
   decided O08 policy); diagnostics verbosity contract.
 - **Testing**: oracle-mass storage (repo corpora vs external downloads);
   property-test dev-dependency choice.
-- **Performance**: benchmark budgets (measure-first); native wall-clock default
-  budget value (measure-first; step budget primary).
+- **Performance**: first baselines recorded (W7: 50–1000 realistic spreads +
+  pathological brackets, see tests/data/benchmarks/baseline.json; round-1
+  single-1000 bracket ≈97s — worst case, bounded); budget publication +
+  native wall-clock default value still measure-first/open.

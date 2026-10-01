@@ -98,7 +98,8 @@ two-minor deprecation window (O08); API tiers; no partial results (O02).
 ## 17. Performance
 
 Measure-first; scenarios 10→1000 + pathological; bounded typed failure, no
-hangs; budgets published from data, none invented.
+hangs; first baselines recorded in tests/data/benchmarks/baseline.json
+(W7); budgets published from data, none invented.
 
 ## 18. Security
 
