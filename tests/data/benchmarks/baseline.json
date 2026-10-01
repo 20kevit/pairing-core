@@ -1,0 +1,47 @@
+{
+ "git_sha": "3d4cc5c",
+ "tool": "tests/test_benchmarks.py",
+ "note": "machine-dependent durations; outcomes are the gates",
+ "scenarios": {
+  "sim_n50_r4": [
+   0.008760341035667807,
+   0.003567342006135732,
+   0.0030831180047243834,
+   0.020444975001737475
+  ],
+  "realistic_n50_round5": {
+   "seconds": 0.0027920890133827925,
+   "outcome": "success",
+   "boards": 25
+  },
+  "sim_n100_r4": [
+   0.05710557795828208,
+   0.0158951340126805,
+   0.009154111030511558,
+   0.007607599953189492
+  ],
+  "realistic_n100_round5": {
+   "seconds": 0.010062788031063974,
+   "outcome": "success",
+   "boards": 50
+  },
+  "sim_n250_r4": [
+   0.7741784660029225,
+   0.16088137699989602,
+   0.07044999598292634,
+   0.05509121197974309
+  ],
+  "realistic_n250_round5": {
+   "seconds": 0.05171858600806445,
+   "outcome": "success",
+   "boards": 125
+  },
+  "pathological_single80": {
+   "seconds": 9.274178698018659,
+   "outcome": "timeout-bounded"
+  },
+  "dense_rematch20": {
+   "outcome": "timeout-bounded"
+  }
+ }
+}

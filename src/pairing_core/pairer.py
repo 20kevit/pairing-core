@@ -466,6 +466,10 @@ def _iter_transposition_pairings(
         row: List[Optional[_Pair]] = []
         mask = 0
         for j in range(n):
+            # Counted: matrix work is O(n^2) per exchange pattern and
+            # otherwise escapes the step budget (W7 finding: pattern x
+            # matrix churn hung a single-80 bracket past 400s).
+            ctx.check_limits()
             pair = _build_pair_if_legal(ctx, s1[i], s2[j])
             row.append(pair)
             if pair is not None:

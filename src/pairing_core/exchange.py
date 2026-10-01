@@ -150,17 +150,19 @@ def _generate_k_exchanges(
 
     # Generate S1 combinations: lowest-ranked first
     # S1 is sorted ascending (pno 1, 3, 5, ...)
-    # Lowest-ranked in S1 = highest pno = last in list
-    s1_combinations = list(_reverse_combinations(s1, k))
-
-    # Generate S2 combinations: highest-ranked first
-    # S2 is sorted ascending (pno 7, 9, 11, ...)
-    # Highest-ranked in S2 = lowest pno = first in list
-    s2_combinations = list(combinations(s2, k))
+    # Lowest-ranked in S1 = highest pno = last in list.
+    # LAZY: never materialize combination lists (C(n,k) explodes for large
+    # brackets and defeated the search step budget with unbounded memory
+    # growth). The inner S2 combinations are re-generated per S1 group in
+    # the same order as before.
+    s1_combinations = _reverse_combinations(s1, k)
 
     # Yield in FIDE order: for each S1 combo, all S2 combos
     for s1_group in s1_combinations:
-        for s2_group in s2_combinations:
+        # Generate S2 combinations: highest-ranked first
+        # S2 is sorted ascending (pno 7, 9, 11, ...)
+        # Highest-ranked in S2 = lowest pno = first in list
+        for s2_group in combinations(s2, k):
             new_s1, new_s2 = _swap_groups(s1, s2, s1_group, s2_group)
             yield new_s1, new_s2
 
