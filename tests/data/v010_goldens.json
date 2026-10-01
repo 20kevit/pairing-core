@@ -1,0 +1,3240 @@
+{
+  "meta": {
+    "tool": "tests/v010_cases.py --dump (F1 harness)",
+    "kernel": "pairing-core",
+    "kernel_version": "0.1.0",
+    "git_sha": "c3c19f9912e00308d5de123fea9caee7eb639156",
+    "ruleset_label": "dutch-till2026-compat",
+    "date": "2026-10-01",
+    "command": "python3 tests/v010_cases.py --dump",
+    "note": "Expectations recorded from the unmodified v0.1.0 kernel, never hand-written. Regenerate only deliberately; review every diff (O08)."
+  },
+  "cases": [
+    {
+      "id": "E-r1-2",
+      "kind": "engine",
+      "desc": "round 1, 2 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-4",
+      "kind": "engine",
+      "desc": "round 1, 4 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 3,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-6",
+      "kind": "engine",
+      "desc": "round 1, 6 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 5,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-8",
+      "kind": "engine",
+      "desc": "round 1, 8 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 5,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 7,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 4,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-10",
+      "kind": "engine",
+      "desc": "round 1, 10 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 9,
+          "pairing_no": 9,
+          "rating": 1920,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 10,
+          "pairing_no": 10,
+          "rating": 1910,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 7,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 4,
+            "black": 9,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 5,
+            "white": 5,
+            "black": 10,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-12",
+      "kind": "engine",
+      "desc": "round 1, 12 players",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 9,
+          "pairing_no": 9,
+          "rating": 1920,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 10,
+          "pairing_no": 10,
+          "rating": 1910,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 11,
+          "pairing_no": 11,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 12,
+          "pairing_no": 12,
+          "rating": 1890,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 7,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 9,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 4,
+            "black": 10,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 5,
+            "white": 5,
+            "black": 11,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 6,
+            "white": 6,
+            "black": 12,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-odd-3",
+      "kind": "engine",
+      "desc": "round 1, 3 players (bye)",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 3,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 3,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-odd-5",
+      "kind": "engine",
+      "desc": "round 1, 5 players (bye)",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 3,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 5,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 5,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-odd-7",
+      "kind": "engine",
+      "desc": "round 1, 7 players (bye)",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 5,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 7,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 7,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r1-odd-9",
+      "kind": "engine",
+      "desc": "round 1, 9 players (bye)",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 9,
+          "pairing_no": 9,
+          "rating": 1920,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 5,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 3,
+            "black": 7,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 4,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 5,
+            "white": 9,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 9,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-empty",
+      "kind": "engine",
+      "desc": "zero players",
+      "round": 1,
+      "players": [],
+      "locked": null,
+      "expected": {
+        "pairings": [],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-single",
+      "kind": "engine",
+      "desc": "single player gets bye",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 1,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r2-decisive",
+      "kind": "engine",
+      "desc": "round 2 after decisive round 1",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            5
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            6
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            7
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            8
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            3
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 3,
+            "black": 1,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 4,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 5,
+            "black": 7,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 4,
+            "white": 6,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "COL-SCP",
+            "COL-SCP",
+            "COL-SCP",
+            "COL-SCP"
+          ],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r2-draw",
+      "kind": "engine",
+      "desc": "round 2 with 0.5 group (floats expected)",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 1990,
+          "points": 0.5,
+          "color_hist": "w",
+          "opponents": [
+            5
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1980,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            6
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1970,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            7
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1960,
+          "points": 1.0,
+          "color_hist": "w",
+          "opponents": [
+            8
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1950,
+          "points": 0.5,
+          "color_hist": "b",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1940,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1930,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            3
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1920,
+          "points": 0.0,
+          "color_hist": "b",
+          "opponents": [
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 3,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 4,
+            "black": 1,
+            "bye": false,
+            "white_float": "D",
+            "black_float": "U"
+          },
+          {
+            "board": 3,
+            "white": 5,
+            "black": 7,
+            "bye": false,
+            "white_float": "D",
+            "black_float": "U"
+          },
+          {
+            "board": 4,
+            "white": 6,
+            "black": 8,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "COL-SCP",
+            "COL-SCP",
+            "COL-SCP",
+            "COL-SCP"
+          ],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-r3-mixed",
+      "kind": "engine",
+      "desc": "round 3 mixed colours/floats",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 1990,
+          "points": 2.0,
+          "color_hist": "wb",
+          "opponents": [
+            2,
+            5
+          ],
+          "received_bye": false,
+          "float_hist": "-D"
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1980,
+          "points": 2.0,
+          "color_hist": "bw",
+          "opponents": [
+            1,
+            6
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1970,
+          "points": 1.5,
+          "color_hist": "wb",
+          "opponents": [
+            4,
+            7
+          ],
+          "received_bye": false,
+          "float_hist": "D-"
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1960,
+          "points": 1.5,
+          "color_hist": "bw",
+          "opponents": [
+            3,
+            8
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1950,
+          "points": 1.0,
+          "color_hist": "bw",
+          "opponents": [
+            1,
+            6
+          ],
+          "received_bye": false,
+          "float_hist": "U-"
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1940,
+          "points": 1.0,
+          "color_hist": "wb",
+          "opponents": [
+            2,
+            5
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 7,
+          "pairing_no": 7,
+          "rating": 1930,
+          "points": 0.5,
+          "color_hist": "wb",
+          "opponents": [
+            3,
+            8
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 8,
+          "pairing_no": 8,
+          "rating": 1920,
+          "points": 0.5,
+          "color_hist": "bw",
+          "opponents": [
+            4,
+            7
+          ],
+          "received_bye": false,
+          "float_hist": "-U"
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 3,
+            "bye": false,
+            "white_float": "D",
+            "black_float": "U"
+          },
+          {
+            "board": 2,
+            "white": 4,
+            "black": 2,
+            "bye": false,
+            "white_float": "U",
+            "black_float": "D"
+          },
+          {
+            "board": 3,
+            "white": 7,
+            "black": 5,
+            "bye": false,
+            "white_float": "U",
+            "black_float": "D"
+          },
+          {
+            "board": 4,
+            "white": 6,
+            "black": 8,
+            "bye": false,
+            "white_float": "D",
+            "black_float": "U"
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "FLO-01",
+            "FLO-01"
+          ],
+          "infos": [
+            "COL-MCP",
+            "COL-MCP"
+          ]
+        }
+      }
+    },
+    {
+      "id": "E-rematch",
+      "kind": "engine",
+      "desc": "rematch avoidance forces cross pairing",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 1.0,
+          "color_hist": "",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 1.0,
+          "color_hist": "",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1800,
+          "points": 1.0,
+          "color_hist": "",
+          "opponents": [
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1700,
+          "points": 1.0,
+          "color_hist": "",
+          "opponents": [
+            3
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 3,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-abs-ww",
+      "kind": "engine",
+      "desc": "absolute colour: ww must take black",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "ww",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 2,
+            "black": 1,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-abs-bb",
+      "kind": "engine",
+      "desc": "absolute colour: bb must take white",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "bb",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-strong",
+      "kind": "engine",
+      "desc": "strong preference wbw history recorded",
+      "round": 4,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 1.0,
+          "color_hist": "wbw",
+          "opponents": [
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 1.0,
+          "color_hist": "bwb",
+          "opponents": [
+            3
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1800,
+          "points": 0.0,
+          "color_hist": "wbw",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1700,
+          "points": 0.0,
+          "color_hist": "bwb",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 2,
+            "black": 1,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 4,
+            "black": 3,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-bye-mixed",
+      "kind": "engine",
+      "desc": "bye skips already-bye'd players",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": true,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": true,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1800,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1700,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1600,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 3,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 2,
+            "black": 4,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 5,
+            "black": null,
+            "bye": true,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": 5,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "E-locked",
+      "kind": "engine",
+      "desc": "locked pair placed verbatim",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 5,
+          "pairing_no": 5,
+          "rating": 1960,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 6,
+          "pairing_no": 6,
+          "rating": 1950,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": {
+        "pairings": [
+          {
+            "board": 1,
+            "white": 1,
+            "black": 2,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 2,
+            "white": 3,
+            "black": 5,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          },
+          {
+            "board": 3,
+            "white": 4,
+            "black": 6,
+            "bye": false,
+            "white_float": "",
+            "black_float": ""
+          }
+        ],
+        "bye_player_id": null,
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "X-impossible",
+      "kind": "error",
+      "desc": "fully-played field cannot pair",
+      "round": 4,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            2,
+            3,
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            1,
+            3,
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1800,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            1,
+            2,
+            4
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1700,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            1,
+            2,
+            3
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": null,
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Round 4: No legal FIDE Dutch pairing exists for 4 players. Possible causes:\n  - All players have played each other\n  - Color constraints are too restrictive\n  - Float constraints prevent valid pairing\nBracket structure:\nBrackets:\n  [0.0] 4 players (pno: 1, 2, 3, 4) [TOP] [BOT]"
+        }
+      }
+    },
+    {
+      "id": "X-lock-rematch",
+      "kind": "error",
+      "desc": "locked rematch rejected",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Locked pair #1: players 1 and 2 have already played each other."
+        }
+      }
+    },
+    {
+      "id": "X-lock-unknown",
+      "kind": "error",
+      "desc": "locked unknown player rejected",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          99
+        ]
+      ],
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Locked pair #1: black player 99 is not in the active player list."
+        }
+      }
+    },
+    {
+      "id": "X-lock-self",
+      "kind": "error",
+      "desc": "locked self-pair rejected",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          1
+        ]
+      ],
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Locked pair #1: player 1 cannot be paired with themselves."
+        }
+      }
+    },
+    {
+      "id": "X-lock-dup",
+      "kind": "error",
+      "desc": "player in two locked pairs rejected",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Locked pair #2: player 1 appears in multiple locked pairs."
+        }
+      }
+    },
+    {
+      "id": "X-lock-colour",
+      "kind": "error",
+      "desc": "colour-illegal lock rejected",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "ww",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "ww",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "locked": [
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": {
+        "error": {
+          "type": "ValueError",
+          "message": "Locked pair #1: assigning white to 1 and black to 2 violates FIDE color rules (3-consecutive or balance limit)."
+        }
+      }
+    },
+    {
+      "id": "V-clean",
+      "kind": "validator",
+      "desc": "clean 4-player round validates",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 3,
+          "bye": false
+        },
+        {
+          "board": 2,
+          "white": 2,
+          "black": 4,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-rematch",
+      "kind": "validator",
+      "desc": "repeat opponents are ERROR GEN-01",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            2
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [
+            1
+          ],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 2,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "GEN-01"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-triple-white",
+      "kind": "validator",
+      "desc": "ww player given white",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "ww",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 2,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "COL-01",
+            "COL-02",
+            "COL-ACO"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-two-byes",
+      "kind": "validator",
+      "desc": "two byes are ERROR GEN-02",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": null,
+          "bye": true
+        },
+        {
+          "board": 2,
+          "white": 2,
+          "black": null,
+          "bye": true
+        },
+        {
+          "board": 3,
+          "white": 3,
+          "black": 4,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "GEN-02"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-repeat-bye",
+      "kind": "validator",
+      "desc": "repeat bye warns GEN-03",
+      "round": 2,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": true,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1800,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 2,
+          "black": 3,
+          "bye": false
+        },
+        {
+          "board": 2,
+          "white": 1,
+          "black": null,
+          "bye": true
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "GEN-03"
+          ],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-strong-pref",
+      "kind": "validator",
+      "desc": "missed strong preference warns",
+      "round": 4,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "wbw",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 2,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "COL-SCP"
+          ],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-mild-pref",
+      "kind": "validator",
+      "desc": "missed mild preference is INFO",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "bw",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 2,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [],
+          "infos": [
+            "COL-MCP"
+          ]
+        }
+      }
+    },
+    {
+      "id": "V-boards",
+      "kind": "validator",
+      "desc": "non-sequential boards warn",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 3,
+          "bye": false
+        },
+        {
+          "board": 3,
+          "white": 2,
+          "black": 4,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": true,
+          "errors": [],
+          "warnings": [
+            "BOARD"
+          ],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-missing",
+      "kind": "validator",
+      "desc": "absent active player is ERROR COMP-01",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 3,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "COMP-01",
+            "COMP-01"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-unknown",
+      "kind": "validator",
+      "desc": "unknown paired id is ERROR COMP-02",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 99,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "COMP-01",
+            "COMP-02",
+            "GEN-UNK"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-dup",
+      "kind": "validator",
+      "desc": "player on two boards is ERROR GEN-DUP",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 3,
+          "pairing_no": 3,
+          "rating": 1980,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 4,
+          "pairing_no": 4,
+          "rating": 1970,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 3,
+          "bye": false
+        },
+        {
+          "board": 2,
+          "white": 1,
+          "black": 4,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "COMP-01",
+            "GEN-DUP"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-self",
+      "kind": "validator",
+      "desc": "self pairing is ERROR GEN-SELF",
+      "round": 1,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1990,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 1,
+          "black": 1,
+          "bye": false
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "COMP-01",
+            "GEN-DUP",
+            "GEN-SELF"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    },
+    {
+      "id": "V-float-err",
+      "kind": "validator",
+      "desc": "third consecutive downfloat is ERROR",
+      "round": 3,
+      "players": [
+        {
+          "id": 1,
+          "pairing_no": 1,
+          "rating": 2000,
+          "points": 1.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": "DD"
+        },
+        {
+          "id": 2,
+          "pairing_no": 2,
+          "rating": 1900,
+          "points": 0.0,
+          "color_hist": "",
+          "opponents": [],
+          "received_bye": false,
+          "float_hist": ""
+        }
+      ],
+      "cards": [
+        {
+          "board": 1,
+          "white": 2,
+          "black": 1,
+          "bye": false,
+          "wfloat": "U",
+          "bfloat": "D"
+        }
+      ],
+      "expected": {
+        "validation": {
+          "valid": false,
+          "errors": [
+            "FLO-01"
+          ],
+          "warnings": [],
+          "infos": []
+        }
+      }
+    }
+  ]
+}
