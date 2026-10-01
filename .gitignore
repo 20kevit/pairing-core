@@ -1,0 +1,4 @@
+# Generated Python artifacts (never commit).
+__pycache__/
+*.py[cod]
+*$py.class
