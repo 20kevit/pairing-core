@@ -109,12 +109,53 @@ def test_rejects_bad_forced_shape_and_unknown_ruleset():
 
 def test_unsupported_capabilities_refused_not_ignored():
     players = [_pd(1), _pd(2, pairing_no=2, rating=1400)]
-    with pytest.raises(UnsupportedCapabilityError):
-        validate_request(_req(players, constraints=ConstraintSet(
-            forbidden_pairs=[(1, 2)])))
+    # Forbidden pairs are ENFORCED since Phase 2 (virtual rematches).
+    rid = validate_request(_req(players, constraints=ConstraintSet(
+        forbidden_pairs=[(1, 2)])))
+    assert rid.system == "dutch"
     with pytest.raises(UnsupportedCapabilityError):
         validate_request(_req(players, constraints=ConstraintSet(
             bye_directive="lowest")))
+
+
+def test_forbidden_pairs_enforced_end_to_end():
+    from pairing_core import validate_round
+    players = [_pd(1, points=1.0), _pd(2, pairing_no=2, rating=1400,
+                                      points=1.0),
+               _pd(3, pairing_no=3, rating=1300, points=1.0),
+               _pd(4, pairing_no=4, rating=1200, points=1.0)]
+    req = _req(players, constraints=ConstraintSet(
+        forbidden_pairs=[(1, 2)]))
+    result = pair(req)
+    for c in result.pairings:
+        if c.black_id is not None:
+            assert frozenset((c.white_id, c.black_id)) != frozenset((1, 2))
+    rep = validate_round(result, players, forbidden_pairs=[(1, 2)])
+    assert not rep.has_errors
+    # Locked pair violating a forbidden pair is rejected like a rematch.
+    with pytest.raises(InvalidRequestError):
+        pair(_req(players, constraints=ConstraintSet(
+            forced_pairs=[(1, 2)], forbidden_pairs=[(1, 2)])))
+
+
+def test_forbidden_making_impossible_is_typed():
+    players = [_pd(1), _pd(2, pairing_no=2, rating=1400)]
+    with pytest.raises(ImpossiblePairingError):
+        pair(_req(players, constraints=ConstraintSet(
+            forbidden_pairs=[(1, 2)])))
+
+
+def test_forbid_01_validator_code():
+    from pairing_core import PairingCard, RoundResult, validate_round
+    players = [_pd(1), _pd(2, pairing_no=2, rating=1400)]
+    cards = [PairingCard(board=1, white_id=1, black_id=2)]
+    rep = validate_round(RoundResult(round_number=1, pairings=cards),
+                         players, forbidden_pairs=[(1, 2)])
+    assert rep.has_errors
+    assert [f.rule for f in rep.errors] == ["FORBID-01"]
+    clean = validate_round(RoundResult(round_number=1, pairings=cards),
+                           players)
+    assert not clean.has_errors
 
 
 def test_valid_request_resolves_compat_ruleset():

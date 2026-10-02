@@ -120,3 +120,49 @@ def test_rtg_differential_recorded(tmp_path):
               "w", encoding="utf-8") as fh:
         json.dump(records, fh)
     assert all("1" in rec["codes"] for rec in records)
+
+
+@needs_bbp
+@needs_bbp
+def test_forbidden_pairs_agree(tmp_path):
+    """XXP avoidance agrees with BBP (pair sets; colors excluded: E.5)."""
+    import subprocess
+    from pairing_core import (
+        ConstraintSet,
+        EngineRequest,
+        PlayerData,
+        pair,
+    )
+    from pairing_core.adapters.trf import (
+        TournamentInput,
+        TrfPlayer,
+        build_trf,
+    )
+    players = tuple(
+        TrfPlayer(pairing_id=i, name=f"P{i}",
+                  rating=2000 - (i - 1) * 10, points=0.0)
+        for i in range(1, 5))
+    src = tmp_path / "xxp.trf"
+    src.write_text(build_trf(TournamentInput(
+        players=players, rounds_total=3, name="XXP", initial_color="w",
+        forbidden_pairs=((1, 2),))), encoding="utf-8")
+    out = tmp_path / "xxp.out"
+    r = subprocess.run([BBP_EXE, "--dutch", str(src), "-p", str(out)],
+                       capture_output=True, text=True, timeout=120)
+    assert r.returncode == 0, r.stderr[:300]
+    bbp_sets = set()
+    for ln in out.read_text(encoding="utf-8").splitlines()[1:]:
+        if ln.strip():
+            w, b = ln.split()
+            pair_set = frozenset((int(w), int(b)))
+            assert pair_set != frozenset((1, 2))
+            bbp_sets.add(pair_set)
+    pds = [PlayerData(id=i, pairing_no=i, rating=2000 - (i - 1) * 10,
+                      points=0.0) for i in range(1, 5)]
+    res = pair(EngineRequest(
+        players=pds, ruleset="dutch-till2026-compat", round_number=1,
+        constraints=ConstraintSet(forbidden_pairs=[(1, 2)])))
+    nat_sets = {frozenset((c.white_id, c.black_id)) for c in res.pairings
+                if c.black_id is not None}
+    assert frozenset((1, 2)) not in nat_sets
+    assert bbp_sets == nat_sets

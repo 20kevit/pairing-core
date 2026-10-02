@@ -69,3 +69,17 @@ O08 exact two-minor window superseding the earlier "≥1 minor" draft).
 - D20 DEFERRED (refined by O09): team systems, KO orchestration as features;
   tie-break engine → specified as tiebreak-core, implementation deferred.
 - D10–D16 (Stage-4 proposals) are SUPERSEDED by O01–O08/O10 finals above.
+
+## Validation-wave confirmations (evidence-backed, no architecture change)
+
+- O03/O08 CONFIRMED (live-oracle + differential evidence, 42 tournaments):
+  `dutch-till2026-compat` stays FROZEN. Confirmed deviations (E.5 round-1
+  parity colours; absolute 3rd-float bar) are NOT corrected in place;
+  correction, if ever approved, requires a new dated ruleset id with its
+  own golden migration — never a silent compat change.
+- O10 CONFIRMED: budget policy explicit (see REPRODUCIBILITY.md §4); no
+  default wall-clock for native; adapter timeouts are required explicit
+  parameters with conservative operational defaults.
+- BBP oracle pin: source build 8f9e3c5 (2026-07-30); live runs via BBP_EXE.
+  JaVaFo live-verified: Rel. 2.2 Build 3223 (Dutch-2017 vintage per 092
+  tag); BYO-only posture unchanged, nothing vendored.

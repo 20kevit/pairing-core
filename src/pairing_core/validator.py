@@ -50,6 +50,8 @@ from pairing_core.models import (
 def validate_round(
     result: RoundResult,
     players: List[PlayerData],
+    *,
+    forbidden_pairs=None,
 ) -> "ValidationReport":
     """
     Validate a complete round of pairings against FIDE rules.
@@ -57,6 +59,8 @@ def validate_round(
     Args:
         result:   The RoundResult to validate.
         players:  All active PlayerData in the tournament.
+        forbidden_pairs: Optional iterable of (id, id) pairs that must not
+            meet ( Phase-2 ConstraintSet enforcement check, FORBID-01 ).
 
     Returns:
         ValidationReport with all findings.
@@ -72,6 +76,8 @@ def validate_round(
     report.extend(_check_self_pairings(result))
     report.extend(_check_unknown_players(result, player_map))
     report.extend(_check_repeat_opponents(result, played_map))
+    if forbidden_pairs:
+        report.extend(_check_forbidden_pairs(result, forbidden_pairs))
     report.extend(_check_color_absolute(result, player_map))
     report.extend(_check_color_balance_limit(result, player_map))
     report.extend(_check_color_preferences(result, player_map))
@@ -353,6 +359,33 @@ def _check_repeat_opponents(
             findings.append(Finding(
                 Finding.ERROR, "GEN-01",
                 f"Repeat opponents: {w} vs {b}.",
+                board=card.board,
+            ))
+
+    return findings
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Check: Forbidden pairs (FORBID-01)
+# ═══════════════════════════════════════════════════════════════════
+
+def _check_forbidden_pairs(
+    result: RoundResult,
+    forbidden_pairs,
+) -> List[Finding]:
+    findings: List[Finding] = []
+    forbidden = set()
+    for entry in forbidden_pairs:
+        a, b = tuple(entry)
+        forbidden.add(frozenset((a, b)))
+
+    for card in result.pairings:
+        if card.black_id is None:
+            continue
+        if frozenset((card.white_id, card.black_id)) in forbidden:
+            findings.append(Finding(
+                Finding.ERROR, "FORBID-01",
+                f"Forbidden pairing: {card.white_id} vs {card.black_id}.",
                 board=card.board,
             ))
 

@@ -106,9 +106,13 @@ def test_resolve_unsupported_constraints():
     reg = create_default_registry()
     req = _req()
     bad = EngineRequest(players=req.players, ruleset=COMPAT, round_number=1,
-                        constraints=ConstraintSet(forbidden_pairs=[(1, 2)]))
+                        constraints=ConstraintSet(bye_directive="lowest"))
     with pytest.raises(UnsupportedCapabilityError):
         reg.resolve(bad, "native-dutch")
+    # Forbidden pairs ARE supported (Phase 2): resolution succeeds.
+    ok = EngineRequest(players=req.players, ruleset=COMPAT, round_number=1,
+                       constraints=ConstraintSet(forbidden_pairs=[(1, 2)]))
+    assert reg.resolve(ok, "native-dutch").provider_id == "native-dutch"
 
 
 def test_resolve_rejects_non_request():

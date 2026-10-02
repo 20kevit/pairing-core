@@ -64,6 +64,7 @@ class SwissEngine:
         *,
         budgets: Optional[object] = None,
         cancel_token: Optional[object] = None,
+        forbidden_pairs: Optional[List[Tuple[int, int]]] = None,
     ):
         self.round_number = round_number
         self.locked_pairs: List[Tuple[int, int]] = list(locked_pairs or [])
@@ -71,6 +72,9 @@ class SwissEngine:
         # F5 execution controls (additive; None preserves legacy behavior).
         self._budgets = budgets
         self._cancel_token = cancel_token
+        # Phase-2 constraints: forbidden pairs act as virtual already-played
+        # pairs (rematch-equivalent) throughout search + lock validation.
+        self._forbidden: List[Tuple[int, int]] = list(forbidden_pairs or [])
 
     def generate(self) -> RoundResult:
         """
@@ -86,7 +90,8 @@ class SwissEngine:
 
         # ── Build engine state ────────────────────────────────
         engine_players = make_engine_players(self._raw_players)
-        played_map = self._build_played_map(engine_players)
+        played_map = self._played_map_with_forbidden(
+            self._build_played_map(engine_players))
 
         # ── Process locked pairs ──────────────────────────────
         locked_player_ids, locked_cards = self._process_locked_pairs(
@@ -406,6 +411,27 @@ class SwissEngine:
         for p in players:
             played[p.id] = set(p.data.opponents)
         return played
+
+    def _played_map_with_forbidden(
+        self,
+        played_map: Dict[int, Set[int]],
+    ) -> Dict[int, Set[int]]:
+        """Played map augmented with symmetric forbidden pairs.
+
+        Forbidden pairs behave exactly like rematches everywhere downstream
+        (search gates, lock validation): they can never meet. Unknown ids in
+        forbidden pairs are ignored here (the boundary validates shapes;
+        kernel stays tolerant like v0.1.0 rematch handling).
+        """
+        if not self._forbidden:
+            return played_map
+        merged = {pid: set(opps) for pid, opps in played_map.items()}
+        for a, b in self._forbidden:
+            if a in merged:
+                merged[a].add(b)
+            if b in merged:
+                merged[b].add(a)
+        return merged
 
     @staticmethod
     def _assign_board_numbers(pairings: List[PairingCard]) -> None:

@@ -134,7 +134,7 @@ class NativeDutchProvider(EngineProvider):
         return Capability(
             rulesets=(resolve_ruleset(DUTCH_TILL2026_COMPAT),),
             supports_forced_pairs=True,
-            supports_forbidden_pairs=False,
+            supports_forbidden_pairs=True,
             supports_bye_directives=False,
             deterministic=True,
         )

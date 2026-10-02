@@ -43,7 +43,7 @@ def test_identity_and_capability():
     assert isinstance(caps, Capability)
     assert caps.rulesets == (resolve_ruleset(COMPAT),)
     assert caps.supports_forced_pairs is True
-    assert caps.supports_forbidden_pairs is False
+    assert caps.supports_forbidden_pairs is True
     assert caps.supports_bye_directives is False
     assert caps.deterministic is True
     # honest identity: compat ruleset only, never relabelled
@@ -69,7 +69,7 @@ def test_unsupported_ruleset_and_constraints():
         p.pair(EngineRequest(
             players=[_player(x) for x in base["players"]],
             ruleset=COMPAT, round_number=1,
-            constraints=ConstraintSet(forbidden_pairs=[(1, 2)])))
+            constraints=ConstraintSet(bye_directive="lowest")))
     with pytest.raises(InvalidRequestError):
         p.pair(object())
 

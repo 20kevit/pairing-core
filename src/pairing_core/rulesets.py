@@ -47,9 +47,9 @@ class ConstraintSet:
     """Caller constraints for one round (data, not a layer).
 
     forced_pairs: (white_id, black_id) tuples placed verbatim (kernel lock).
-    forbidden_pairs: unordered {id, id} pairs that must not meet — NOT
-        enforceable by the v0.1.0 kernel (boundary rejects non-empty).
-    bye_directive: reserved; any non-None value is rejected in F2
+    forbidden_pairs: unordered (id, id) pairs that must not meet — enforced
+        by the kernel as virtual already-played pairs (rematch-equivalent).
+    bye_directive: reserved; any non-None value is rejected
         (Dutch-phase work).
     """
     forced_pairs: Tuple[Tuple[int, int], ...] = ()

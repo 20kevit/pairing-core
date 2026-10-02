@@ -30,7 +30,25 @@ larger budget is an explicit new request, not a replay. Fallback runs replay
 against the ACTUAL engine recorded, with the original request mode preserved
 for audit.
 
-## 3. Retention & audit
+## 4. Budget policy (Phase 1B decision, evidence-backed)
+
+- Native step budget: default 2,000,000 nodes (legacy cap, retained for
+  compatibility); configurable per request via ExecutionBudgets. Deterministic.
+- Native wall-clock: NO default (deterministic-by-default principle; a
+  machine-dependent default would make default behavior unreproducible).
+  Callers set explicit wall-clock budgets where needed (measured reference:
+  single-1000 round-1 ≈97s; pathological single-80 → step-cap at ≈8.5s;
+  realistic ≤250-player rounds in milliseconds — see
+  tests/data/benchmarks/baseline.json). Step budget remains the primary bound.
+- Cancellation: cooperative token, checked per search node + bracket entry;
+  no default cancellation (explicit token only).
+- Adapter timeouts (BBP/JaVaFo configs): REQUIRED explicit parameters with
+  conservative operational defaults (60s pairing / 30s probe), documented in
+  adapter modules; these bound external processes, not pairing semantics.
+- Timeout vs cancellation stay distinct typed errors with budget context in
+  the envelope (budgets field); replay-limit semantics per §3 unchanged.
+
+## 5. Retention & audit
 
 Envelopes stored alongside results by the manager; core provides
 verify/envelope-diff helpers. Audit trail = envelopes + diagnostics, no

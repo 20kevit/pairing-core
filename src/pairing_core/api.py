@@ -194,10 +194,8 @@ def validate_request(request: object) -> object:
                     not all(_is_int(x) for x in g)):
                 raise InvalidRequestError(
                     f"{group_name} entries must be int pairs, got {g!r}.")
-    if constraints.forbidden_pairs:
-        raise UnsupportedCapabilityError(
-            "forbidden pairs are not enforceable by the v0.1.0 kernel; "
-            "constrained search is Dutch-phase work (refusing, not ignoring).")
+    # Forbidden pairs are enforced by the kernel as virtual rematches
+    # (Phase 2); only bye directives remain unsupported.
     if constraints.bye_directive is not None:
         raise UnsupportedCapabilityError(
             "bye directives are not honoured by the v0.1.0 kernel "
@@ -227,6 +225,8 @@ def pair(request: EngineRequest) -> RoundResult:
     constraints = request.constraints
     locked = [tuple(p) for p in constraints.forced_pairs] \
         if constraints is not None else []
+    forbidden = [tuple(p) for p in constraints.forbidden_pairs] \
+        if constraints is not None else []
     try:
         return SwissEngine(
             players=list(request.players),
@@ -234,6 +234,7 @@ def pair(request: EngineRequest) -> RoundResult:
             locked_pairs=locked,
             budgets=request.budgets,
             cancel_token=request.cancel_token,
+            forbidden_pairs=forbidden,
         ).generate()
     except ValueError as exc:
         raise translate_kernel_error(
