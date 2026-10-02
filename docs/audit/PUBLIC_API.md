@@ -145,3 +145,19 @@ validate_round(result, players) -> ValidationReport
 No `async`, no generators, no context managers, no callbacks in public API.
 No console scripts / entry points (VERIFIED — `pyproject.toml` has no
 `[project.scripts]`). No serialization formats in public API.
+
+## 4. Expansion-wave API audit addendum (47 exports)
+
+- No accidental internals: `translate_kernel_error`, `from_kernel`,
+  `input_digest`, `canonical_json` stay module-level (intentionally
+  unexported); `validate_and_fix` remains legacy importable-but-unexported.
+- `pair` is terse but established since F2 — kept for compatibility;
+  `pair_via`/`pair_detailed` are the explicit paths for new callers.
+- `SwissEngine` tier: PUBLIC legacy-compat kernel entry (keyword-only
+  budgets/cancel_token/forbidden_pairs added, all defaulted).
+- `__fide_reference__` value ("effective 1 July 2025") retained byte-identical
+  for compatibility; the honest ruleset identity is `DUTCH_TILL2026_COMPAT`
+  (see README + DUTCH_CONFORMANCE_STATUS.md).
+- All public functions annotated; frozen value objects throughout new API;
+  mutable state confined to legacy dataclasses (documented) and explicit
+  Registry/CancelToken.

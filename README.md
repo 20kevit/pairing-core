@@ -9,6 +9,9 @@ from `20kevit/chess-manager` (`domain/pairing/`).
   by the frozen kernel; see `docs/research/DUTCH_CONFORMANCE_STATUS.md`
   for the exact conformance standing, including confirmed deviations under
   investigation — no FIDE endorsement claimed).
+- Also: Berger round-robin schedules (`round_robin`, validated against
+  FIDE C.05 Annex 1), typed errors, dated rulesets, execution budgets,
+  BBP/JaVaFo adapter edge (bring-your-own binaries), TRF interchange.
 
 ## Install
 

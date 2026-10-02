@@ -58,8 +58,10 @@ supervised-subprocess failure mapping, conformance obligations per engine.
 
 ## 10. Supported systems
 
-Dutch (target: 2026 criteria; compat: pre-2026 kernel pinned). Explicitly NOT
-yet: Dubov, Burstein, Lim, Double, Team, RR (roadmap phases with gates).
+Dutch (target: 2026 criteria; compat: pre-2026 kernel pinned) + Berger
+round robin (validated, standalone module). Explicitly NOT yet: Dubov,
+Burstein, Lim, Double, Team, KO/match (roadmap phases with gates; team
+blocked on C.04.6 text, KO lacks a single authoritative pairing text).
 
 ## 11. Future systems
 
