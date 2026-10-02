@@ -16,8 +16,9 @@ measurement, or later-phase decisions — none blocks Foundation.
   see §8); strict-FIDE vs completion-tolerant variant naming deferred to
   future ruleset work.
 - **Engine**: JaVaFo clearance IF bundling ever reconsidered (BYO-binary is
-  the decided posture). BBP oracle pin DONE (8f9e3c5 source build; live runs
-  via BBP_EXE).
+  the decided posture). JaVaFo LIVE-VERIFIED (Rel. 2.2 Build 3223, Dutch-2017
+  vintage per 092 tag; JVM + jar BYO in test env only, never vendored).
+  BBP oracle pin DONE (8f9e3c5 source build; live runs via BBP_EXE).
 - **API/compatibility**: `SwissEngine` public-vs-internal tiering (detail under
   decided O08 policy); diagnostics verbosity contract.
 - **Testing**: oracle-mass storage (repo corpora vs external downloads);

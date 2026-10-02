@@ -115,6 +115,25 @@ is a completion-tolerant application behavior for exactly those states,
 BBP's refusal is FIDE-pure. A ruleset variant (strict vs tolerant) can be
 decided for future ids; current behavior documented, corpus Y1–Y4 covers it.
 
+## 10. Live-differential summary (42 oracle tournaments, 2026-10-02)
+
+BBP 8f9e3c5 (Dutch 2025) RTG-seeded fields + JaVaFo 2.2 b3223 (Dutch
+**2017** per its own 092 tag — older vintage, read disagreements
+accordingly) RTG/model fields; native inputs derived with documented
+FIDE-A-def float reconstruction; BBP outputs screened by our validator.
+
+| Outcome | BBP (32) | JaVaFo (10) | Meaning |
+|---|---|---|---|
+| Pair-compatible, both validator-clean | 18 (8 effectively exact modulo unknown BBP tags; 10 pair-divergent-but-legal) | 6 (incl. 2 colour-dimension) | first-wins vs global-optimum choice divergence |
+| Native Impossible, oracle legal+clean | 14 | 4 | float-bar over-strictness (§7); zero illegal outputs anywhere |
+
+Methodology lessons recorded: oracle files need XXR + truncation with
+recomputed points (both engines otherwise repair the last round — a
+misleading "rematch" artifact, not an engine finding); BBP float tags are
+unknown to the comparison, so tag-only "float" flags mean effectively-exact.
+Live re-verification: tests/test_bbp_oracle.py (BBP_EXE),
+tests/test_javafo_oracle.py (JAVAFO_JAR).
+
 ## 9. Valid-alternative characterization (seed-100 autopsy)
 
 BBP {7v1, 9v2, 3v5, 4v6, 10v8} vs native {1v5, 2v9, 3v7, 4v10, 6v8}: disjoint
