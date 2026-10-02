@@ -21,6 +21,19 @@ Separate abstractions per family; no forced unification (§3.9).
 
 Berger table lookup + bye rotation + double-cycle reversal. No search, no
 engine selection. Simplest module; doubles as test-data generator.
+IMPLEMENTED (expansion wave): `pairing_core.roundrobin.round_robin`,
+validated against Handbook C.05 Annex 1 rows for even N 4..12, structural
+coverage for odds; maturity VALIDATED; standalone module (not forced into
+the Swiss provider abstraction).
+
+## 2b. Team / Knockout / Match investigation outcome (expansion wave)
+
+Team Swiss needs C.04.6 full text (still unretrieved) plus a team/match/
+board domain layer — NOT implemented; stays deferred with reason (no
+authoritative spec in hand). Knockout/match/playoff formats have no single
+authoritative pairing text applicable here; a bracket generator alone would
+be speculative scope without a requesting use case — NOT implemented.
+Neither is pretended production-ready; both remain roadmap phases.
 
 ## 3. Team systems (C.04.6 + Olympiad rules)
 
