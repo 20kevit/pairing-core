@@ -24,7 +24,7 @@ def _sample():
                       rounds=(TrfRound(opponent=1, color="b", result="0"),)),
             TrfPlayer(pairing_id=3, name="Gamma", rating=1800, points=1.0,
                       rounds=(TrfRound(opponent=None, color="-",
-                                       result="F"),)),
+                                       result="U"),)),
         ),
         rounds_total=2, name="Sample", absent_ids=(3,),
         forbidden_pairs=((1, 2),))
@@ -55,8 +55,50 @@ def test_rank_tolerant_parse():
 def test_writer_shape_spot_checks():
     text = build_trf(_sample())
     assert text.startswith("012 Sample\n062 3\nXXR 2\nXXZ 3\nXXP 1 2\n")
-    assert "001 1 - - Alpha 2000 XXX 0 0 1.0 2 w 1" in text
-    assert "0000 - F" in text  # PAB assumption, see module docstring
+    line1 = [ln for ln in text.splitlines() if ln.startswith("001")][0]
+    # fixed columns (BBP-verified): id[4,8), rating[48,52), score[80,84),
+    # entries from 91 in steps of 10.
+    assert line1[0:3] == "001" and line1[4:8] == "   1"
+    assert line1[48:52] == "2000" and line1[80:84] == " 1.0"
+    assert line1[91:101] == "   2 w 1  "
+    # PAB history is U-coded (VERIFIED in BBP source: U marks PAB
+    # participation and scores a win; F is a requested full-point bye).
+    assert "0000 - U" in text
+
+
+def test_writer_initial_color_and_ranges():
+    t = _sample()
+    import dataclasses
+    assert "XXC white1" in build_trf(dataclasses.replace(t,
+                                                         initial_color="w"))
+    assert "XXC black1" in build_trf(dataclasses.replace(t,
+                                                          initial_color="b"))
+    # rounds_total=0 omits XXR (parses BBP's own XXR-less RTG files);
+    # pairing callers must set a total (BBP requires XXR > 0 to pair).
+    assert "XXR" not in build_trf(dataclasses.replace(t, rounds_total=0))
+    bad = TrfPlayer(pairing_id=10000, name="X", rating=0, points=0.0)
+    with pytest.raises(InvalidRequestError):
+        build_trf(TournamentInput(players=(bad,), rounds_total=1))
+    bad_pts = TrfPlayer(pairing_id=1, name="X", rating=0, points=2.25)
+    with pytest.raises(InvalidRequestError):
+        build_trf(TournamentInput(players=(bad_pts,), rounds_total=1))
+
+
+def test_fixed_width_bbp_shaped_parse():
+    # Real BBP RTG shape: multi-token names, rank zone, fixed columns.
+    text = ("012 AutoTest\nXXR 5\n"
+            "001    1      Test0001 Player0001               2652"
+            "                             3.5   21   105 b 1    49 w =\n"
+            "001    2      Test0002 Player0002               2649"
+            "                             4.0    5   106 w 1    51 b =\n")
+    back = parse_trf(text)
+    assert [p.pairing_id for p in back.players] == [1, 2]
+    assert back.players[0].name == "Test0001_Player0001"
+    assert back.players[0].rating == 2652
+    assert [(r.opponent, r.color, r.result)
+            for r in back.players[0].rounds] == [(105, "b", "1"),
+                                                (49, "w", "=")]
+    assert back.players[1].points == 4.0
 
 
 def test_output_parser_and_bye():
@@ -92,6 +134,10 @@ def test_bridge_from_engine_request():
     text = build_trf(t)
     assert "XXR 2" in text
     assert parse_trf(text).rounds_total == 2
+    t5 = from_engine_request(req, {1: [TrfRound(2, "w", "1")],
+                                   2: [TrfRound(1, "b", "0")]},
+                             absent_ids=(), rounds_total=9)
+    assert parse_trf(build_trf(t5)).rounds_total == 9
     with pytest.raises(InvalidRequestError):
         from_engine_request(object(), {})
 

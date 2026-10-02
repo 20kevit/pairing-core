@@ -79,7 +79,7 @@ def test_check_constraints():
 def test_corpus_passes_with_independent_anchor():
     import json
     doc = json.load(open(CORPUS, encoding="utf-8"))
-    assert len(doc["cases"]) == 18
+    assert len(doc["cases"]) == 21
     failures = run_corpus(CORPUS)
     assert failures == [], [f.detail for f in failures]
 

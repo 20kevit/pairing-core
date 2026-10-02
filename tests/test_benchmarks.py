@@ -203,10 +203,19 @@ def test_write_baseline_record():
             text=True, check=True).stdout.strip()
     except Exception:
         sha = "UNKNOWN"
+    path = os.path.join(BENCH_DIR, "baseline.json")
+    previous = {}
+    if os.path.isfile(path):
+        try:
+            previous = json.load(open(path, encoding="utf-8")
+                                 ).get("scenarios", {})
+        except (ValueError, OSError):
+            previous = {}
+    # Merge: refresh measured scenarios, keep heavy ones from earlier runs.
+    previous.update(RECORD)
     record = {"git_sha": sha, "tool": "tests/test_benchmarks.py",
               "note": "machine-dependent durations; outcomes are the gates",
-              "scenarios": RECORD}
-    path = os.path.join(BENCH_DIR, "baseline.json")
+              "scenarios": previous}
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(record, fh, indent=1)
     print("\nBENCHMARK " + json.dumps(RECORD, indent=1))

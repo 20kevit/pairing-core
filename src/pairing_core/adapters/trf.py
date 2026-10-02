@@ -1,29 +1,35 @@
-"""TRF interchange at the adapter edge (W2 foundation).
+"""TRF interchange at the adapter edge (W2 foundation, W6-verified vs BBP).
 
 Never imported by core domain code (import-lint enforced): TRF types live
 exclusively here and in future engine adapters.
 
-Subset scope (documented deviations from full TRF16/TRF26):
-- Player lines: ``001 <id> [sex] [title] <name> <rating> <fed> <fideid>
-  <birth> <points> [<rank>] (<opp> <color> <result>)*`` — whitespace
-  tokenized (cf. Tornelo TRFx doc, SPP TRF-update deck: real files use
-  this shape). sex/title optional on parse; always written (``-`` default).
-  rank is written NEVER, parsed leniently (leading token when token count
-  demands it). fed/fideid/birth default (XXX/0/0) when unknown.
-- Result codes accepted: 1 0 = + - D F H L U W Z (per echecs/trf table,
-  secondary source). Anything else is malformed input.
-- Header/tags: 012 (name), 062 (player count informational), XXR (total
-  rounds, mandatory for engines per JaVaFo AUM), XXZ (absent ids), XXP
-  (forbidden pairs). Other tags/XX lines are ignored on parse (documented).
-- Pairing-allocated bye in history: ``0000 - F``. ASSUMPTION (UNKNOWN,
-  flagged): full-point code carries the win-valued PAB under standard
-  scoring so engine score cross-checks (BBP refuses on mismatch) hold.
-  MUST be re-verified against live BBP/JaVaFo binaries.
-- Engine pairing output (shared BBP/JaVaFo shape per AUM): first line is
-  the pair count, then ``<white> <black>`` lines; bye is ``<id> 0``.
+Wire format (VERIFIED against BBP's own parser, src/fileformats/trf.cpp —
+primary source; BBP 2025-Dutch build, Apache-2.0, used as reference only):
+- 001 lines are FIXED-WIDTH: id[4,8), rating[48,52) (blank allowed),
+  score[80,84) (tenths, e.g. " 3.5"), round entries from char 91 in steps
+  of 10: opponent[0,4) of entry (blank or 0000 = no opponent), color at
+  entry+5 (w/b/-/space), result at entry+7. Name/rank/other columns are
+  ignored by BBP and carried opaquely here.
+- Result semantics (BBP mapping): D = = H draw; + W 1 F U win; - L 0 Z loss.
+  Unplayed = blank/0000 opponent. Crucially, **U marks PAB participation**
+  (participatedInPairing) AND scores a win: a pairing-allocated bye in
+  history is ``0000 - U`` (VERIFIED in BBP source, common.h eligibleForBye:
+  past U-win blocks future PAB). F is a requested full-point bye
+  (non-participation). The earlier F-for-PAB assumption was WRONG and is
+  corrected here.
+- Tags: 012 (name), 062 (count, informational), XXR/142 (total rounds,
+  REQUIRED > 0), XXP (whitespace id list = mutually forbidden),
+  XXC rank/white1/black1 (BBP-verified tokens), 240/162 parsed where seen.
+  XXZ (JaVaFo absentees) is WRITTEN for JaVaFo but BBP does not read it
+  (BBP absentee mechanism: UNVERIFIED — limitation, see below).
+- Parser is dual-mode: fixed-width first (BBP-shaped files, multi-token
+  names supported), whitespace-token fallback (JaVaFo-shaped). Unknown
+  tags/XX lines ignored (documented subset).
 
-Live-binary acceptance of emitted files is PENDING (no binaries in this
-environment); round-trip self-consistency + AUM-shaped fixtures are tested.
+Known limitations (all explicit): BBP absentee (current-round) mechanism
+unverified (XXZ written for JaVaFo only); live-binary acceptance PENDING
+for JaVaFo; acceleration (XXA/250) neither written nor parsed; 240 lines
+parsed into nothing (see parse_trf docstring).
 """
 
 from __future__ import annotations
@@ -93,6 +99,7 @@ class TournamentInput:
     name: str = "pairing-core"
     absent_ids: Tuple[int, ...] = ()
     forbidden_pairs: Tuple[Tuple[int, int], ...] = ()
+    initial_color: str = ""  # "", "w" (XXC white1) or "b" (XXC black1)
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "players", tuple(self.players))
@@ -100,47 +107,84 @@ class TournamentInput:
         object.__setattr__(
             self, "forbidden_pairs",
             tuple(tuple(p) for p in self.forbidden_pairs))
+        if self.initial_color not in ("", "w", "b"):
+            raise InvalidRequestError(
+                "initial_color must be '', 'w' or 'b'.")
+
+
+def _check_range(value: int, low: int, high: int, what: str) -> None:
+    if not isinstance(value, int) or isinstance(value, bool) \
+            or not low <= value <= high:
+        raise InvalidRequestError(
+            f"TRF {what} must be int in [{low}, {high}], got {value!r}.")
 
 
 def build_trf(tournament: TournamentInput) -> str:
-    """Serialize to TRF(x)-shaped text (subset; see module docstring)."""
+    """Serialize to BBP-compatible fixed-width TRF(x) (see module docstring).
+
+    Raises InvalidRequestError for values the fixed format cannot carry
+    (ids/ratings outside 1..9999/0..9999, scores not in tenths below 100,
+    rounds_total < 1, overlong names are truncated).
+    """
     if not isinstance(tournament.rounds_total, int) or \
             isinstance(tournament.rounds_total, bool) or \
             tournament.rounds_total < 0:
         raise InvalidRequestError("rounds_total must be int >= 0.")
-    lines = [f"012 {tournament.name}", f"062 {len(tournament.players)}",
-             f"XXR {tournament.rounds_total}"]
+    lines = [f"012 {tournament.name}", f"062 {len(tournament.players)}"]
+    if tournament.rounds_total >= 1:
+        # BBP requires XXR > 0 when present; omit when unknown (BBP's own
+        # RTG output carries no XXR line and derives rounds from matches).
+        lines.append(f"XXR {tournament.rounds_total}")
+    if tournament.initial_color == "w":
+        lines.append("XXC white1")
+    elif tournament.initial_color == "b":
+        lines.append("XXC black1")
     for pid in tournament.absent_ids:
+        _check_range(pid, 1, 9999, "absent id")
         lines.append(f"XXZ {pid}")
     for pair in tournament.forbidden_pairs:
         lines.append(f"XXP {pair[0]} {pair[1]}")
     for p in tournament.players:
-        parts = ["001", str(p.pairing_id), p.sex, p.title, p.name,
-                 str(p.rating), p.federation, p.fide_id, p.birth_year,
-                 _fmt_points(p.points)]
+        _check_range(p.pairing_id, 1, 9999, "pairing id")
+        _check_range(p.rating, 0, 9999, "rating")
+        if not isinstance(p.points, (int, float)) or \
+                isinstance(p.points, bool) or \
+                not 0 <= p.points < 100 or \
+                abs(round(float(p.points) * 10)
+                    - float(p.points) * 10) > 1e-9:
+            raise InvalidRequestError(
+                f"TRF points must be tenths in [0, 100), got {p.points!r}.")
+        seen = set()
+        head = ("001 " + f"{p.pairing_id:>4d}" + "  "
+                + p.name[:38].ljust(38) + f"{p.rating:>4d}"
+                + " " * 28 + f"{float(p.points):4.1f}" + " " * 7)
+        entries = ""
         for r in p.rounds:
-            opp = "0000" if r.opponent is None else str(r.opponent)
-            parts += [opp, r.color, r.result]
-        lines.append(" ".join(parts))
+            opp = "0000" if r.opponent is None else f"{r.opponent:>4d}"
+            if r.opponent is not None:
+                _check_range(r.opponent, 1, 9999, "opponent id")
+                if r.opponent in seen:
+                    raise InvalidRequestError(
+                        f"duplicate opponent {r.opponent} "
+                        f"for player {p.pairing_id}.")
+                seen.add(r.opponent)
+            entries += f"{opp} {r.color} {r.result}  "
+        lines.append(head + entries)
     return "\n".join(lines) + "\n"
 
 
-def _fmt_points(points: float) -> str:
-    if not isinstance(points, (int, float)) or isinstance(points, bool):
-        raise InvalidRequestError("TRF points must be numeric.")
-    text = str(float(points))
-    return text
-
-
 def parse_trf(text: str) -> TournamentInput:
-    """Lenient TRF(x)-subset parser (see module docstring for scope).
+    """Dual-mode TRF(x)-subset parser (see module docstring for scope).
 
-    Malformed content -> InvalidRequestError with line context. Unknown
-    tags/XX lines are ignored (documented subset behavior).
+    Fixed-width mode first (BBP-shaped files; multi-token names OK), then
+    whitespace-token fallback (JaVaFo-shaped). Malformed content ->
+    InvalidRequestError with line context. Unknown tags/XX lines, 240/162
+    lines, and DAT lines are ignored (documented subset behavior).
     """
     players: List[TrfPlayer] = []
     name = "pairing-core"
     rounds_total = 0
+    initial_color = ""
     absent: List[int] = []
     forbidden: List[Tuple[int, int]] = []
     seen_ids = set()
@@ -153,8 +197,14 @@ def parse_trf(text: str) -> TournamentInput:
             name = rest.strip() or name
         elif head == "062":
             pass  # informational only
-        elif head == "XXR":
+        elif head in ("XXR", "142"):
             rounds_total = _parse_int(rest.strip(), lineno, "XXR rounds")
+        elif head == "XXC":
+            for tok in rest.split():
+                if tok == "white1":
+                    initial_color = "w"
+                elif tok == "black1":
+                    initial_color = "b"
         elif head == "XXZ":
             absent += [_parse_int(t, lineno, "XXZ id")
                        for t in rest.split()]
@@ -164,16 +214,87 @@ def parse_trf(text: str) -> TournamentInput:
                 _fail(lineno, "XXP needs exactly two ids")
             forbidden.append((ids[0], ids[1]))
         elif head == "001":
-            player = _parse_player(rest.split(), lineno)
+            player = _parse_player_fixed(raw, lineno)
+            if player is None:
+                player = _parse_player_tokens(rest.split(), lineno)
             if player.pairing_id in seen_ids:
                 _fail(lineno, f"duplicate pairing id {player.pairing_id}")
             seen_ids.add(player.pairing_id)
             players.append(player)
-        # DAT/TRF26 tags/other XX codes: out of subset, ignored.
+        # DAT/TRF26 tags/240/162/other XX codes: out of subset, ignored.
     players.sort(key=lambda p: p.pairing_id)
     return TournamentInput(players=tuple(players), rounds_total=rounds_total,
                            name=name, absent_ids=tuple(absent),
-                           forbidden_pairs=tuple(forbidden))
+                           forbidden_pairs=tuple(forbidden),
+                           initial_color=initial_color)
+
+
+def _parse_player_fixed(raw: str, lineno: int) -> Optional[TrfPlayer]:
+    """Fixed-width 001 parse (BBP shape); None if the line is not fixed.
+
+    Columns: id[4,8), name[10,48) opaque, rating[48,52) (blank allowed),
+    score[80,84), entries from 91 in steps of 10 (opp[0,4) blank/0000/int,
+    color[+5] w/b/-/space, result[+7]). All-blank entries are trailing
+    padding and skipped. Rank zone [84,91) ignored.
+    """
+    line = raw.rstrip("\n")
+    if len(line) < 84 or not line.startswith("001"):
+        return None
+    try:
+        pid = int(line[4:8])
+    except ValueError:
+        return None
+    name = line[10:48].strip() if len(line) >= 48 else ""
+    name = name or f"Player{pid}"
+    rating = 0
+    if len(line) >= 52 and line[48:52].strip():
+        try:
+            rating = int(line[48:52])
+        except ValueError:
+            return None
+    try:
+        points = float(line[80:84])
+    except ValueError:
+        return None
+    rounds: List[TrfRound] = []
+    pos = 91
+    ok_shape = True
+    while pos + 8 <= len(line):
+        entry = line[pos:pos + 10]
+        opp_tok, color, result = entry[0:4], entry[5:6], entry[7:8]
+        if entry.strip() == "":
+            pos += 10
+            continue
+        if color not in ("w", "b", "-", " "):
+            ok_shape = False
+            break
+        try:
+            opp = None if opp_tok.strip() in ("", "0000") else int(opp_tok)
+        except ValueError:
+            ok_shape = False
+            break
+        res = result.upper()
+        if res not in RESULT_CODES:
+            ok_shape = False
+            break
+        if color == " ":
+            # Padding without opponent: skip (BBP trailing shape).
+            pos += 10
+            continue
+        rounds.append(TrfRound(opponent=opp, color=color, result=res))
+        pos += 10
+    if not ok_shape:
+        return None
+    tail = line[pos:]
+    if tail.strip() != "":
+        return None
+    try:
+        return TrfPlayer(pairing_id=pid, name=name.replace(" ", "_"),
+                         rating=rating, points=points,
+                         rounds=tuple(rounds))
+    except InvalidRequestError:
+        _fail(lineno, "fixed 001 values out of range")
+        raise AssertionError("unreachable")
 
 
 def _fail(lineno: int, message: str) -> None:
@@ -188,7 +309,7 @@ def _parse_int(token: str, lineno: int, what: str) -> int:
         raise AssertionError("unreachable")
 
 
-def _parse_player(tokens: List[str], lineno: int) -> TrfPlayer:
+def _parse_player_tokens(tokens: List[str], lineno: int) -> TrfPlayer:
     idx = 0
     try:
         pid = int(tokens[idx])
@@ -290,13 +411,17 @@ def from_engine_request(request: object,
                         rounds_by_player: Dict[int, List[TrfRound]],
                         *,
                         name: str = "pairing-core",
-                        absent_ids: Tuple[int, ...] = ()) -> TournamentInput:
+                        absent_ids: Tuple[int, ...] = (),
+                        rounds_total: Optional[int] = None,
+                        ) -> TournamentInput:
     """Bridge new-API request + caller-supplied per-round histories to TRF.
 
     Core PlayerData carries no per-round mapping (by design), so the caller
     (manager/adapter user) supplies it here. Histories must cover played
     rounds; lengths are NOT cross-checked against points here (engines verify
-    scores themselves, e.g. BBP refuses on mismatch).
+    scores themselves, e.g. BBP refuses on mismatch). rounds_total sets XXR
+    (total planned rounds; BBP requires it > 0) and defaults to the request
+    round number when unknown.
     """
     from pairing_core.api import EngineRequest
 
@@ -314,6 +439,8 @@ def from_engine_request(request: object,
         forbidden = [tuple(x) for x in
                      request.constraints.forbidden_pairs]
     return TournamentInput(players=tuple(players),
-                           rounds_total=request.round_number,
+                           rounds_total=(request.round_number
+                                         if rounds_total is None
+                                         else rounds_total),
                            name=name, absent_ids=tuple(absent_ids),
                            forbidden_pairs=tuple(forbidden))

@@ -781,6 +781,374 @@
     "outcome": "error",
     "error": "ImpossiblePairingError"
    }
+  },
+  {
+   "id": "X100",
+   "category": "differential",
+   "desc": "BBP RTG seed 100 (10pl/4r): both legal, pair-sets differ (first-wins vs global optimum)",
+   "round": 5,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2170,
+     "points": 3.0,
+     "color_hist": "bwbw",
+     "opponents": [
+      2,
+      3,
+      4,
+      6
+     ],
+     "received_bye": false,
+     "float_hist": "----"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 2169,
+     "points": 3.0,
+     "color_hist": "wbww",
+     "opponents": [
+      1,
+      3,
+      5,
+      7
+     ],
+     "received_bye": false,
+     "float_hist": "---D"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1965,
+     "points": 2.5,
+     "color_hist": "bwwb",
+     "opponents": [
+      1,
+      2,
+      6,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "-D-U"
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1856,
+     "points": 2.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      1,
+      5,
+      8,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "-U--"
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1746,
+     "points": 2.0,
+     "color_hist": "bwbw",
+     "opponents": [
+      2,
+      4,
+      9,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "-D--"
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1703,
+     "points": 1.5,
+     "color_hist": "wbww",
+     "opponents": [
+      1,
+      3,
+      7,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "-UUU"
+    },
+    {
+     "id": 7,
+     "pairing_no": 7,
+     "rating": 1656,
+     "points": 2.0,
+     "color_hist": "bwbb",
+     "opponents": [
+      2,
+      6,
+      8,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "--D-"
+    },
+    {
+     "id": 8,
+     "pairing_no": 8,
+     "rating": 1634,
+     "points": 1.0,
+     "color_hist": "wbbw",
+     "opponents": [
+      3,
+      4,
+      7,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "----"
+    },
+    {
+     "id": 9,
+     "pairing_no": 9,
+     "rating": 1620,
+     "points": 2.0,
+     "color_hist": "bwbb",
+     "opponents": [
+      4,
+      5,
+      8,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "--D-"
+    },
+    {
+     "id": 10,
+     "pairing_no": 10,
+     "rating": 1527,
+     "points": 1.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      5,
+      6,
+      7,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "--UD"
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
+  },
+  {
+   "id": "X101",
+   "category": "differential",
+   "desc": "BBP RTG seed 101: BBP pairs legally, native Impossible (absolute float bar over-strictness?) - PENDING article resolution, do not treat as conformance proof",
+   "round": 5,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2064,
+     "points": 3.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      2,
+      4,
+      6,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "---U"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 2049,
+     "points": 3.5,
+     "color_hist": "bwbw",
+     "opponents": [
+      1,
+      3,
+      5,
+      7
+     ],
+     "received_bye": false,
+     "float_hist": "--DD"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 2037,
+     "points": 2.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      2,
+      4,
+      6,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "-DUU"
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1978,
+     "points": 3.0,
+     "color_hist": "bwbw",
+     "opponents": [
+      1,
+      3,
+      5,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "--DD"
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1920,
+     "points": 1.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      2,
+      4,
+      7,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "--U-"
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1888,
+     "points": 1.5,
+     "color_hist": "bwbw",
+     "opponents": [
+      1,
+      3,
+      9,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "-UU-"
+    },
+    {
+     "id": 7,
+     "pairing_no": 7,
+     "rating": 1878,
+     "points": 2.0,
+     "color_hist": "wbww",
+     "opponents": [
+      2,
+      5,
+      8,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "-UU-"
+    },
+    {
+     "id": 8,
+     "pairing_no": 8,
+     "rating": 1852,
+     "points": 2.5,
+     "color_hist": "bwbw",
+     "opponents": [
+      1,
+      3,
+      7,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "-D-D"
+    },
+    {
+     "id": 9,
+     "pairing_no": 9,
+     "rating": 1566,
+     "points": 1.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      4,
+      6,
+      8,
+      10
+     ],
+     "received_bye": false,
+     "float_hist": "--DU"
+    },
+    {
+     "id": 10,
+     "pairing_no": 10,
+     "rating": 1531,
+     "points": 0.5,
+     "color_hist": "bwbb",
+     "opponents": [
+      5,
+      6,
+      7,
+      9
+     ],
+     "received_bye": false,
+     "float_hist": "--D-"
+    }
+   ],
+   "expect": {
+    "outcome": "error",
+    "error": "ImpossiblePairingError"
+   }
+  },
+  {
+   "id": "Y4",
+   "category": "bye",
+   "desc": "fresh-first agreement with live BBP (allpab4 probe): bye to never-bye fresh player",
+   "round": 3,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "color_hist": "wb",
+     "opponents": [
+      2,
+      3
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.5,
+     "color_hist": "b-",
+     "opponents": [
+      1
+     ],
+     "received_bye": true
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 1.5,
+     "color_hist": "-w",
+     "opponents": [
+      1
+     ],
+     "received_bye": true
+    }
+   ],
+   "expect": {
+    "outcome": "valid",
+    "bye": 1
+   }
   }
  ]
 }
