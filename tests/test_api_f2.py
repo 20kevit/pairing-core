@@ -145,6 +145,20 @@ def test_forbidden_making_impossible_is_typed():
             forbidden_pairs=[(1, 2)])))
 
 
+def test_forbidden_order_irrelevant():
+    players = [_pd(1, points=1.0), _pd(2, pairing_no=2, rating=1400,
+                                      points=1.0),
+               _pd(3, pairing_no=3, rating=1300, points=0.0),
+               _pd(4, pairing_no=4, rating=1200, points=0.0)]
+
+    def run(forbidden):
+        return [(c.board, c.white_id, c.black_id) for c in pair(_req(
+            players, constraints=ConstraintSet(
+                forbidden_pairs=forbidden))).pairings]
+
+    assert run([(1, 3), (2, 4)]) == run([(2, 4), (1, 3)])
+
+
 def test_forbid_01_validator_code():
     from pairing_core import PairingCard, RoundResult, validate_round
     players = [_pd(1), _pd(2, pairing_no=2, rating=1400)]
