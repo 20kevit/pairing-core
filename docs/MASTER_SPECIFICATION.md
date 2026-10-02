@@ -83,7 +83,11 @@ API-compat. Every bug becomes a regression test.
 BBP first oracle (Dutch-2025 scope), JaVaFo second; checker-mode agreement;
 mismatch triage discipline (rule-gap/oracle-bug/spec-gap); 7-class comparison
 taxonomy (exact / reordered-equivalent / valid-alternative / violation /
-implementation-specific / unsupported / oracle-disagreement).
+implementation-specific / unsupported / oracle-disagreement). LIVE STATUS:
+BBP 8f9e3c5 source build runs green in-harness (round-1 pair-sets agree;
+systematic valid-alternative divergence characterized; E.5 + float-bar
+deviations confirmed with evidence, frozen per O08 pending dated-ruleset
+migration).
 
 ## 15. Reproducibility
 
