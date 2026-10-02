@@ -23,8 +23,11 @@ primary source; BBP 2025-Dutch build, Apache-2.0, used as reference only):
   XXZ (JaVaFo absentees) is WRITTEN for JaVaFo but BBP does not read it
   (BBP absentee mechanism: UNVERIFIED — limitation, see below).
 - Parser is dual-mode: fixed-width first (BBP-shaped files, multi-token
-  names supported), whitespace-token fallback (JaVaFo-shaped). Unknown
-  tags/XX lines ignored (documented subset).
+  names supported), then whitespace-token fallback (JaVaFo-shaped). Unknown
+  tags/XX lines ignored (documented subset). Consequence of ignoring 240:
+  future-round bye declarations from third-party files are NOT consumed —
+  callers pass current-round absentees explicitly via
+  TournamentInput.absent_ids / XXZ.
 
 Known limitations (all explicit): BBP absentee (current-round) mechanism
 unverified (XXZ written for JaVaFo only); live-binary acceptance PENDING

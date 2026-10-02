@@ -75,7 +75,11 @@ Constructor `SwissEngine(players, round_number, locked_pairs=None)`; method
 module docstring's "Public contract" list** (`__init__.py:7-10` lists
 `pair_round` but not `SwissEngine`) — a minor export/doc inconsistency, VERIFIED.
 Behaviorally the real engine; `NativeDutchEngine` is a thin wrapper. Tested
-(`test_engine_interface_equivalence` line 133).
+(`test_engine_interface_equivalence` line 133). TIER DECISION (validation
+wave): `SwissEngine` stays PUBLIC as the legacy-compat kernel entry (O08;
+F2 added keyword-only budgets/cancel_token, defaults preserve behavior).
+Recommended path for new callers is `EngineRequest` + `pair`/`pair_detailed`/
+`pair_via` (validated, typed errors, envelope); no new abstraction created.
 
 ### 1.9 `pair_round(players, round_number, locked_pairs=None)` (`engine.py:35-50`)
 

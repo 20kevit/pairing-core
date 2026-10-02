@@ -288,6 +288,11 @@ def pair_detailed(request: EngineRequest) -> object:
     errors = tuple(sorted(f.rule for f in rep.errors))
     warnings = tuple(sorted(
         f.rule for f in rep.findings if f.level in ("WARNING", "INFO")))
+    budgets = request.budgets
+    budget_dict = None
+    if budgets is not None:
+        budget_dict = {"max_steps": budgets.max_steps,
+                       "wall_clock_seconds": budgets.wall_clock_seconds}
     return from_kernel(
         result,
         engine_id="native-dutch",
@@ -298,6 +303,7 @@ def pair_detailed(request: EngineRequest) -> object:
                                       resolved),
         warnings=warnings,
         validator_errors=errors,
+        budgets=budget_dict,
     )
 
 

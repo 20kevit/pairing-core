@@ -120,6 +120,19 @@ def test_digest_changes_with_content():
     assert digest_canonical({"a": 1}) != digest_canonical({"a": 2})
 
 
+def test_budgets_recorded_and_backward_compatible():
+    rp = _round(budgets={"max_steps": 1000, "wall_clock_seconds": 60.0})
+    assert rp.budgets == {"max_steps": 1000, "wall_clock_seconds": 60.0}
+    assert RoundPairing.from_dict(rp.to_dict()) == rp
+    assert _round().budgets is None
+    # pre-budgets serialized forms (no key) still load
+    d = _round().to_dict(with_digest=False)
+    del d["budgets"]
+    assert RoundPairing.from_dict(d, verify_digest=False).budgets is None
+    with pytest.raises(InvalidRequestError):
+        _round(budgets=["unbounded"])
+
+
 # -- input digests: order- and hash-independent ---------------------------------
 
 def test_input_digest_stable_and_order_independent():

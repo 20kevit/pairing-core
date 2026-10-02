@@ -106,6 +106,7 @@ class RoundPairing:
     library_version: str = ""
     input_digest: str = ""
     warnings: Tuple[str, ...] = ()
+    budgets: Optional[Dict[str, Any]] = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.round_number, int) or \
@@ -135,6 +136,10 @@ class RoundPairing:
             raise InvalidRequestError(
                 "bye_player_id must match the bye card.")
         object.__setattr__(self, "warnings", tuple(self.warnings))
+        if self.budgets is not None:
+            if not isinstance(self.budgets, dict):
+                raise InvalidRequestError("budgets must be a dict or None.")
+            object.__setattr__(self, "budgets", dict(self.budgets))
         for name in ("engine_id", "engine_version", "library_version",
                      "input_digest"):
             if not isinstance(getattr(self, name), str):
@@ -160,6 +165,7 @@ class RoundPairing:
             "library_version": self.library_version,
             "input_digest": self.input_digest,
             "warnings": list(self.warnings),
+            "budgets": None if self.budgets is None else dict(self.budgets),
         }
         if with_digest:
             body["digest"] = digest_canonical(body)
@@ -194,7 +200,8 @@ class RoundPairing:
                 ruleset=ruleset,
                 library_version=data["library_version"],
                 input_digest=data["input_digest"],
-                warnings=tuple(data.get("warnings", [])))
+                warnings=tuple(data.get("warnings", [])),
+                budgets=data.get("budgets"))
         except (KeyError, TypeError) as exc:
             raise InvalidRequestError(
                 f"malformed RoundPairing dict: {exc}") from exc
@@ -238,7 +245,9 @@ def input_digest(players: object, round_number: int,
 def from_kernel(result: object, *, engine_id: str, engine_version: str,
                 ruleset: RulesetId, library_version: str,
                 input_digest_hex: str, warnings: Tuple[str, ...],
-                validator_errors: Tuple[str, ...]) -> RoundPairing:
+                validator_errors: Tuple[str, ...],
+                budgets: Optional[Dict[str, Any]] = None,
+                ) -> RoundPairing:
     """INTERNAL. Convert a v0.1.0 RoundResult, enforcing O02.
 
     validator_errors: rule codes at ERROR level for this output (from
@@ -259,4 +268,5 @@ def from_kernel(result: object, *, engine_id: str, engine_version: str,
         bye_player_id=result.bye_player_id,
         engine_id=engine_id, engine_version=engine_version,
         ruleset=ruleset, library_version=library_version,
-        input_digest=input_digest_hex, warnings=tuple(warnings))
+        input_digest=input_digest_hex, warnings=tuple(warnings),
+        budgets=None if budgets is None else dict(budgets))

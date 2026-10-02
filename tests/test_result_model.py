@@ -98,3 +98,17 @@ def test_no_partial_on_error_paths():
     for case in _error_cases():
         with pytest.raises(PairingError):
             pair_detailed(_req(case))
+
+
+def test_detailed_records_budgets():
+    from pairing_core.controls import ExecutionBudgets
+    case = [c for c in _engine_cases() if c["id"] == "E-r1-4"][0]
+    players = [_player(p) for p in case["players"]]
+    req = EngineRequest(players=players, ruleset=COMPAT, round_number=1,
+                        constraints=ConstraintSet(),
+                        budgets=ExecutionBudgets(max_steps=2000000))
+    rp = pair_detailed(req)
+    assert rp.budgets == {"max_steps": 2000000, "wall_clock_seconds": None}
+    assert RoundPairing.from_dict(rp.to_dict()) == rp
+    plain = pair_detailed(_req(case))
+    assert plain.budgets is None
