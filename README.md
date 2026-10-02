@@ -5,7 +5,10 @@ from `20kevit/chess-manager` (`domain/pairing/`).
 
 - No Flask, no SQLAlchemy, no persistence, no network.
 - Deterministic: same input -> same output.
-- Reference: FIDE C.04.2 + C.04.3 (effective 1 July 2025).
+- Ruleset: `dutch-till2026-compat` (pre-2026 Dutch formulation as realized
+  by the frozen kernel; see `docs/research/DUTCH_CONFORMANCE_STATUS.md`
+  for the exact conformance standing, including confirmed deviations under
+  investigation — no FIDE endorsement claimed).
 
 ## Install
 
