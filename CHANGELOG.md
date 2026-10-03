@@ -4,6 +4,30 @@ All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
 is the `pyproject.toml` version. Dates are commit dates (UTC).
 
+## [0.3.1] — 2026-10-03
+
+Hostile FIDE conformance audit of the 0.3.0 2026 engines (authoritative
+reference: Council bundle CM3-202517 FULL_TEXT + Annotated Dutch V2026).
+No public API change; frozen v0.1.0/v0.2.0 behavior byte-identical:
+
+- 20 conformance defects fixed across Dutch (BSN order, MDP-set order,
+  M1/MDP ordering), Dubov (G1 extremes, 3.2.4.1 shift, real-pairing C7),
+  Burstein (C6 sign, C7 scope, incoming loop, enumeration), Double/Team
+  (C5 construction, TPN identifier space, Team 4.3.7 + secondary),
+  Olympiad (floater routing), Lim (scrutiny, columns, even-making, 2.6,
+  3.x, 4.4, 5.4, Art.6), and all colour walkbacks (round-aligned).
+- Budgets made effective (ticks + count guards + every-tick wall checks;
+  deferred Dutch alterations; exact lex-first fast paths); 2026 performance
+  gates measured (R1 + realistic sizes succeed; factorial ceilings terminate
+  typed — no heuristic pruning).
+- 30-test adversarial corpus, 2026 randomized property suite (7 rulesets),
+  2026 benchmark record; version-scoped differential oracles pass
+  (BBP 2025-era vs legacy; no meaningless cross-version comparisons).
+- Rule-level conformance matrix (`docs/audit/FIDE_CONFORMANCE_MATRIX.md`)
+  with explicit interpretation register; final report
+  (`docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md`). No FIDE endorsement
+  claimed; full conformance claimed nowhere interpretations remain.
+
 ## [0.3.0] — 2026-10-03
 
 New additive `pairing_core.fide2026` namespace (no v0.1.0/v0.2.0 behavior

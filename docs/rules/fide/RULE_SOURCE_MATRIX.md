@@ -82,3 +82,44 @@ traceability appended, new rules appended (never renumbered).
 | R-A04 | Baku | Virtual schedule + examples | F-0117 | 1.4 | 2026 / 01-02-2026 | FULL_TEXT | baku.py:virtual_points | corpus baku | EVIDENCED |
 | R-A05 | Baku | Pairing score = standings + virtual | F-0117 | 1.5 | 2026 / 01-02-2026 | FULL_TEXT | baku.py:pairing_scores | score test | EVIDENCED |
 | W-01 | (withdrawn) | Absolute float-bar (no citation, any era) | — | — | — | WITHDRAWN | NOT implemented anywhere | n/a | WITHDRAWN |
+
+## Audit-wave amendments (2026-10-03, hostile conformance audit)
+
+Previous "documented readings" corrected or reclassified (original rows above
+preserved; these amend them — see docs/audit/FIDE_CONFORMANCE_MATRIX.md):
+
+- Dutch BSN (R-D28/4.1): implementation inverted BSN order (score-ascending);
+  fixed to Art.1.2 order (score desc, TPN asc). Status was overstated.
+- Dutch MDP sets (R-D28/4.4.2): complement-lexicographic order corrected to
+  kept-set smallest-differing-BSN + larger-first per the annotated worked
+  example ({1,3} < {1,4} < {3,4}).
+- Dutch PAB post-(score,unplayed) tiebreak: reclassified INTERPRETATION
+  (I-D-PAB) — C.04.3 states no further rule; family convention applied.
+- Burstein C6 (outgoing scores): implementation maximised; corrected to
+  minimise (Art.2.3.2). Test corpus lacked a direction pin; added.
+- Burstein C7 probe: scope corrected to outgoing floaters + next residents.
+- Burstein bracket loop: incoming floaters never joined (dropped by a
+  join-filter); restructured to score-ordered loop with persistent incoming.
+- Dubov 3.2.3 G1: TPN-half restricted to all-unplayed brackets (was applied
+  to all-seeker extremes).
+- Dubov 3.2.4.1: phase-1 shift was dead code (greedy probe needs equal
+  sizes); redesigned around actual-pairing C7 evaluation.
+- Dubov 3.2.2 C7: scored on greedy estimate; now scored on the real ensuing
+  S1×T2 pairing; viability requires full C1+C3 legality.
+- Double/Team 3.5.2 (C5): best score profile is now constructional (worked
+  example); a C5-best profile with no legal pairing yields no set (3.3.3).
+- Double/Team 3.6: TPN/identifier vs player-id spaces separated throughout.
+- Team 4.2.2: secondary no longer dropped for kind 'none' (caller passes 0
+  when unused). Team 4.3.7 step inserted (was missing).
+- Olympiad 8.x: floater routing crashed (NameError) and dropped floaters;
+  fixed with processing-order queues.
+- Lim 4.1.1: scrutiny direction corrected to the worked 4.2 table (#1 first
+  downward; upward mirrored). 4.2 same-half order corrected to descending.
+- Lim 3.2.2: even-making corrected to majority side + 3.2.4 tiebreak.
+- Lim 2.6/3.x/4.4: median cracking, floater priorities/selection/routing,
+  and 4.4 recovery implemented per text (prior "3.9 folding" claim was
+  inaccurate — 3.9 was absent, not folded). 5.4 below-median flip + Art.6
+  last-round relaxation added.
+- Colour walkbacks (Dubov 5.2.4, Burstein 5.2.4, Double 4.3.3, Team 4.3.6,
+  Lim 5.4, Olympiad 7.6): aligned by round (C.04.2 Art.3.4), not by zipping
+  played-only sequences.

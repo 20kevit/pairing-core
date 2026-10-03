@@ -16,6 +16,8 @@ from `20kevit/chess-manager` (`domain/pairing/`).
   `burstein-2026`, `lim-2026`, `double-2026`, `team-2026`, `olympiad-2022`,
   Baku modifier — implemented from FULL_TEXT Council-bundle evidence
   (see `docs/rules/fide/evidence/`); frozen `dutch-till2026-compat` untouched.
+  Rule-level conformance standing (v0.3.1 audit): `docs/audit/FIDE_CONFORMANCE_MATRIX.md`
+  — explicit interpretations where FIDE is silent; no FIDE endorsement claimed.
 
 ## Install
 

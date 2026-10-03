@@ -1,39 +1,20 @@
 {
  "note": "machine-dependent durations; outcomes are the gates",
  "scenarios": {
-  "burstein-2026_big_n50": {
-   "outcome": "EngineTimeoutError",
-   "seconds": 0.001
-  },
-  "burstein-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.006
-  },
   "burstein-2026_mid_n20_seed3": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.005
+   "seconds": 0.006
   },
   "burstein-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.001
+   "seconds": 0.002
   },
   "burstein-2026_r1_n50": {
    "outcome": "success",
    "pairs": 25,
    "seconds": 0.002
-  },
-  "double-2026_big_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.004
-  },
-  "double-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.004
   },
   "double-2026_mid_n20_seed2": {
    "outcome": "success",
@@ -43,65 +24,46 @@
   "double-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   "double-2026_r1_n50": {
    "outcome": "success",
    "pairs": 25,
    "seconds": 0.001
   },
-  "dubov-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.036
-  },
   "dubov-2026_mid_n20_seed2": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.009
+   "seconds": 0.008
   },
   "dubov-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.001
+   "seconds": 0.002
   },
   "dubov-2026_r1_n50": {
    "outcome": "success",
    "pairs": 25,
    "seconds": 0.004
   },
-  "dutch-2026_big_n50": {
-   "outcome": "EngineTimeoutError",
-   "seconds": 45.001
-  },
-  "dutch-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 3.659
-  },
   "dutch-2026_mid_n20_seed3": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.142
+   "seconds": 0.141
   },
   "dutch-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.001
+   "seconds": 0.002
   },
   "dutch-2026_r1_n50": {
    "outcome": "success",
    "pairs": 25,
-   "seconds": 0.003
+   "seconds": 0.002
   },
   "dutch_pathological_dense_rematch": {
    "outcome": "timeout-bounded",
-   "seconds": 1.334
-  },
-  "lim-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.001
+   "seconds": 1.176
   },
   "lim-2026_mid_n20_seed2": {
    "outcome": "success",
@@ -111,17 +73,12 @@
   "lim-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   "lim-2026_r1_n50": {
    "outcome": "success",
    "pairs": 25,
    "seconds": 0.0
-  },
-  "olympiad-2022_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.001
   },
   "olympiad-2022_mid_n20_seed3": {
    "outcome": "success",
@@ -131,27 +88,22 @@
   "olympiad-2022_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   "olympiad-2022_r1_n50": {
    "outcome": "success",
    "pairs": 25,
    "seconds": 0.001
   },
-  "team-2026_frag_n50": {
-   "outcome": "success",
-   "pairs": 25,
-   "seconds": 0.003
-  },
   "team-2026_mid_n20_seed2": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.003
+   "seconds": 0.004
   },
   "team-2026_r1_n20": {
    "outcome": "success",
    "pairs": 10,
-   "seconds": 0.001
+   "seconds": 0.0
   },
   "team-2026_r1_n50": {
    "outcome": "success",

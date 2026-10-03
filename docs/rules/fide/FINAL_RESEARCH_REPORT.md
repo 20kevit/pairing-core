@@ -79,3 +79,40 @@ at Dutch). Evidence ✓ (50 Rule IDs → Source → section/version).
 Repository ✓ (registry + notes + matrices + timeline + manifest committed;
 validator green; no secrets; no vendored copyrighted bulk; links verified
 2026-10-03; behavior diff zero).
+
+## Z. Hostile conformance audit addendum (2026-10-03; supersedes conflicting
+##    implementation claims above — research conclusions stand, corrected
+##    where the audit disproved an implementation reading)
+
+Method: every 2026 engine re-read against CM3-202517 FULL_TEXT (+ Annotated
+Dutch V2026); 20 implementation defects fixed (docs/audit/
+FIDE_CONFORMANCE_FINAL_REPORT.md §5); 30-test adversarial corpus +
+2026 property suite + 2026 performance gates added (474 passed / 16 skipped).
+
+Corrections to prior implementation claims:
+
+1. "Lim 3.9 folded into selection order" — INACCURATE. No 3.9 evaluation
+   existed (selection was due-colour + number only). 3.9 a–d is now explicit
+   in floater selection; 3.3/3.4/3.5/3.6/3.7/3.8 implemented alongside.
+2. "Dutch PAB past-(score,unplayed) uses largest-TPN family convention" —
+   reclassified INTERPRETATION I-D-PAB (C.04.3 silent; convention borrowed
+   from Dubov 3.1.5 / Double-Team 3.4.4 / Burstein 3.1.5 where explicit).
+3. "Double/Team min-vector + generation tiebreak" — retained with narrowed
+   justification I-T-C7 (coincides with "first complying" iff a zero exists;
+   graceful otherwise; strict zero-filter would fail ordinary rounds).
+4. "BSN/id-space confusion after exchanges" (Burstein, fixed deffe5d) —
+   re-verified fixed; the SAME bug class was found and fixed in Double/Team
+   3.6 identifier handling (id≠TPN KeyError/mis-pairing).
+5. Dutch C8 "restricted look-ahead" — probe now uses the heterogeneous
+   machinery (MDPs pair residents-only); RSL pre-sizing still absent
+   (documented approximation).
+6. Olympiad evidence: F-0601 primary PDF not re-retrievable this wave
+   (handbook bot-wall); Olympiad rows rest on the 2026-10-03 FULL_TEXT
+   evidence record; 8.x.3 and the 88-team example stay unresolved.
+7. BBP differential scope: BBP implements 2025 Dutch + a flawed previous
+   Burstein (per its README) — cross-version comparison is meaningless and
+   was not performed; version-scoped legacy oracles pass (12 BBP + JaVaFo).
+8. Performance: exact-search architecture ceilings measured (Dutch/Burstein
+   big brackets → typed budget timeouts; R1 + realistic sizes succeed).
+   No pruning heuristics introduced (conformance risk); budgets derived from
+   measurements (test_benchmarks_2026 + benchmarks_2026.json).

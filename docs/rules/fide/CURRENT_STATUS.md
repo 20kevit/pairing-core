@@ -1,5 +1,13 @@
 # CURRENT STATUS — Per-System Latest-Source Answers (completion wave)
 
+> HOSTILE-AUDIT AMENDMENT (2026-10-03): the per-system sections below predate
+> the audit wave and contain superseded implementation claims (notably "NOT
+> implemented" rejections and the Lim-3.9/Dutch-PAB/Double-min-vector readings).
+> Authoritative implementation status is now docs/audit/FIDE_CONFORMANCE_MATRIX.md
+> (+ docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md); research history is preserved
+> below unmodified.
+
+
 Seven-stage state per system (§17 — never collapsed):
 located → verified → full-text → extracted → possible → implemented → tested.
 Conformance (§16): Dutch-2026 etc. are IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS

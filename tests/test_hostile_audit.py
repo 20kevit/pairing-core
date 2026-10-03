@@ -268,6 +268,18 @@ def test_double_c5_best_profile_without_legal_pairing_fails():
         pair_2026(req)
 
 
+def test_double_identifier_lex_first_construction():
+    """Fast-path exactness: lex_first_pairing() == enumerate_pairings()[0]
+    for small brackets (top-half vs bottom-half)."""
+    from pairing_core.fide2026.double_team import (
+        enumerate_pairings,
+        lex_first_pairing,
+    )
+    for n in (2, 4, 6, 8):
+        ps = [P(i, 10 * i, 0.0) for i in range(1, n + 1)]
+        assert lex_first_pairing(ps) == enumerate_pairings(ps)[0]
+
+
 def test_double_identifier_uses_tpn_space():
     """B-ids: Art.3.6 identifiers are TPNs; engine must work when id != TPN
     (old code KeyError'd / mis-paired as soon as they diverged)."""
