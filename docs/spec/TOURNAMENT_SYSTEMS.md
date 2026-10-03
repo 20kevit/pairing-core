@@ -39,6 +39,14 @@ Neither is pretended production-ready; both remain roadmap phases.
 
 Team/match/board entities; MP/GP duality; board colours; line-up constraints.
 New domain layer; spec blocked on C.04.6 text retrieval. Late roadmap.
+RESEARCH UPDATE (capability wave): Olympiad Pairing Rules 2022 substantially
+retrieved (controlled Swiss on match points; median groups; float procedures
+with explicit combination-priority tables; board-1 colours ±2/3× with floater
+exception, equalisation-then-alternation; B/C-team odd handling; <3-player
+exclusion) and ECU confirms Olympiad rules as the team-competition standard —
+making Olympiad team Swiss the leading team candidate IF full articles 3–6
+and ranking rules are retrieved. C.04.6 TPS remains excerpt-only. Neither
+implemented; no code pretends otherwise.
 
 ## 4. Elimination / match / hybrid
 

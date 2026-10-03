@@ -15,9 +15,10 @@ listed evidence — tests alone never suffice.
 | Dubov | BLOCKED (no PRIMARY text in hand; no oracle) | research/FIDE_SYSTEMS.md |
 | Burstein | BLOCKED (BBP self-declares its impl flawed; no PRIMARY text) | research/PAIRING_ENGINES.md |
 | Lim | BLOCKED (thin spec retrieval; no oracle) | research/FIDE_SYSTEMS.md |
-| Double Swiss | RESEARCHED (C.04.5 known; needs match-result model) | research |
+| Double Swiss | RESEARCHED+ (C.04.5 skeleton retrieved: TPN order, even brackets + upfloaters, C1/C2/C4/C5, PAB=win+draw, arbiter-decides; pairing procedures 3.4–3.6 and colours art. 4 still missing) | Closest future system: mirrors Dutch machinery with upfloat direction |
 | Berger Round Robin (single/double) | VALIDATED | Handbook C.05 Annex 1 goldens (even 4–12), structural odds, balance bounds |
-| Team Swiss/RR | BLOCKED (C.04.6 text unretrieved) | research/TEAM_SYSTEMS.md |
+| Team Swiss (Olympiad rules) | RESEARCHED+ (Olympiad Pairing Rules 2022 excerpts: controlled Swiss on match points, median groups, float procedures with priority tables, board-1 colours ±2/3× with floater exception, B/C-team odd handling; full articles 3–6 + ranking still missing; ECU confirms Olympiad rules as team standard) | Next team candidate if full text retrieved |
+| Team Swiss (C.04.6 TPS) | BLOCKED (only excerpts: brackets + upfloaters C4–C7, PAB, Type-A colours) | research/TEAM_SYSTEMS.md |
 | Knockout/Match/Playoff | RESEARCHED (no single authoritative pairing text; no requesting use case) | research/OTHER_FORMATS.md |
 
 ## Cross-cutting capabilities

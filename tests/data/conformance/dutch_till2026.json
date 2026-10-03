@@ -1209,6 +1209,137 @@
     "outcome": "valid",
     "bye": 4
    }
+  },
+  {
+   "id": "J0",
+   "category": "differential",
+   "desc": "JaVaFo RTG field, valid both engines with pair differences (live-verified agreement class)",
+   "round": 5,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2017,
+     "points": 3.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      4,
+      5,
+      7,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "--DD"
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 2013,
+     "points": 3.0,
+     "color_hist": "bwbw",
+     "opponents": [
+      3,
+      4,
+      5,
+      6
+     ],
+     "received_bye": false,
+     "float_hist": "--DD"
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1966,
+     "points": 2.0,
+     "color_hist": "wbwb",
+     "opponents": [
+      2,
+      5,
+      6,
+      7
+     ],
+     "received_bye": false,
+     "float_hist": "--UD"
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1910,
+     "points": 1.5,
+     "color_hist": "bbww",
+     "opponents": [
+      1,
+      2,
+      5,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "--UU"
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1906,
+     "points": 3.0,
+     "color_hist": "bwbb",
+     "opponents": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "received_bye": false,
+     "float_hist": "--DU"
+    },
+    {
+     "id": 6,
+     "pairing_no": 6,
+     "rating": 1874,
+     "points": 1.5,
+     "color_hist": "wbww",
+     "opponents": [
+      2,
+      3,
+      7,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "--DU"
+    },
+    {
+     "id": 7,
+     "pairing_no": 7,
+     "rating": 1613,
+     "points": 1.0,
+     "color_hist": "bwbw",
+     "opponents": [
+      1,
+      3,
+      6,
+      8
+     ],
+     "received_bye": false,
+     "float_hist": "--U-"
+    },
+    {
+     "id": 8,
+     "pairing_no": 8,
+     "rating": 1545,
+     "points": 1.0,
+     "color_hist": "wwbb",
+     "opponents": [
+      1,
+      4,
+      6,
+      7
+     ],
+     "received_bye": false,
+     "float_hist": "--U-"
+    }
+   ],
+   "expect": {
+    "outcome": "valid"
+   }
   }
  ]
 }

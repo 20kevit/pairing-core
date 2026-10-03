@@ -12,7 +12,7 @@ throughout. Effective-date discipline: pre-2026 (till 31 Jan 2026) vs 2026
 |---|---|---|---|---|
 | C.04.3 till 31 Jan 2026 | handbook `C0403Till2026`; NewDutch2022.pdf (Chennai 2022) | draw (win unless regs state otherwise — C.04.1.c old) | A/B/C/D/E articles, MDP/BSN/Limbo/P0 | closest to native engine |
 | C.04.3 from 1 Feb 2026 | handbook `C0403202602`; Council 28/10/2025; FIDE news 2026-02-01 | **win** unless regs state otherwise (C.04.1 art. 3) | unified C1–C21 optimisation criteria | NOT implemented natively |
-| Repo claim "effective 1 July 2025" | `__fide_reference__` | — | — | matches NEITHER text's effective date — VERIFIED mismatch (a July-2025 draft cycle existed per TEC refs, but the citable texts are till-2026 / from-2026) |
+| Repo claim "effective 1 July 2025" | `__fide_reference__` | FIDE news "Updated FIDE (Dutch) System Effective from July 1, 2025" (fide.com) | — | PARTIALLY VERIFIED: matches a real FIDE update announcement (simplification drawing on Dutch+Dubov insights); article-level mapping of that update vs the kernel still open |
 
 ## 2. Deep dive (FIDE rules; grades inline)
 
