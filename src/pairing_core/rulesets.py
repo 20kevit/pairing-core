@@ -41,6 +41,30 @@ class RulesetId:
     acceleration: Optional[str] = None
     pab_value: Optional[float] = None
 
+    def to_dict(self) -> Dict[str, object]:
+        """PUBLIC. Stable dict form (canonical key order via sort_keys)."""
+        return {"system": self.system,
+                "effective_date": self.effective_date,
+                "acceleration": self.acceleration,
+                "pab_value": self.pab_value}
+
+    @staticmethod
+    def from_dict(data: Dict[str, object]) -> "RulesetId":
+        """PUBLIC. Rebuild; malformed -> InvalidRequestError."""
+        from pairing_core.errors import InvalidRequestError
+
+        try:
+            system = data["system"]
+            date = data["effective_date"]
+            if not isinstance(system, str) or not isinstance(date, str):
+                raise KeyError("types")
+            return RulesetId(system=system, effective_date=date,
+                             acceleration=data.get("acceleration"),
+                             pab_value=data.get("pab_value"))
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise InvalidRequestError(
+                f"malformed RulesetId dict: {exc}") from exc
+
 
 @dataclass(frozen=True)
 class ConstraintSet:
@@ -61,6 +85,28 @@ class ConstraintSet:
                            tuple(tuple(p) for p in self.forced_pairs))
         object.__setattr__(self, "forbidden_pairs",
                            tuple(tuple(p) for p in self.forbidden_pairs))
+
+    def to_dict(self) -> Dict[str, object]:
+        """PUBLIC. Stable dict form."""
+        return {"forced_pairs": [list(p) for p in self.forced_pairs],
+                "forbidden_pairs": [list(p) for p in self.forbidden_pairs],
+                "bye_directive": self.bye_directive}
+
+    @staticmethod
+    def from_dict(data: Dict[str, object]) -> "ConstraintSet":
+        """PUBLIC. Rebuild; malformed -> InvalidRequestError."""
+        from pairing_core.errors import InvalidRequestError
+
+        try:
+            return ConstraintSet(
+                forced_pairs=[tuple(p) for p in
+                              data.get("forced_pairs", [])],
+                forbidden_pairs=[tuple(p) for p in
+                                 data.get("forbidden_pairs", [])],
+                bye_directive=data.get("bye_directive"))
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise InvalidRequestError(
+                f"malformed ConstraintSet dict: {exc}") from exc
 
 
 #: String aliases accepted by resolve_ruleset().

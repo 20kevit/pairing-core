@@ -18,6 +18,13 @@ not truth.
 - Round-1 pair SETS agree with native on fresh 4/8/10-player fields
   (oracle test, gated in CI when BBP_EXE set).
 - BBP pin recorded above; live runs reproducible via tests/test_bbp_oracle.py.
+- C9 bye ordering IMPLEMENTED (capability wave): among equal-score fresh
+  bye candidates, fewer unplayed (`-`) rounds first — evidenced by BBP's own
+  dutch_2025_C9 fixture (reproduced exactly), BBP source "C9" minimization
+  weights, and the 2026 C9 criterion. Zero pinned behavior changed
+  (no golden/corpus case has unplayed rounds except Y4, where fresh-first
+  dominates): additive refinement in previously-untested territory, with new
+  goldens (unit + corpus Y5 + live oracle). O08 compat contract holds.
 
 ## 1. Target rulesets (unchanged)
 

@@ -79,9 +79,72 @@ class EngineRequest:
     budgets: Optional[ExecutionBudgets] = None  # F5; None == legacy caps
     cancel_token: Optional[CancelToken] = None  # F5; None == no cancel
 
+    def to_dict(self) -> Dict[str, object]:
+        """PUBLIC. Stable dict form (budgets/cancel_token excluded: budgets
+        serialize via their fields when set; cancel tokens never serialize)."""
+        from pairing_core.rulesets import ConstraintSet as _CS
+        from pairing_core.rulesets import RulesetId as _RS
+
+        constraints = self.constraints
+        if constraints is None:
+            constraints = _CS()
+        budgets = None
+        if self.budgets is not None:
+            budgets = {"max_steps": self.budgets.max_steps,
+                       "wall_clock_seconds": self.budgets.wall_clock_seconds}
+        ruleset = self.ruleset
+        ruleset_dict = (ruleset.to_dict() if isinstance(ruleset, _RS)
+                        else {"alias": ruleset})
+        return {"players": [_player_to_dict(p) for p in self.players],
+                "ruleset": ruleset_dict,
+                "round_number": self.round_number,
+                "constraints": constraints.to_dict(),
+                "budgets": budgets}
+
+    @staticmethod
+    def from_dict(data: Dict[str, object]) -> "EngineRequest":
+        """PUBLIC. Rebuild; malformed -> InvalidRequestError. Cancel tokens
+        never deserialize (fresh tokens only)."""
+        from pairing_core.controls import ExecutionBudgets
+        from pairing_core.errors import InvalidRequestError
+        from pairing_core.rulesets import ConstraintSet as _CS
+        from pairing_core.rulesets import RulesetId as _RS
+
+        try:
+            players = [_player_from_dict(p) for p in data["players"]]
+            rs = data["ruleset"]
+            ruleset = _RS.from_dict(rs) if "alias" not in rs else rs["alias"]
+            budgets = data.get("budgets")
+            return EngineRequest(
+                players=players, ruleset=ruleset,
+                round_number=data.get("round_number", 1),
+                constraints=_CS.from_dict(data.get("constraints", {})),
+                budgets=(None if budgets is None else ExecutionBudgets(
+                    max_steps=budgets.get("max_steps"),
+                    wall_clock_seconds=budgets.get("wall_clock_seconds"))))
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise InvalidRequestError(
+                f"malformed EngineRequest dict: {exc}") from exc
+
 
 def _is_int(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _player_to_dict(p: PlayerData) -> Dict[str, object]:
+    return {"id": p.id, "pairing_no": p.pairing_no, "rating": p.rating,
+            "points": p.points, "color_hist": p.color_hist,
+            "opponents": sorted(p.opponents),
+            "received_bye": p.received_bye, "float_hist": p.float_hist}
+
+
+def _player_from_dict(data: Dict[str, object]) -> PlayerData:
+    return PlayerData(
+        id=data["id"], pairing_no=data["pairing_no"], rating=data["rating"],
+        points=data["points"], color_hist=data.get("color_hist", ""),
+        opponents=frozenset(data.get("opponents", [])),
+        received_bye=bool(data.get("received_bye", False)),
+        float_hist=data.get("float_hist", ""))
 
 
 def validate_request(request: object) -> object:

@@ -1,0 +1,42 @@
+# Capability & Maturity Matrix (product authority)
+
+Maturity scale: RESEARCHED (studied, not built) / EXPERIMENTAL (built,
+provisional) / VALIDATED (spec-anchored tests green) / PRODUCTION_READY
+(evidence across spec/coverage/edge-cases/determinism/performance/docs) /
+DEPRECATED / UNSUPPORTED / BLOCKED (with reason). Promotion requires the
+listed evidence — tests alone never suffice.
+
+## Pairing systems
+
+| System | Maturity | Evidence |
+|---|---|---|
+| Dutch, `dutch-till2026-compat` (frozen kernel) | PRODUCTION_READY (compat scope) | F1 goldens (41), corpus (22), 42 live oracle runs, benchmarks, hash sweeps; deviations E.5/float-bar documented+ frozen |
+| Dutch-2026 (C1–C21 criteria engine) | BLOCKED (no PRIMARY article text; secondary only) | research/DUTCH_SYSTEM_SPECIFICATION.md |
+| Dubov | BLOCKED (no PRIMARY text in hand; no oracle) | research/FIDE_SYSTEMS.md |
+| Burstein | BLOCKED (BBP self-declares its impl flawed; no PRIMARY text) | research/PAIRING_ENGINES.md |
+| Lim | BLOCKED (thin spec retrieval; no oracle) | research/FIDE_SYSTEMS.md |
+| Double Swiss | RESEARCHED (C.04.5 known; needs match-result model) | research |
+| Berger Round Robin (single/double) | VALIDATED | Handbook C.05 Annex 1 goldens (even 4–12), structural odds, balance bounds |
+| Team Swiss/RR | BLOCKED (C.04.6 text unretrieved) | research/TEAM_SYSTEMS.md |
+| Knockout/Match/Playoff | RESEARCHED (no single authoritative pairing text; no requesting use case) | research/OTHER_FORMATS.md |
+
+## Cross-cutting capabilities
+
+| Capability | Maturity | Evidence |
+|---|---|---|
+| Forced / forbidden pairs | PRODUCTION_READY | e2e + validator FORBID-01 + BBP-XXP agreement |
+| Bye selection (fresh-first + C5 + C9) | PRODUCTION_READY (compat scope) | goldens + corpus Y1–Y5 + BBP C9 agreement |
+| Colour allocation (compat model) | PRODUCTION_READY (compat scope) | goldens; E.5 deviation documented |
+| Float model (compat 3-level) | PRODUCTION_READY (compat scope) | goldens; absolute-bar question documented |
+| Typed errors / budgets / cancellation | PRODUCTION_READY | suites + pathological bounds |
+| Envelopes / digests / replay metadata | PRODUCTION_READY | round-trip + determinism suites |
+| Explainability (`explain`) | VALIDATED | unit + integration tests (no search-path exposure by design) |
+| Request serialization | VALIDATED | round-trip + malformed rejection |
+| TRF interchange (subset) | VALIDATED | round-trips + live BBP acceptance; PAB-U verified; absentee/accel limits documented |
+| BBP adapter | VALIDATED | stub failure-paths + live runs (BYO) |
+| JaVaFo adapter | VALIDATED | stub failure-paths + live runs (BYO JVM+jar) |
+| Differential harness | VALIDATED | taxonomy + corpus + native self-differential |
+| Benchmarks | VALIDATED | 50–1000 + pathological, baselines recorded |
+
+Promotion rule: any maturity upgrade needs a dated entry here with its
+evidence. Downgrades on contradictory evidence immediately.
