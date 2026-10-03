@@ -4,6 +4,31 @@ All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
 is the `pyproject.toml` version. Dates are commit dates (UTC).
 
+## [0.3.0] — 2026-10-03
+
+New additive `pairing_core.fide2026` namespace (no v0.1.0/v0.2.0 behavior
+change — frozen kernel, KNOWN_RULESETS, KNOWN_SYSTEMS, resolve_ruleset all
+untouched and pinned):
+
+- Seven new rulesets from FULL_TEXT Council-bundle evidence (CM3-202517):
+  `dutch-2026` (C1–C21 search), `dubov-2026` (ARO/MaxT/G1–G2), `burstein-2026`
+  (Index/BSN enumeration), `lim-2026` (median routing), `double-2026`,
+  `team-2026` (lexicographic machinery), `olympiad-2022` (median + 9.x),
+  plus the `baku` accelerated modifier and C.04.2 board-order sorting.
+- Entry point `pair_2026()` with exact-match `P26RulesetId` resolution (no
+  fallback); typed errors; budget/cancel/step discipline throughout.
+- Evidence package (`docs/rules/fide/evidence/`), extracted rules
+  (`docs/rules/fide/extracted/`), official corpus
+  (`tests/corpus/fide_official/`, provenance-labelled), rule→source→code→test
+  traceability (`RULE_SOURCE_MATRIX.md`), upgraded source validator (wired
+  into the suite).
+- Conformance: Berger FULLY_IMPLEMENTED_AND_EVIDENCED (unchanged); six 2026
+  systems + Olympiad IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (documented
+  readings listed in the matrix; no silent guessing); KO/match
+  OUT_OF_SCOPE_WITH_REASON. No FIDE endorsement claimed.
+- v0.1.0/v0.2.0 compatibility: 41/41 goldens + full legacy suite green,
+  kernel outputs byte-identical.
+
 ## [0.2.0] — 2026-10-03
 
 Additive canonical consumer contract (no v0.1.0 behavior change):

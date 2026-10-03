@@ -1,7 +1,24 @@
-# CURRENT STATUS — Per-System Latest-Source Answers
+# CURRENT STATUS — Per-System Latest-Source Answers (completion wave)
 
-Authoritative answers as of 2026-10-03. "Implementation possible?" means: is the
-retrieved official material sufficient to implement without guessing.
+Seven-stage state per system (§17 — never collapsed):
+located → verified → full-text → extracted → possible → implemented → tested.
+Conformance (§16): Dutch-2026 etc. are IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS
+where documented readings exist (PAB-TPN tiebreak, Double/Team min-vector
+selection, Lim 3.9 folding, Burstein/Baku caller-side duties); Berger is
+FULLY_IMPLEMENTED_AND_EVIDENCED; KO/match is OUT_OF_SCOPE_WITH_REASON.
+
+| System | Located | Verified | Full-text | Extracted | Possible | Implemented | Tested |
+|---|---|---|---|---|---|---|---|
+| Dutch-2026 | YES | YES | YES (bundle) | YES | YES | YES `dutch-2026` | YES (47-suite) |
+| Dubov-2026 | YES | YES | YES (bundle) | YES | YES | YES `dubov-2026` | YES |
+| Burstein-2026 | YES | YES | YES (bundle) | YES | YES | YES `burstein-2026` | YES |
+| Lim-2026 | YES | YES | YES (bundle) | YES | YES | YES `lim-2026` | YES |
+| Double-2026 | YES | YES | YES (bundle) | YES | YES | YES `double-2026` | YES |
+| Team-2026 | YES | YES | YES (bundle) | YES | YES | YES `team-2026` | YES |
+| Baku-2026 | YES | YES | YES (bundle) | YES | YES | YES (modifier) | YES |
+| Olympiad-2022 | YES | YES | YES (annex PDF) | YES | YES | YES `olympiad-2022` | YES |
+| Berger | YES | YES | YES (tables) | YES | YES | YES (pre-existing) | YES |
+| KO/match | YES | YES | boundary | YES | n/a | OUT (boundary) | n/a |
 
 ## Dutch — C.04.3 [F-0105]
 

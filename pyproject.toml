@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pairing-core"
-version = "0.2.0"
+version = "0.3.0"
 description = "Standalone FIDE Dutch Swiss pairing engine (extracted from chess-manager)"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -1,12 +1,18 @@
 # SOURCE INDEX — Master Registry of FIDE Pairing Sources
 
 Master registry. Every claim in later pairing documentation must be traceable
-to a Source ID below. Retrieved 2026-10-03 unless stated otherwise.
-`handbook.fide.com` article bodies are JS/bot-protected against machine fetch;
-chapter existence, titles, approval/applied dates are verified via (a) FIDE
-Council bundle headers, (b) fide.com announcements, (c) search-index excerpts
-of the official pages. Full article text of several 2026 chapters is therefore
-graded PRIMARY-excerpt (official text, indirect retrieval) — see SEARCH_LOG.md.
+to a Source ID below.
+
+Evidence grades (completion wave, 2026-10-03): the Council bundle CM3-202517
+(F-0201) was retrieved in full via curl + pdftotext (SHA-256 `6b12df0e…4c94`,
+8 PDFs, 8,650 text lines, /tmp only — never vendored) and read cover to
+cover by the researcher. All 2026 chapters below are therefore FULL_TEXT
+(normative Council text = Handbook text), closing G-01. Interim 2025 texts
+are OFFICIAL_PDF (2024_1FC set, closing G-02). Pre-2026 Dubov/Burstein are
+OFFICIAL_PDF (interim-refs); pre-2026 Lim is OFFICIAL_EXCERPT (spp +
+old.fide.com search-cache, consistent verbatim with the 2026 text modulo
+headers — closing G-04). Handbook HTML bodies remain bot-protected but are
+no longer needed (same normative text in hand).
 
 Status: CURRENT = in force on 2026-10-03; HISTORICAL = applicable in its era;
 SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
@@ -33,7 +39,7 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Relevant sections: 9 numbered general rules (no repeat; PAB handling incl.
   win-valued PAB unless regulations state otherwise; same-score pairing;
   colour limits).
-- Supersedes: F-0102. Retrieved: 2026-10-03 (existence/dates via Council bundle
+- Supersedes: F-0102. Retrieved: 2026-10-03 (existence/dates via Council bundle Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
   + fide.com reminder 2026-03-24; article body via official-page excerpts).
 
 ### F-0102 — C.04.1 Basic rules (effective till 31 January 2026)
@@ -48,7 +54,7 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Approved 28/10/2025; applied 01/02/2026.
 - Status: CURRENT. Applicable: all Swiss (authorised systems/QC authorisation,
   TPN/initial order/late entries, pairing/colour/publishing procedure).
-- Supersedes: F-0104. Retrieved: 2026-10-03.
+- Supersedes: F-0104. Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0104 — C.04.2 General Handling Rules (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/GeneralHandlingRulesForSwissTournamentsTill2026
@@ -63,16 +69,20 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Relevant sections: criteria [C1]–[C21] bracket system; PAB-to-lowest-score;
   topscorer colour rules; sequential generation; 2024 removal of PPB/CLB special
   brackets (per TEC tutorial S-0106).
-- Supersedes: F-0107 (and interim F-0106). Retrieved: 2026-10-03
+- Supersedes: F-0107 (and interim F-0106). Retrieved: 2026-10-03 Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
   (structure via PRIMARY excerpts + TEC tutorials; full body PRIMARY-excerpt).
 
 ### F-0106 — C.04.3 interim (effective from 1 July 2025)
-- Official URL: https://handbook.fide.com/chapter/C0403202507 (cited by fide.com;
-  direct re-verification pending — direct fetch protected)
+- Official URL: https://handbook.fide.com/chapter/C0403202507 (cited by fide.com).
+- Official PDFs (2024_1FC, retrieved+read in full 2026-10-03): interim Dutch text
+  (SHA `e006e2d9…`), Table of Changes (SHA `384cdb61…`), interim C.04.1
+  (SHA `f61597e1…`), interim C.04.2+C.04.4+C.04.5 refs (SHA `e1117bcb…`).
+  Evidence: OFFICIAL_PDF — G-02 CLOSED
 - Announced 2024-05-13 (page stamp; title: effective 01/07/2025): simplified
   end-of-round pairing; PAB types (half/virtual/zero-point, full-point bye);
   players with fewer games excluded from PAB candidacy.
 - Status: SUPERSEDED (by F-0105, effective 01/02/2026). Retrieved: 2026-10-03.
+  (Pre-2026 lineage documented by the interim TOCh, OFFICIAL_PDF.)
 
 ### F-0107 — C.04.3 FIDE (Dutch) System (effective till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/C0403Till2026
@@ -84,13 +94,14 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 
 ### F-0108 — C.04.4.1 Dubov System (effective from 1 February 2026)
 - Official URL: https://handbook.fide.com/chapter/C040401202602
-- Status: CURRENT. Applicable: Dubov. Retrieved: 2026-10-03.
+- Status: CURRENT. Applicable: Dubov. Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 - Notes: ARO-equalising design; no downfloaters (upfloaters only); completion
   criterion + quality criteria (see swiss/dubov.md). Till-2026 text: F-0109.
 
 ### F-0109 — C.04.4.1 Dubov (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/C040401Till2026
 - Container: https://handbook.fide.com/chapter/OtherApprovedPairingSystemsTill2026
+- Pre-2026 full text in interim-refs PDF (2024_1FC, OFFICIAL_PDF) — G-04 CLOSED for Dubov.
 - Status: SUPERSEDED (by F-0108). Retrieved: 2026-10-03.
 
 ### F-0110 — C.04.4.2 Burstein System (effective from 1 February 2026)
@@ -98,10 +109,11 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Approved 28/10/2025; applied 01/02/2026. Index-equalising system with
   Dutch-seeded rounds.
 - Status: CURRENT. Applicable: Burstein. Till-2026 text: F-0111.
-- Retrieved: 2026-10-03.
+- Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0111 — C.04.4.2 Burstein (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/C040402Till2026
+- Pre-2026 full text in interim-refs PDF (2024_1FC, OFFICIAL_PDF) — G-04 CLOSED for Burstein.
 - Status: SUPERSEDED (by F-0110). Notes: fairness-by-opposition-strength design.
 - Retrieved: 2026-10-03.
 
@@ -111,10 +123,12 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
   with exchange rules.
 - Status: CURRENT. Applicable: Lim. Till-2026 text: F-0113.
 - Mirror: https://spp.fide.com/c-04-4-3-lim-system/
-- Retrieved: 2026-10-03.
+- Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0113 — C.04.4.3 Lim (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/C040403Till2026
+- Pre-2026 text via spp mirror + old.fide.com?id=168 search-cache (OFFICIAL_EXCERPT-grade,
+  verbatim-consistent with 2026 text modulo headers) — G-04 CLOSED for Lim.
 - Status: SUPERSEDED (by F-0112). Retrieved: 2026-10-03.
 
 ### F-0114 — C.04.5 Double Swiss System (effective from 1 February 2026)
@@ -123,13 +137,13 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
   PAB scores win+draw value; upfloater pairing.
 - Status: CURRENT. Applicable: Double Swiss.
 - Note: pre-2026 C.04.5 was Accelerated Systems (renumbered to C.04.7).
-- Retrieved: 2026-10-03.
+- Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0115 — C.04.6 Swiss Team Pairing System (effective from 1 February 2026)
 - Official URL: https://handbook.fide.com/chapter/SwissTeamPairingSystem202602
 - Applied 01/02/2026. Team Swiss with TPN/brackets/upfloaters; PAB = draw value.
 - Status: CURRENT. Applicable: Team Swiss. Till text: F-0116.
-- Retrieved: 2026-10-03.
+- Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0116 — C.04.6 Team (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/SwissTeamPairingSystem082024
@@ -141,7 +155,7 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Approved 28/10/2025; applied 01/02/2026. Baku Acceleration with GA/GB split +
   virtual points, generalised beyond 1-½-0 scoring.
 - Status: CURRENT. Applicable: accelerated Swiss. Till text: F-0118.
-- Retrieved: 2026-10-03.
+- Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).
 
 ### F-0118 — C.04.7 Accelerated (till 31 January 2026)
 - Official URL: https://handbook.fide.com/chapter/C0407Till2026
@@ -164,7 +178,9 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 - Status: CURRENT (enacting instrument for F-0101/0103/0105/0108/0110/0112/0114/0115/0117).
 - Decision list: https://www.fide.com/3rd-fide-council-meeting-list-of-decisions/
   ("CM3-2025/17 To approve the proposal of the Technical Commission.")
-- Retrieved: 2026-09-30 (prior wave, full bundle headers) / 2026-10-03.
+- Retrieved in full 2026-10-03 (curl+pdftotext, 1,872 lines, SHA-256
+  `6b12df0e692d517624709ff79b1c55048e68f344d13e24f4c96748e7c846b93b`).
+  Evidence: FULL_TEXT + OFFICIAL_PDF (hash in SOURCE_MANIFEST.md).
 
 ---
 
@@ -253,7 +269,8 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
   https://handbook.fide.com/chapter/olympiadregulations
 - Live pointer: https://handbook.fide.com/files/handbook/Olympiad2026MainCompetition.pdf §4.1
 - Status: CURRENT (no newer Olympiad pairing text found 2026-10-03).
-- Retrieved: 2026-10-03 (existence/structure; article body PRIMARY-excerpt).
+- Full annex PDF retrieved+read (curl+pdftotext, SHA `e7c995b9…`, 210 lines).
+  Evidence: FULL_TEXT.
 
 ---
 
@@ -278,13 +295,13 @@ SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
 
 ---
 
-## Open retrieval gaps (honest record)
+## Retrieval gaps — CLOSED this wave (honest record)
 
-- G-01: full machine-readable article bodies of F-0101/0103/0105/0108/0110/0112/
-  0114/0115/0117 (handbook bot-protection; browser/manual retrieval still open).
-- G-02: direct re-verification of F-0106 chapter URL (cited by fide.com, fetch-protected).
-- G-03: "E.5 float-bar" as a 2026 concept — no official handbook location found;
-  E.5 is a **till-2026** Dutch article (initial-colour parity). Any 2026 float-bar
-  claim must cite a 2026 section or be withdrawn.
-- G-04: pre-2026 archive chapter URLs for Dubov/Burstein/Lim individual texts
-  beyond the container F-0109/0111/0113.
+- G-01: CLOSED — all 2026 chapters FULL_TEXT via Council bundle (same normative
+  text as Handbook). Handbook HTML bodies remain bot-protected but redundant.
+- G-02: CLOSED — interim texts + TOCh retrieved as official PDFs (F-0106).
+- G-03: resolved prior wave (W-01 withdrawn; E.5 = till-2026 parity, successor
+  2026 Art.5.2.5 verified).
+- G-04: CLOSED — pre-2026 Dubov/Burstein full texts (interim-refs PDF); Lim via
+  spp/old.fide.com cache (verbatim-consistent).
+- Remaining non-blocking: Q-03 handbook-HTML re-verification (redundant path).

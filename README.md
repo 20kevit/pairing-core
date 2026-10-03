@@ -12,6 +12,10 @@ from `20kevit/chess-manager` (`domain/pairing/`).
 - Also: Berger round-robin schedules (`round_robin`, validated against
   FIDE C.05 Annex 1), typed errors, dated rulesets, execution budgets,
   BBP/JaVaFo adapter edge (bring-your-own binaries), TRF interchange.
+- 2026 family (`pairing_core.fide2026`, v0.3.0+): `dutch-2026`, `dubov-2026`,
+  `burstein-2026`, `lim-2026`, `double-2026`, `team-2026`, `olympiad-2022`,
+  Baku modifier — implemented from FULL_TEXT Council-bundle evidence
+  (see `docs/rules/fide/evidence/`); frozen `dutch-till2026-compat` untouched.
 
 ## Install
 

@@ -20,3 +20,18 @@ No cell populated by inference; gaps say so. As of 2026-10-03.
 A system leaves RESEARCH CONTINUES only with full article text in hand
 (machine- or manually-retrieved) mapped Rule ID → section. Berger is the only
 FULLY SPECIFIED system; KO/match is fully specified *as a boundary*.
+
+## Completion-wave implementation (2026-10-03)
+
+| System | Engine | Evidence | Conformance status |
+|---|---|---|---|
+| Dutch-2026 | `fide2026/dutch.py` (`dutch-2026`) | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (PAB-TPN tiebreak reading) |
+| Dubov-2026 | `fide2026/dubov.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (ratings + prior_upfloats caller duties) |
+| Burstein-2026 | `fide2026/burstein.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (round_results + virtual-strip duties) |
+| Lim-2026 | `fide2026/lim.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (3.9-folding reading) |
+| Double-2026 | `fide2026/double_team.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (min-vector reading; valuation OUT) |
+| Team-2026 | `fide2026/double_team.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (min-vector reading; line-ups OUT) |
+| Baku-2026 | `fide2026/baku.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (list-management caller-side) |
+| Olympiad-2022 | `fide2026/olympiad.py` | FULL_TEXT | IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS (Arts.10–11 + valuation OUT) |
+| Berger | `roundrobin.py` (pre-existing) | FULL_TEXT | FULLY_IMPLEMENTED_AND_EVIDENCED |
+| KO/match | boundary only | CONTEXT | OUT_OF_SCOPE_WITH_REASON |

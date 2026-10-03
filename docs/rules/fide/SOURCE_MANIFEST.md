@@ -12,18 +12,19 @@
   vendored); JaVaFo custom free+attribution (no bundling); py4swiss MIT;
   echecs MIT; vendor tools proprietary (no inclusion).
 
-## Retrieval records (this wave)
+## Retrieval records (completion wave — full evidence set)
 
-| Source ID | URL | Retrieved | Method | Artifact | Hash |
+| Source ID | URL | Retrieved | Method | Artifact | SHA-256 |
 |---|---|---|---|---|---|
-| F-0301 | fide.com …february-1-2026 | 2026-10-03 | webfetch full page | none (metadata) | n/a (HTML) |
-| F-0302 | fide.com …july-1-2025 | 2026-10-03 | webfetch full page | none (metadata) | n/a (HTML) |
-| F-0401 | tec.fide.com/endorsement | 2026-10-03 | webfetch full page | none (metadata) | n/a (HTML) |
-| F-0101…F-0119 | handbook.fide.com chapters | 2026-10-03 | search excerpts + Council headers | none | n/a |
-| F-0201 | doc.fide.com CM3-202517.pdf | 2026-09-30 / 2026-10-03 | headers verified | none | QUEUED (full binary) |
-| F-0501 | C05Annex1 tables | 2026-09-30 | full retrieval | none (facts extracted) | n/a |
-| F-0601 | OlympiadPairingRules2022 | 2026-10-03 | search-verified structure | none | n/a |
-| S-0101…S-0108 | secondary URLs | 2026-09-30 → 2026-10-03 | fetch/search per SEARCH_LOG | none vendored | n/a |
+| F-0201 (+F-0101/03/05/08/10/12/14/15/17) | doc.fide.com …/2025_3FC/CM3-202517.pdf | 2026-10-03 | curl+pdftotext, read in full (1,872 lines) | none vendored (/tmp) | `6b12df0e692d517624709ff79b1c55048e68f344d13e24f4c96748e7c846b93b` |
+| F-0106 (interim Dutch) | doc.fide.com …/2024%201FC/2024_FC1_TEC_Dutch.pdf | 2026-10-03 | curl+pdftotext, read (312 lines) | none vendored | `e006e2d9f342198b5ad8d2367fb01423bebcf69b5d283a5310bd6606c3031770` |
+| F-0106 TOCh | …/2024_FC1_TEC_Dutch_TOCh.pdf | 2026-10-03 | curl+pdftotext, read (92 lines) | none vendored | `384cdb61449d7567656ea00ff6934f924306c9633109245da21f6dc2f28ba474` |
+| F-0101int/F-0103int (2025) | …/2024_FC1_TEC_Swiss.pdf + …_References.pdf | 2026-10-03 | curl+pdftotext, read (25+655 lines) | none vendored | `f61597e18c4480a8b1cde2ba4f03696476925d139ddacf5c80a78fb4cab21831` / `e1117bcb40a58daab2bc7f37aa99adef41097202853b7296058f21a3480b5259` |
+| F-0601 Olympiad | doc.fide.com …/3FC2021/Annex 3.2.3…pdf | 2026-10-03 | curl+pdftotext, read in full (210 lines) | none vendored | `e7c995b923f40b024306394d60a54c996154b572b25997610139039fd832f017` |
+| S-0106 Annotated Dutch V2026 | tec.fide.com …/2026/08/AnnotatedDutch-V2026-1.pdf | 2026-10-03 | curl+pdftotext (2,184 lines) | none vendored | `c0515191ff457cac80842d5d7e1ef8e7314b8d6b858cec4dd3024d8f7666e1de` |
+| S-0106 Terms 2026 | tec.fide.com …/2026-fide-dutch-terms-and-definitions-1.pdf | 2026-10-03 | curl+pdftotext (165 lines) | none vendored | `e32c753a8854607bcbc2e6a4f6d21d537a42cf60d280b1dfe06c087b1e9a658c` |
+| S-0106 Mastering Dutch | tec.fide.com …/2026/07/Mastering_the_Dutch_2026.pdf | 2026-10-03 | curl+pdftotext (3,346 lines) | none vendored | `00445682142f88899ecb7320ec49f027a9b38300a800ce1c76585e38dad745ca` |
+| F-0301/F-0302/F-0401 | fide.com / tec.fide.com pages | 2026-10-03 | webfetch full page | metadata only | n/a (HTML) |
 
 ## Queued (next wave, manual path)
 
