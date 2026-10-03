@@ -1,0 +1,1 @@
+{"article": "C.04.4.3 Art.4.2 example", "expected_columns_for_1": ["4", "5", "6", "3", "2"], "note": "Opponent search order for Player #1: proposed 1v4, then 1v5, 1v6, 1v3, 1v2", "proposed": [[1, 4], [2, 5], [3, 6]], "provenance": "official-example", "source": "F-0112", "system": "lim-2026"}

@@ -1,0 +1,1 @@
+{"article": "Olympiad Rules Art.9.3 example", "expected_first": [[1, 4], [2, 5], [3, 6]], "note": "15 combinations in descending priority; first is 1x4, 2x5, 3x6", "provenance": "official-example", "source": "F-0601", "system": "olympiad-2022", "teams": [1, 2, 3, 4, 5, 6]}
