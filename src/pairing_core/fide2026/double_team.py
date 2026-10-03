@@ -103,9 +103,11 @@ def select_upfloaters(residents: Sequence[P26Player],
     (documented reading I-T-C7: min-vector + generation tiebreak coincides
     with "first complying" whenever a zero-violation set exists)."""
     pool_ids = [p.id for p in lower]
+    from math import comb as _comb
     for k in range(0, len(pool_ids) + 1):
         if (len(residents) + k) % 2:
             continue
+        stepper.check_count(_comb(len(pool_ids), k), "upfloater sets")
         combos = list(combinations(pool_ids, k))
         if not any(exists_complete_pairing(
                 list(residents) + [by_id[i] for i in combo],
@@ -146,15 +148,26 @@ def select_upfloaters(residents: Sequence[P26Player],
 
 # ---------------------------------------------------------- identifiers
 
-def enumerate_pairings(bracket: Sequence[P26Player]) -> List[List[Tuple[int, int]]]:
+def enumerate_pairings(bracket: Sequence[P26Player],
+                       stepper=None) -> List[List[Tuple[int, int]]]:
     """Art.3.6.1-3.6.3: (smaller-TPN top, larger-TPN bottom); identifier =
     top TPNs ascending + corresponding bottom TPNs; lexicographic
-    (worked `4 6 9 11 8 16 10 24` example)."""
+    (worked `4 6 9 11 8 16 10 24` example). Factorial-scale: pre-guarded by
+    count (typed timeout instead of hang/OOM)."""
     order = sorted(bracket, key=lambda p: p.tpn)
+    n = len(order)
+    # number of pairings (double factorial) computed cheaply upfront.
+    total = 1
+    for k in range(1, n, 2):
+        total *= k
+    if stepper is not None:
+        stepper.check_count(total, "bracket pairings")
     out: List[List[Tuple[int, int]]] = []
 
     def rec(remaining: Tuple[P26Player, ...],
             acc: List[Tuple[int, int]]) -> None:
+        if stepper is not None:
+            stepper.tick()
         if not remaining:
             out.append(sorted(acc, key=lambda pr: pr[0]))
             return
@@ -169,6 +182,16 @@ def enumerate_pairings(bracket: Sequence[P26Player]) -> List[List[Tuple[int, int
     out.sort(key=lambda pairs: (tuple(t for t, _ in pairs),
                                 tuple(b for _, b in pairs)))
     return out
+
+
+def lex_first_pairing(bracket: Sequence[P26Player]) -> List[Tuple[int, int]]:
+    """The lexicographically smallest identifier pairing, constructed
+    directly (no enumeration): top-half vs bottom-half in TPN order, i.e.
+    S1[i]↔S2[i]. Verified against enumerate_pairings() for n ≤ 10
+    (test_double_identifier_lex_first)."""
+    order = sorted(bracket, key=lambda p: p.tpn)
+    half = len(order) // 2
+    return [(order[i].tpn, order[i + half].tpn) for i in range(half)]
 
 
 # --------------------------------------------------------------- colours
@@ -379,11 +402,34 @@ def _choose_bracket_pairing(bracket, by_id, by_tpn, blocked, stepper, *,
                             system, kind, initial_colour, is_last_round,
                             up_ids, count_opp_repeat):
     """Art.3.6.4: minimal violation vector; ties -> earlier identifier
-    (enumeration is already in identifier order: strictly-smaller wins)."""
+    (enumeration is already in identifier order: strictly-smaller wins).
+
+    Exact fast path: the lexicographically first identifier pairing, when
+    legal and carrying the zero vector (global minimum — counts only), is
+    provably the winner (any earlier candidate is illegal; any later
+    zero ties to it; no negative vectors exist). This keeps R1-scale
+    full-field brackets O(n) instead of factorial."""
+    if len(bracket) % 2 == 0 and bracket:
+        first = lex_first_pairing(bracket)
+        rec = []
+        ok = True
+        for t_top, t_bot in first:
+            a, b = by_tpn[t_top], by_tpn[t_bot]
+            if C.rematch(a, b):
+                ok = False
+                break
+            rec.append((t_top, t_bot))
+        if ok:
+            vec = _violation_vector(rec, by_id, by_tpn, system=system,
+                                    kind=kind, initial_colour=initial_colour,
+                                    is_last_round=is_last_round,
+                                    up_ids=up_ids,
+                                    count_opp_repeat=count_opp_repeat)
+            if all(v == 0 for v in vec):
+                return rec
     best_vec = None
     best_rec = None
-    for ident_pairs in enumerate_pairings(bracket):
-        stepper.tick()
+    for ident_pairs in enumerate_pairings(bracket, stepper):
         rec = []
         ok = True
         for t_top, t_bot in ident_pairs:

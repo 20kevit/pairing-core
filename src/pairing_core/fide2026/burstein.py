@@ -125,20 +125,33 @@ def burstein_colour(a: P26Player, b: P26Player, ra: tuple, rb: tuple, *,
 def enumerate_burstein_pairings(
         bracket: Sequence[P26Player],
         rank_of: Dict[int, tuple],
-        n_pairs: int) -> List[List[Tuple[int, int]]]:
+        n_pairs: int,
+        stepper=None) -> List[List[Tuple[int, int]]]:
     """Art.4: BSNs in 1.8 order; pad with (n-k) zero-BSN virtual floaters;
     pairings ordered by BSN#1's opponent BSN descending, then #2..., (the
     worked 6-player/2-pair table follows this rule). Yields id-pairs with
-    0 = virtual (float)."""
+    0 = virtual (float). Factorial-scale: pre-guarded by count (typed
+    timeout instead of hang/OOM); per-node ticks when stepped."""
+    from math import factorial as _fact
     ordered = sorted(bracket, key=lambda p: rank_of[p.id])
     bsns = list(range(1, len(ordered) + 1))
     n = len(ordered)
     n_float = n - 2 * n_pairs
+    if stepper is not None:
+        # Upper bound on distinct slot-pairings: S! / (2^P P!) for S slots
+        # in P pairs (zero-identicality only shrinks it further).
+        from math import factorial as _fact
+        slots_n = n + n_float
+        pairs_n = slots_n // 2
+        bound = _fact(slots_n) // (2 ** pairs_n * _fact(pairs_n))
+        stepper.check_count(bound, "burstein bracket pairings")
     slots = bsns + [0] * n_float
     out = []
 
     def rec(remaining: Tuple[int, ...],
             acc: List[Tuple[int, int]]) -> None:
+        if stepper is not None:
+            stepper.tick()
         if not remaining:
             out.append(list(acc))
             return
@@ -295,12 +308,12 @@ def _exists_k_pairs(bracket, by_id, blocked, stepper, k) -> bool:
                                    stepper):
             # C3 absolute-colour check inside exists_? No: exists_ checks
             # rematch only. Filter C3 here.
-            if _subset_c3_ok([by_id[i] for i in subset], blocked):
+            if _subset_c3_ok([by_id[i] for i in subset], blocked, stepper):
                 return True
     return False
 
 
-def _subset_c3_ok(players, blocked) -> bool:
+def _subset_c3_ok(players, blocked, stepper=None) -> bool:
     # existence of a C1+C3 full pairing (small backtrack)
     bset = {tuple(sorted(b)) for b in blocked}
     idmap = {p.id: p for p in players}
@@ -312,6 +325,8 @@ def _subset_c3_ok(players, blocked) -> bool:
         return not (pa[1] == 3 and pb[1] == 3 and pa[0] == pb[0])
 
     def bt(rem):
+        if stepper is not None:
+            stepper.tick()
         if not rem:
             return True
         f = rem[0]
@@ -329,9 +344,27 @@ def _choose_pairing(bracket, by_id, rank_of, n_pairs, blocked, stepper, *,
                     req, rest_after) -> List[Tuple[int, int]]:
     """Art.3.2.2: first pairing (Art.4 order) that complies best C1–C8
     (higher-priority quality first; C6 outgoing scores desc; C7 next-bracket
-    C1–C6 as a hard filter via rest probe; C8 colours)."""
+    C1–C6 as a hard filter via rest probe; C8 colours).
+
+    Exact fast path: the lexicographically first Art.4 pairing
+    (BSN i ↔ BSN n−i+1, then leftovers float — the worked table's head),
+    when C1/C3-legal with the zero vector (no outgoing floaters, no colour
+    misses), is provably the winner. Keeps fresh full-field brackets O(n)."""
+    if n_pairs * 2 == len(bracket):
+        ordered = sorted(bracket, key=lambda p: rank_of[p.id])
+        n = len(ordered)
+        ids = [p.id for p in ordered]
+        first = [(ids[i], ids[n - 1 - i]) for i in range(n_pairs)]
+        if all(_c1c3_ok(by_id[xa], by_id[xb]) for xa, xb in first):
+            misses = _colour_misses(first, by_id, rank_of,
+                                    initial_colour=req.initial_colour)
+            if misses == 0:
+                if _next_bracket_ok(first, rest_after, by_id, blocked,
+                                    stepper):
+                    return first
     cands = []
-    for pairing in enumerate_burstein_pairings(bracket, rank_of, n_pairs):
+    for pairing in enumerate_burstein_pairings(bracket, rank_of, n_pairs,
+                                               stepper):
         stepper.tick()
         ok = True
         for xa, xb in pairing:
@@ -375,9 +408,10 @@ def _next_bracket_ok(pairing, rest_after, by_id, blocked, stepper) -> bool:
     top = max(p.score for p in rest_after)
     scope = outgoing + [p for p in rest_after if p.score == top]
     if len(scope) % 2 == 0:
-        return _subset_c3_ok(scope, blocked)
+        return _subset_c3_ok(scope, blocked, stepper)
     return any(
-        _subset_c3_ok([p for p in scope if p.id != skip.id], blocked)
+        _subset_c3_ok([p for p in scope if p.id != skip.id], blocked,
+        stepper)
         for skip in scope)
 
 

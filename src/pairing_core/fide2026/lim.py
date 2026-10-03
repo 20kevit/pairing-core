@@ -22,14 +22,18 @@ from pairing_core.fide2026.common import Stepper
 from pairing_core.fide2026.models import P26Pair, P26Pairing, P26Player, P26Request
 
 
-def compatible(a: P26Player, b: P26Player) -> bool:
+def compatible(a: P26Player, b: P26Player, *, last_round: bool = False) -> bool:
     """Art.2.1: unplayed + no 3-in-row + no ±3 imbalance for either side.
 
     A pairing is compatible iff SOME colour assignment avoids the hard bans
-    (5.1.1/5.1.2) for both players.
+    (5.1.1/5.1.2) for both players. In the last round (Art.6) same-score
+    pairing outranks alternation/equalisation, so colour bans are lifted
+    (repeat meetings still bar).
     """
     if C.rematch(a, b):
         return False
+    if last_round:
+        return True
     for wa in (True, False):
         if _colour_ok(a, wa) and _colour_ok(b, not wa):
             return True
@@ -146,12 +150,13 @@ def _dest_score(score: float, scores_in_order: List[float], idx: int,
     return rest[0] if rest else None
 
 
-def _needs_floater(p: P26Player, work: List[P26Player]) -> bool:
+def _needs_floater(p: P26Player, work: List[P26Player], *,
+                   last_round: bool = False) -> bool:
     """Art.2.3.1-2.3.3: no suitable (compatible) opponent in the group."""
     mates = [q for q in work if q.id != p.id]
     if not mates:
         return True
-    return all(not compatible(p, q) for q in mates)
+    return all(not compatible(p, q, last_round=last_round) for q in mates)
 
 
 def _dest_pool(dest: Optional[float], by_id: Dict[int, P26Player],
@@ -174,12 +179,14 @@ def _dest_pool(dest: Optional[float], by_id: Dict[int, P26Player],
 
 
 def _floater_type(p: P26Player, arrived: Set[int],
-                  dest_pool: List[P26Player]) -> int:
+                  dest_pool: List[P26Player],
+                  *, last_round: bool = False) -> int:
     """Art.3.9 disadvantage rank (lower better): d=0 compatible newcomer,
     c=1 incompatible newcomer, b=2 compatible re-floater, a=3 incompatible
     re-floater. ('Re-floater' = already floated into the group just handled.)"""
     was_here = p.id in arrived
-    compat = any(compatible(p, q) for q in dest_pool if q.id != p.id)
+    compat = any(compatible(p, q, last_round=last_round)
+                 for q in dest_pool if q.id != p.id)
     if not was_here and compat:
         return 0  # d
     if not was_here:
@@ -191,7 +198,7 @@ def _floater_type(p: P26Player, arrived: Set[int],
 
 def _select_floater(work: List[P26Player], dest_pool: List[P26Player],
                     arrived: Set[int], *, downward: bool,
-                    maxi: bool) -> P26Player:
+                    maxi: bool, last_round: bool = False) -> P26Player:
     """Art.3.2.2-3.2.4 even-making choice with 3.9 minimisation folded in:
     majority due-colour side (3.2.2) -> least-disadvantaged 3.9 type ->
     3.2.4 number (lowest TPN downward, highest upward). Maxi 100pt guard
@@ -212,12 +219,15 @@ def _select_floater(work: List[P26Player], dest_pool: List[P26Player],
                    if abs((p.rating or 0) - (ref.rating or 0)) <= 100]
         if guarded:
             cands = guarded
+    lr = {"last_round": last_round}
     if downward:
         return min(cands,
-                   key=lambda p: (_floater_type(p, arrived, dest_pool), p.tpn))
+                   key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
+                                  p.tpn))
     # upward 3.2.4: highest numbered -> max TPN; 3.9 type still minimised.
     return min(cands,
-               key=lambda p: (_floater_type(p, arrived, dest_pool), -p.tpn))
+               key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
+                              -p.tpn))
 
 
 def _pair_group(work: List[P26Player], dest: Optional[float], downward: bool,
@@ -232,52 +242,60 @@ def _pair_group(work: List[P26Player], dest: Optional[float], downward: bool,
                 further: Optional[float]) -> None:
     """Pair one non-median scoregroup (2.3-2.5, Art.3, Art.4)."""
     work = list(work)
+    last_round = req.is_last_round
     arrived = {p.id for p in work if p.id in floater_of}
     dest_pool = _dest_pool(dest, by_id, members_of, queue, pending, paired)
     further_pool = _dest_pool(further, by_id, members_of, queue, pending,
                               paired)
     even_floated = None
     for p in list(work):
-        if _needs_floater(p, work):
+        if _needs_floater(p, work, last_round=last_round):
             work.remove(p)
             _float_one(p, work, dest, further, queue, floater_of,
-                       group_score, downward, by_id, dest_pool, further_pool)
+                       group_score, downward, by_id, dest_pool, further_pool,
+                       last_round=last_round)
     if len(work) % 2:
         even_maker = _select_floater(work, dest_pool, arrived,
                                      downward=downward,
-                                     maxi=req.maxi_tournament)
+                                     maxi=req.maxi_tournament,
+                                     last_round=last_round)
         if even_maker.last_float in ("D", "U") and not _refloat_allowed(
-                even_maker, work, by_id, downward, upper, floater_of):
+                even_maker, work, by_id, downward, upper, floater_of,
+                last_round):
             alt = next((q for q in work
                         if q.id != even_maker.id and (
                             q.last_float not in ("D", "U") or
                             _refloat_allowed(q, work, by_id, downward,
-                                             upper, floater_of))),
+                                             upper, floater_of,
+                                             last_round))),
                        even_maker)
             even_maker = alt
         work.remove(even_maker)
         before = {(d, i) for d in queue for i in queue[d]}
         _float_one(even_maker, work, dest, further, queue, floater_of,
-                   group_score, downward, by_id, dest_pool, further_pool)
+                   group_score, downward, by_id, dest_pool, further_pool,
+                   last_round=last_round)
         after = {(d, i) for d in queue for i in queue[d]}
         floated_now = [i for d, i in after - before]
         even_floated = floated_now[0] if floated_now else None
     res = _exchange_pair(work, by_id, downward=downward, upper=upper,
                          floater_of=floater_of, group_score=group_score,
-                         stepper=stepper, maxi=req.maxi_tournament)
+                         stepper=stepper, maxi=req.maxi_tournament,
+                         last_round=last_round)
     if res is None:
         # Art.4.4: originally odd -> exchange the culprit with the
         # even-maker (4.4.1); originally even -> float the culprit together
         # with the lowest numbered remaining player (4.4.2); retry once.
         res = _apply_44(work, even_floated, dest, further, downward, queue,
                         req, stepper, by_id, floater_of, dest_pool,
-                        further_pool, upper, group_score)
+                        further_pool, upper, group_score,
+                        last_round=last_round)
         if res is None:
             raise ImpossiblePairingError(
                 "scoregroup unpairable after Art.4.4 float.")
     group_pairs[group_score] = list(res)
     for a_id, b_id in res:
-        w, b = _lim_colour(by_id[a_id], by_id[b_id], req=req)
+        w, b = _lim_colour(by_id[a_id], by_id[b_id], req=req, upper=upper)
         result_pairs.append((w, b))
         paired.add(a_id)
         paired.add(b_id)
@@ -285,10 +303,11 @@ def _pair_group(work: List[P26Player], dest: Optional[float], downward: bool,
         pending.discard(b_id)
 
 
-def _compat_in_dest(p: P26Player,
-                    dest_pool: List[P26Player]) -> bool:
+def _compat_in_dest(p: P26Player, dest_pool: List[P26Player], *,
+                    last_round: bool = False) -> bool:
     """Whether p has a compatible opponent in the adjacent group (3.3-3.5)."""
-    return any(q.id != p.id and compatible(p, q) for q in dest_pool)
+    return any(q.id != p.id and compatible(p, q, last_round=last_round)
+               for q in dest_pool)
 
 
 def _float_one(p: P26Player, work: List[P26Player], dest: Optional[float],
@@ -298,7 +317,8 @@ def _float_one(p: P26Player, work: List[P26Player], dest: Optional[float],
                src_score: float, downward: bool,
                by_id: Dict[int, P26Player],
                dest_pool: List[P26Player],
-               further_pool: List[P26Player]) -> int:
+               further_pool: List[P26Player],
+               *, last_round: bool = False) -> int:
     """Float p out of `work` (3.2.1), applying 3.5: a proposed floater with
     no compatible opponent adjacent is exchanged for another group member
     who has one (3.2.4 number order: lowest TPN downward, highest upward;
@@ -307,7 +327,7 @@ def _float_one(p: P26Player, work: List[P26Player], dest: Optional[float],
     if dest is None:
         raise ImpossiblePairingError(
             f"floater {p.id} has no adjacent scoregroup (Art.3.5).")
-    if _compat_in_dest(p, dest_pool):
+    if _compat_in_dest(p, dest_pool, last_round=last_round):
         queue.setdefault(dest, []).append(p.id)
         floater_of[p.id] = (src_score, "D" if downward else "U")
         return p.id
@@ -316,7 +336,7 @@ def _float_one(p: P26Player, work: List[P26Player], dest: Optional[float],
     ordered = sorted((q for q in work if q.id != p.id),
                      key=lambda q: q.tpn if downward else -q.tpn)
     for q in ordered:
-        if _compat_in_dest(q, dest_pool):
+        if _compat_in_dest(q, dest_pool, last_round=last_round):
             work.remove(q)
             work.append(p)
             queue.setdefault(dest, []).append(q.id)
@@ -334,7 +354,8 @@ def _float_one(p: P26Player, work: List[P26Player], dest: Optional[float],
 def _refloat_allowed(cand: P26Player, work: List[P26Player],
                       by_id: Dict[int, P26Player], downward: bool,
                       upper: bool,
-                      floater_of: Dict[int, Tuple[float, str]]) -> bool:
+                      floater_of: Dict[int, Tuple[float, str]],
+                      last_round: bool = False) -> bool:
     """Art.3.10: allowed unless it produces a/b/c floaters or shrinks pairs.
     Approximated: the remainder must still pair fully (no stranded member)."""
     rest = [p for p in work if p.id != cand.id]
@@ -345,7 +366,8 @@ def _refloat_allowed(cand: P26Player, work: List[P26Player],
     group_score = cand.score
     return _exchange_pair(rest, by_id, downward=downward, upper=upper,
                           floater_of=sub, group_score=group_score,
-                          stepper=None, maxi=False) is not None
+                          stepper=None, maxi=False,
+                          last_round=last_round) is not None
 
 
 def _apply_44(work: List[P26Player], even_floated: Optional[int],
@@ -355,7 +377,8 @@ def _apply_44(work: List[P26Player], even_floated: Optional[int],
               by_id: Dict[int, P26Player],
               floater_of: Dict[int, Tuple[float, str]],
               dest_pool: List[P26Player], further_pool: List[P26Player],
-              upper: bool, group_score: float) -> Optional[List[Tuple[int, int]]]:
+              upper: bool, group_score: float,
+              last_round: bool = False) -> Optional[List[Tuple[int, int]]]:
     """Art.4.4 recovery after a failed exchange search. Culprit generalised
     as the lowest numbered (TPN) unpaired player ("#2"-analogue):
     originally-odd groups exchange the culprit with the even-maker (4.4.1);
@@ -381,7 +404,8 @@ def _apply_44(work: List[P26Player], even_floated: Optional[int],
         culprit = min(work, key=lambda p: p.tpn)
         work.remove(culprit)
         _float_one(culprit, work, dest, further, queue, floater_of,
-                   group_score, downward, by_id, dest_pool, further_pool)
+                   group_score, downward, by_id, dest_pool, further_pool,
+                   last_round=last_round)
     else:
         # 4.4.2: float the culprit in company with the lowest numbered
         # remaining player.
@@ -393,16 +417,19 @@ def _apply_44(work: List[P26Player], even_floated: Optional[int],
         companion = min(work, key=lambda p: p.tpn)
         work.remove(companion)
         _float_one(companion, work, dest, further, queue, floater_of,
-                   group_score, downward, by_id, dest_pool, further_pool)
+                   group_score, downward, by_id, dest_pool, further_pool,
+                   last_round=last_round)
     return _exchange_pair(work, by_id, downward=downward, upper=upper,
                           floater_of=floater_of, group_score=group_score,
-                          stepper=stepper, maxi=req.maxi_tournament)
+                          stepper=stepper, maxi=req.maxi_tournament,
+                          last_round=last_round)
 
 
 def _exchange_pair(work: List[P26Player], by_id: Dict[int, P26Player], *,
                    downward: bool, upper: bool,
                    floater_of: Dict[int, Tuple[float, str]],
                    group_score: float, stepper, maxi: bool = False,
+                   last_round: bool = False,
                    ) -> Optional[List[Tuple[int, int]]]:
     """Art.4 exchanges with Art.3 scrutiny priorities.
 
@@ -480,7 +507,7 @@ def _exchange_pair(work: List[P26Player], by_id: Dict[int, P26Player], *,
         for q in opponents_of(m):
             if q.id in assigned or q.id == m.id:
                 continue
-            if not compatible(m, q):
+            if not compatible(m, q, last_round=last_round):
                 continue
             assigned[m.id] = q.id
             assigned[q.id] = m.id
@@ -555,10 +582,12 @@ def _pair_median(work: List[P26Player], pending: Set[int], paired: Set[int],
         cur = [by_id[i] for i in base_ids] + extra
         res = _exchange_pair(cur, by_id, downward=True, upper=True,
                              floater_of=floater_of, group_score=median_score,
-                             stepper=stepper, maxi=req.maxi_tournament)
+                             stepper=stepper, maxi=req.maxi_tournament,
+                             last_round=req.is_last_round)
         if res is not None:
             for a_id, b_id in res:
-                w, b = _lim_colour(by_id[a_id], by_id[b_id], req=req)
+                w, b = _lim_colour(by_id[a_id], by_id[b_id], req=req,
+                                   upper=True)
                 result_pairs.append((w, b))
                 paired.add(a_id)
                 paired.add(b_id)
@@ -600,9 +629,12 @@ def _pair_median(work: List[P26Player], pending: Set[int], paired: Set[int],
             floater_of[pid] = (target, "U" if side == "lower" else "D")
 
 
-def _lim_colour(a: P26Player, b: P26Player, *, req: P26Request) -> Tuple[int, int]:
+def _lim_colour(a: P26Player, b: P26Player, *, req: P26Request,
+                upper: bool = True) -> Tuple[int, int]:
     """Art.5 colour allocation with double scrutiny; Art.6 last-round override
-    lives in the pairing (colours may then violate 5.1)."""
+    lives in the pairing (colours may then violate 5.1). 5.4 identical
+    histories: median-or-above the HIGHER ranked (smaller TPN) is given the
+    alternate colour; below the median the LOWER ranked player is."""
     sa, sb = C.played_colors(a), C.played_colors(b)
     a_alt = len(sa) >= 2 and sa[-1] == sa[-2]
     b_alt = len(sb) >= 2 and sb[-1] == sb[-2]
@@ -616,12 +648,15 @@ def _lim_colour(a: P26Player, b: P26Player, *, req: P26Request) -> Tuple[int, in
         ca, _cb = last_diff
         return (b.id, a.id) if ca == "W" else (a.id, b.id)
     if sa and sb and sa == sb:
-        # identical histories: higher-ranked (smaller TPN) gets the alternate.
+        # identical histories: alternate goes to the higher ranked
+        # (median-or-above) or the lower ranked (below median) — 5.4.
         hi = a if a.tpn <= b.tpn else b
         lo = b if hi is a else a
+        alt = hi if upper else lo
+        other = lo if alt is hi else hi
         if sa[-1] == "W":
-            return (lo.id, hi.id)
-        return (hi.id, lo.id)
+            return (other.id, alt.id)
+        return (alt.id, other.id)
     cda, cdb = C.colour_difference(a), C.colour_difference(b)
     if cda != cdb:  # 5.5/5.6 balance: more-negative CD gets White
         w = a.id if cda < cdb else b.id

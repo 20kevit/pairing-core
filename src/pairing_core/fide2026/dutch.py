@@ -98,12 +98,16 @@ def _bsn(players: Sequence[P26Player]) -> Dict[int, int]:
     return {p.id: i + 1 for i, p in enumerate(order)}
 
 
-def _s2_transpositions(s2: List[P26Player], n1: int, bsn: Dict[int, int]):
+def _s2_transpositions(s2: List[P26Player], n1: int, bsn: Dict[int, int],
+                       stepper=None):
     """Art.4.2: S2 orders sorted lexicographically by first N1 BSNs
-    (trailing downfloater/remainder BSNs ignored). Lazy generator."""
+    (trailing downfloater/remainder BSNs ignored). Lazy generator.
+    Factorial-scale: ticks per permutation (typed timeout, never hang)."""
     ids = [p.id for p in s2]
     seen = set()
     for perm in permutations(ids):
+        if stepper is not None:
+            stepper.tick()
         key = tuple(bsn[i] for i in perm[:n1])
         if key in seen:
             continue
@@ -112,17 +116,24 @@ def _s2_transpositions(s2: List[P26Player], n1: int, bsn: Dict[int, int]):
 
 
 def _resident_exchanges(s1: List[P26Player], s2: List[P26Player],
-                        bsn: Dict[int, int]):
+                         bsn: Dict[int, int], stepper) -> object:
     """Art.4.3: equal-size original-S1<->S2 BSN swaps in comparison-rule
     order: (1) fewest moved; (2) smallest |sum-in - sum-out|; (3) largest
-    differing BSN leaving S1; (4) smallest differing BSN entering S1."""
+    differing BSN leaving S1; (4) smallest differing BSN entering S1.
+    Lazy: the original composition is always generated first by the caller;
+    this order is computed only when alterations are actually needed, and
+    pre-guarded by count (factorial-scale sets raise typed timeouts)."""
+    from math import comb as _comb
     b1 = sorted(bsn[p.id] for p in s1)
     b2 = sorted(bsn[p.id] for p in s2)
-    all_bsns = b1 + b2
+    total = sum(_comb(len(b1), k) * _comb(len(b2), k)
+                for k in range(1, min(len(b1), len(b2)) + 1))
+    stepper.check_count(total, "resident exchanges")
     cands = []
     for k in range(1, min(len(b1), len(b2)) + 1):
         for out in combinations(b1, k):
             for inn in combinations(b2, k):
+                stepper.tick()
                 set_out, set_in = set(out), set(inn)
                 diff_out = sorted(set_out - set_in, reverse=True)
                 diff_in = sorted(set_in - set_out)
@@ -138,7 +149,8 @@ def _resident_exchanges(s1: List[P26Player], s2: List[P26Player],
         yield new_s1_bsns, new_s2_bsns
 
 
-def _mdp_sets(m0: List[P26Player], max_m1: int, bsn: Dict[int, int]):
+def _mdp_sets(m0: List[P26Player], max_m1: int, bsn: Dict[int, int],
+               stepper=None):
     """Art.4.4.2: larger kept-sets first (annotated: "the larger is the number
     of MDPs in the set, the better is the set"); within a size, kept sets in
     smallest-differing-BSN order (annotated worked example {1,3} < {1,4} <
@@ -146,10 +158,14 @@ def _mdp_sets(m0: List[P26Player], max_m1: int, bsn: Dict[int, int]):
     (paired) MDP ids. (Complement-lexicographic order is NOT equivalent:
     it yields {3,4} first in the example.)"""
     from itertools import combinations as _cb
+    if stepper is not None:
+        stepper.check_count(2 ** len(m0), "pairable MDP sets")
     order = sorted((p.id for p in m0), key=lambda i: bsn[i])
     all_sets = []
     for k in range(min(max_m1, len(order)), -1, -1):
         for combo in _cb(order, k):
+            if stepper is not None:
+                stepper.tick()
             kept_bsns = tuple(sorted(bsn[i] for i in combo))
             all_sets.append(((-k, kept_bsns), combo))
     all_sets.sort(key=lambda s: s[0])
@@ -260,6 +276,8 @@ def _c8_next_vector(downfloater_ids: Sequence[int],
         key = (c6, c7)
         if best is None or key < best:
             best = key
+            if best == (0, ()):
+                break  # global minimum: no downfloaters (exact short-cut)
     if best is None:
         return (10 ** 9, ())
     return best
@@ -372,19 +390,22 @@ def _iter_homogeneous(residents: List[P26Player], ctx: _Ctx,
     # S1 = first MaxPairs in Article 1.2 order (3.2.2).
     first = sorted(residents, key=lambda p: (-p.score, p.tpn))[:max_pairs]
     rest = [p for p in residents if p not in set(first)]
+    # Original composition first (always). Resident-exchange alterations
+    # (4.3) are computed ONLY if the original pass finds no perfect
+    # candidate: their count is factorial-scale and pre-guarded.
     compositions = [(frozenset(bsn[p.id] for p in first),
                      frozenset(bsn[p.id] for p in rest))]
-    for ns1, ns2 in _resident_exchanges(first, rest, bsn):
-        compositions.append((frozenset(ns1), frozenset(ns2)))
-    for comp_s1, comp_s2 in compositions:
+
+    def _emit(comp_s1, comp_s2):
         # 3.6.1: re-sort the newly formed S1/S2 according to Article 1.2.
         s1 = sorted((player_of_bsn[b] for b in comp_s1),
-                    key=lambda p: (p.score, p.tpn))
+                    key=lambda p: (-p.score, p.tpn))
         # S2 pool in BSN order so permutations() yields Art.4.2
         # lexicographic order (never raw set order — undetermined).
         s2pool = sorted((player_of_bsn[b] for b in comp_s2),
                         key=lambda p: bsn[p.id])
-        for s2order in _s2_transpositions(s2pool, len(s1), bsn):
+        for s2order in _s2_transpositions(s2pool, len(s1), bsn,
+                                            ctx.stepper):
             ctx.stepper.tick()
             pairs = [(s1[i].id, s2order[i].id) for i in range(len(s1))]
             paired = {i for pr in pairs for i in pr}
@@ -392,6 +413,11 @@ def _iter_homogeneous(residents: List[P26Player], ctx: _Ctx,
                 (p.id for p in residents if p.id not in paired),
                 key=lambda i: ctx.by_id[i].tpn))
             yield pairs, down, ()
+
+    for comp_s1, comp_s2 in compositions:
+        yield from _emit(comp_s1, comp_s2)
+    for ns1, ns2 in _resident_exchanges(first, rest, bsn, ctx.stepper):
+        yield from _emit(frozenset(ns1), frozenset(ns2))
 
 
 def _iter_heterogeneous(residents: List[P26Player], mdps: List[P26Player],
@@ -402,7 +428,7 @@ def _iter_heterogeneous(residents: List[P26Player], mdps: List[P26Player],
     max_pairs = (len(residents) + len(mdps)) // 2
     max_m1 = min(len(mdps), len(residents), max_pairs)
     bsn = _bsn(residents + mdps)
-    for kept in _mdp_sets(mdps, max_m1, bsn):
+    for kept in _mdp_sets(mdps, max_m1, bsn, ctx.stepper):
         # M1 in Article 1.2 order (score desc, TPN asc): positional S1[i]<->S2[i]
         # pairing follows ranking, not raw TPN.
         m1 = sorted(kept,
@@ -410,7 +436,7 @@ def _iter_heterogeneous(residents: List[P26Player], mdps: List[P26Player],
         limbo = [p for p in mdps if p.id not in kept]
         s2pool = sorted(residents, key=lambda p: bsn[p.id])
         n1 = len(m1)
-        for s2order in _s2_transpositions(s2pool, n1, bsn):
+        for s2order in _s2_transpositions(s2pool, n1, bsn, ctx.stepper):
             ctx.stepper.tick()
             mdp_pairs = [(m1[i], s2order[i].id) for i in range(n1)]
             used = {s2order[i].id for i in range(n1)}

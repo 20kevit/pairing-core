@@ -7,7 +7,8 @@
   zero-game = mild Black per C.04.4.1 Art.1.6.4), Team Type A/B (C.04.6 1.7).
 - PAB eligibility: C.04.1 Art.4 (got_pab or forfeit_win blocks).
 - Stepper: deterministic budget/cancel checkpoints (EngineTimeoutError /
-  CancelledError); wall-clock checked every 1024 steps (deterministic cadence).
+  CancelledError); wall-clock checked every tick (cheap, effective since
+  single candidate evaluations can hide whole sub-searches).
 - Board order: C.04.2 Art.3.6 recommended sort (score of higher-ranked, pair
   score sum, smaller TPN of higher-ranked).
 """
@@ -148,9 +149,20 @@ class Stepper:
                 f"step budget exhausted ({self._cap} steps).")
         if self._cancel is not None and self._cancel.cancelled:
             raise CancelledError("pairing run cancelled.")
-        if self._deadline is not None and self.steps % 1024 == 0 \
-                and time.monotonic() > self._deadline:
+        if self._deadline is not None and time.monotonic() > self._deadline:
+            # checked every tick (monotonic() ~20ns): candidate evaluations
+            # can hide whole sub-searches, so coarser cadences overshoot
+            # wall budgets by minutes.
             raise EngineTimeoutError("wall-clock budget exhausted.")
+
+    def check_count(self, count: int, what: str) -> None:
+        """Pre-guard a combinatorial materialization: raise (typed timeout)
+        instead of hanging/OOM when the candidate count alone exceeds the
+        remaining step budget. Deterministic (no timing involved)."""
+        if count > self._cap:
+            raise EngineTimeoutError(
+                f"{what}: {count} candidates exceed step budget "
+                f"({self._cap}).")
 
 
 def lexicographic_sets(pool: Sequence[int], k: int) -> Iterable[Tuple[int, ...]]:

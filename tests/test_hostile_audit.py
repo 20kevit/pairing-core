@@ -382,6 +382,36 @@ def test_lim_26_cracks_adjacent_higher_group():
     assert frozenset((1, 4)) in got and frozenset((3, 8)) in got
 
 
+def test_lim_54_identical_histories_median_side_flip():
+    """B-L54: Art.5.4 — identical histories grant the alternate to the
+    HIGHER ranked median-or-above, but to the LOWER ranked below median."""
+    from pairing_core.fide2026.lim import _lim_colour
+    a = P(1, 1, 1.0, colors="WBWB")
+    b = P(2, 2, 1.0, colors="WBWB")
+    req = P26Request(players=(a, b), ruleset="lim-2026", round_number=5,
+                     total_rounds=9)
+    # last=B both, CD 0: alternate = White. Above: higher-ranked A gets it.
+    assert _lim_colour(a, b, req=req, upper=True) == (1, 2)
+    # below: lower-ranked B gets it.
+    assert _lim_colour(a, b, req=req, upper=False) == (2, 1)
+
+
+def test_lim_art6_last_round_lifts_colour_bans():
+    """B-L6: Art.6 — in the last round same-score pairing outranks colour
+    bans (3-in-row / ±3 no longer bar compatibility)."""
+    a = P(1, 1, 5.0, colors="WW", opponents=(3,))
+    b = P(2, 2, 5.0, colors="BB", opponents=(4,))
+    assert LIM.compatible(a, b) is True  # some assignment avoids bans here
+    c = P(3, 3, 5.0, colors="WW", opponents=(1,))
+    d = P(4, 4, 5.0, colors="WW", opponents=(2,))
+    # c needs Black (WW twice) but d also needs Black: no ban-free colouring.
+    assert LIM.compatible(c, d) is False
+    assert LIM.compatible(c, d, last_round=True) is True  # Art.6
+    e = P(5, 5, 5.0, opponents=(6,))  # repeat still bars, even last round
+    f = P(6, 6, 5.0, opponents=(5,))
+    assert LIM.compatible(e, f, last_round=True) is False
+
+
 def test_lim_44_floats_lowest_numbered_on_failure():
     """B17: Art.4.4.2 — originally-even unpairable group floats the culprit
     (lowest TPN) in company with the lowest numbered remaining player,

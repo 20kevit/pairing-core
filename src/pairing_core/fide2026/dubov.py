@@ -221,9 +221,11 @@ def _select_upfloaters(residents: Sequence[P26Player],
                                                    by_id[pid].tpn)))}
     best = None
     best_k = None
+    from math import comb as _comb
     for k in range(0, len(pool) + 1):
         if (len(residents) + k) % 2:
             continue
+        stepper.check_count(_comb(len(pool), k), "dubov upfloater sets")
         sets = sorted(C.lexicographic_sets(pool, k),
                       key=lambda s: tuple(sorted(seq[i] for i in s)))
         for combo in sets:
