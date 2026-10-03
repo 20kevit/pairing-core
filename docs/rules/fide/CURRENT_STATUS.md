@@ -6,6 +6,14 @@
 > Authoritative implementation status is now docs/audit/FIDE_CONFORMANCE_MATRIX.md
 > (+ docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md); research history is preserved
 > below unmodified.
+>
+> PRODUCT-HARDENING NOTE (v0.4.0): the per-system detail sections (§Dutch …
+> §Accelerated) are RESEARCH-PHASE history — they describe what was known
+> BEFORE the FULL_TEXT Council-bundle retrieval. The seven-stage table at
+> the top of this file is current. For the current per-system catalog see
+> docs/rules/fide/CURRENT_SYSTEM_CATALOG.md; for the current capability
+> statement see docs/CAPABILITY.md. Do not quote the "NOT implemented /
+> RESEARCH CONTINUES" lines below as current status.
 
 
 Seven-stage state per system (§17 — never collapsed):

@@ -1,4 +1,11 @@
-# pairing-core — Master Specification (STAGE 4, §4.15; single entry point)
+# pairing-core — Master Specification (product entry map; v0.4.0)
+
+> Authority note: this document maps the product and points to authorities;
+> it is not itself the conformance record. Current capability authority is
+> `docs/CAPABILITY.md`; conformance authority is
+> `docs/audit/FIDE_CONFORMANCE_MATRIX.md` (+ closure report); ruleset
+> catalog is `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md`. Stage-1/2/3
+> historical detail lives in `docs/audit/`, `docs/research/`, `docs/spec/`.
 
 ## 1. Vision
 
@@ -19,13 +26,17 @@ Tournament management (registration, money, accounts, notifications, UI,
 publishing, admin), REST APIs, databases, ratings, tie-break engines,
 scheduling, arbiter judgment. See `docs/spec/TOURNAMENT_BOUNDARIES.md`.
 
-## 4. Current state (v0.1.0, SHA 2cb570b)
+## 4. Current state (v0.4.0)
 
-Zero-dependency Dutch-kernel library: deterministic bracket search with
-rematch/absolute-colour/absolute-float legality, fresh-first byes, locked
-pairs, independent validator. Gaps: no input validation, ValueError-only
-errors, rating inert, silent legacy filtering, 15 basic tests, no TRF/CLI/
-benchmarks, pre-2026 formulation. Full audit: `docs/audit/`.
+Deterministic, zero-runtime-dependency pairing library: frozen
+`dutch-till2026-compat` Dutch kernel (41 goldens pin behavior) + seven
+implemented 2026-family rulesets (`dutch-2026`, `dubov-2026`,
+`burstein-2026`, `lim-2026`, `double-2026`, `team-2026`, `olympiad-2022`,
+`baku` modifier, all from FULL_TEXT evidence) + validated Berger
+round-robin + TRF interchange + BYO BBP/JaVaFo adapters + typed errors,
+validation boundary, budgets/cancellation, envelopes, provider/registry,
+canonical consumer contract. Full audit trail: `docs/audit/`. Known
+limitations L1/L3/L4/L5 + I-L-412 disclosed in the closure report §L.
 
 ## 5. Target state
 
@@ -58,15 +69,22 @@ supervised-subprocess failure mapping, conformance obligations per engine.
 
 ## 10. Supported systems
 
-Dutch (target: 2026 criteria; compat: pre-2026 kernel pinned) + Berger
-round robin (validated, standalone module). Explicitly NOT yet: Dubov,
-Burstein, Lim, Double, Team, KO/match (roadmap phases with gates; team
-blocked on C.04.6 text, KO lacks a single authoritative pairing text).
+Frozen `dutch-till2026-compat` kernel + the seven 2026-family rulesets
+(Dutch criteria C1–C21, Dubov, Burstein, Lim, Double, Team, Olympiad) +
+Baku modifier + Berger round robin (validated, standalone module).
+Explicitly OUT of scope: KO/match/playoff orchestration, tiebreak-core,
+tournament-core, ratings, REST API, UI, persistence (see
+`docs/spec/TOURNAMENT_BOUNDARIES.md`). Per-system evidence:
+`docs/rules/fide/CURRENT_SYSTEM_CATALOG.md`; conformance standing + explicit
+interpretations: `docs/audit/FIDE_CONFORMANCE_MATRIX.md` (no FIDE
+endorsement claimed).
 
 ## 11. Future systems
 
-Dubov → Burstein → Lim → RR → Team → KO/match per `docs/spec/ROADMAP.md`;
-each gated by spec slice + oracle + goldens (ACCEPTANCE_CRITERIA.md).
+None currently scoped: the C.04 family sweep is complete (see the catalog
+above). Any future system (e.g. new FIDE text ⇒ new dated ruleset id) is
+gated by spec slice + oracle + goldens per ACCEPTANCE_CRITERIA.md and the
+O08 compat policy — never a silent kernel change.
 
 ## 12. FIDE requirements
 

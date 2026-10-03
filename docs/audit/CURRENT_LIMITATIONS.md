@@ -1,5 +1,14 @@
 # Current Limitations — pairing-core v0.1.0 (STAGE 1)
 
+> HISTORICAL RECORD (Stage-1 audit snapshot, v0.1.0): preserved unmodified
+> below. Items A–D describe the pre-expansion kernel; several are resolved
+> (typed errors, validation boundary, serialization, TRF, adapters,
+> benchmarks, LICENSE/CHANGELOG all shipped in later waves). The CURRENT
+> limitation register is `docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md`
+> §L (L1/L3/L4/L5, I-L-412) plus the frozen compat deviations E.5/float-bar
+> (`docs/research/DUTCH_CONFORMANCE_STATUS.md`). Do not cite this file for
+> current limitations.
+
 Categories kept strictly separate per instructions. Every item carries its
 evidence pointer; "suspected" items state what would confirm them.
 

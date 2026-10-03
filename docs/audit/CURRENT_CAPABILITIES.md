@@ -1,5 +1,11 @@
 # Current Capabilities — pairing-core v0.1.0 (STAGE 1)
 
+> HISTORICAL RECORD (Stage-1 audit snapshot, v0.1.0): preserved unmodified
+> below. It describes the pre-expansion kernel only and is SUPERSEDED as a
+> status document by `docs/CAPABILITY.md` (product authority, v0.4.0) and
+> `docs/audit/FIDE_CONFORMANCE_MATRIX.md`. Do not cite it for current
+> support claims.
+
 Conformance key: SUPPORTED (code + test evidence), PARTIAL (code, gaps noted),
 ABSENT (no code). No "planned" column — per instructions, unsupported features
 are not marked as planned (the JavaFo/BBP docstring mentions are recorded as

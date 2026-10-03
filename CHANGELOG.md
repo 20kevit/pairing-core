@@ -4,6 +4,41 @@ All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
 is the `pyproject.toml` version. Dates are commit dates (UTC).
 
+## [0.4.1] — 2026-10-03
+
+Product-hardening wave (patch: no public API or pairing-behavior change —
+v0.1.0 goldens and 0.4.0 outputs byte-identical):
+
+- Packaging: SPDX `license = "MIT"` (fixes setuptools>=77 deprecation
+  warning; build requires 68→77), PyPI classifiers/keywords, `MANIFEST.in`
+  pruning caches/build outputs from the sdist; verified warning-free build,
+  reproducible artifact file list, clean-environment wheel install + smoke.
+- Test hygiene: benchmark baseline refresh is now opt-in
+  (`PAIRING_UPDATE_BASELINES=1`) so plain suite runs leave the tree clean;
+  `test_canonical.py` / `test_import_api.py` no longer assume an absolute
+  checkout path (location-independent, 3.10-compatible); new
+  `tests/test_release.py` pins product files, README topics +
+  no-certification-claims, changelog coverage, and the no-absolute-paths
+  rule; new `examples/basic_swiss.py` (verified against repo checkout and
+  installed wheel).
+- Documentation reconciliation: `docs/CAPABILITY.md` rewritten as the
+  current (v0.4.1) product authority (2026 systems implemented, not
+  blocked); `README.md` rewritten as a product entry point; historical
+  Stage-1 snapshots (`docs/audit/CURRENT_CAPABILITIES.md`,
+  `CURRENT_LIMITATIONS.md`) and research-phase detail in
+  `docs/rules/fide/CURRENT_STATUS.md` marked superseded-but-preserved;
+  `MASTER_SPECIFICATION.md` §§4/10/11, `ROADMAP.md` statuses, and
+  `OPEN_QUESTIONS.md` updated to post-closure reality.
+- OSS hygiene: `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`,
+  issue templates, PR template, CI gate (`.github/workflows/ci.yml`),
+  `docs/RELEASING.md`, `docs/PERFORMANCE.md` (measured baseline + L1
+  ceiling characterization).
+- Verified unchanged (no code change): external-adapter security posture
+  (argv-only, timeouts, caps, cleanup), execution controls (typed
+  timeout/cancel, no partials), determinism (hash-seed sweeps),
+  `versions()` report semantics (adapter edge stays a submodule surface
+  per `API_TIERS.md`).
+
 ## [0.4.0] — 2026-10-03
 
 Closure wave (minor: additive API + conformance corrections; ruleset
@@ -92,7 +127,11 @@ Additive canonical consumer contract (no v0.1.0 behavior change):
 - v0.1.0 compatibility: 41/41 goldens + 15/15 contract tests green,
   kernel outputs byte-identical.
 
-## [Unreleased] (main branch, post-0.1.0 development)
+## [Archived] post-0.1.0 development record (main branch, pre-0.2.0 wave)
+
+> HISTORICAL: preserved unmodified below. These foundation items shipped
+> across 0.2.0–0.4.0 (see entries above); this section is no longer the
+> live "Unreleased" list.
 
 ### Added (all additive; v0.1.0 behavior preserved)
 
