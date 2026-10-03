@@ -531,7 +531,8 @@ def pair_dutch(req: P26Request) -> P26Pairing:
                if a.id < b.id and C.rematch(a, b)}
     blocked |= {(b, a) for a, b in list(blocked)}
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
-                                      wall_clock_seconds=req.wall_clock_seconds))
+                                      wall_clock_seconds=req.wall_clock_seconds),
+                      req.cancel_token)
     topscorers: Set[int] = set()
     if req.is_last_round:
         limit = req.total_rounds / 2.0

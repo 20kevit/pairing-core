@@ -236,7 +236,8 @@ def pair_burstein(req: P26Request) -> P26Pairing:
     for p in players:
         rank_of[p.id] = rank_key(p, by_id, results)
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
-                                      wall_clock_seconds=req.wall_clock_seconds))
+                                      wall_clock_seconds=req.wall_clock_seconds),
+                      req.cancel_token)
     blocked = [(a.id, b.id) for a in players for b in players
                if a.id < b.id and C.rematch(a, b)]
     pairs: List[Tuple[int, int]] = []

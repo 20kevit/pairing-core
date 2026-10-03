@@ -17,6 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, Optional, Tuple
 
+from pairing_core.controls import CancelToken
 from pairing_core.errors import InvalidPlayerError, UnsupportedRulesetError
 
 DUTCH_2026 = "dutch-2026"
@@ -213,6 +214,9 @@ class P26Request:
     # (Burstein Art.1.7 opposition evaluation; never inferred)
     max_steps: Optional[int] = None
     wall_clock_seconds: Optional[float] = None
+    cancel_token: Optional[CancelToken] = None  # cooperative cancellation;
+    # pre-cancelled (or cancelled mid-run) -> typed CancelledError, never
+    # partial output (see SEARCH_CEILING_POLICY.md).
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "players", tuple(self.players))

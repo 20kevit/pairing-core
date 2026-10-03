@@ -175,7 +175,8 @@ def pair_olympiad(req: P26Request) -> P26Pairing:
     teams = list(req.players)
     by_id = {p.id: p for p in teams}
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
-                                      wall_clock_seconds=req.wall_clock_seconds))
+                                      wall_clock_seconds=req.wall_clock_seconds),
+                      req.cancel_token)
     remaining = list(teams)
     bye_id = None
     if len(remaining) % 2:

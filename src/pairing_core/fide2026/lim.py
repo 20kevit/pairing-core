@@ -61,7 +61,8 @@ def pair_lim(req: P26Request) -> P26Pairing:
     players = list(req.players)
     by_id = {p.id: p for p in players}
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
-                                      wall_clock_seconds=req.wall_clock_seconds))
+                                      wall_clock_seconds=req.wall_clock_seconds),
+                      req.cancel_token)
     if req.round_number == 1:
         return _round_one(players, by_id, req)
     remaining = list(players)

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pairing_core.errors import UnsupportedRulesetError
+from pairing_core.errors import CancelledError, UnsupportedRulesetError
 from pairing_core.fide2026.models import (
     P26Pairing,
     P26Request,
@@ -12,6 +12,11 @@ from pairing_core.fide2026.models import (
 
 def pair_2026(request: P26Request) -> P26Pairing:
     """Pair one round under an exact 2026 ruleset. Unknown -> typed error."""
+    tok = request.cancel_token
+    if tok is not None and tok.cancelled:
+        # entry checkpoint: fast paths (R1 recipes, lex-first) tick nothing,
+        # so a pre-cancelled run must fail here, never succeed silently.
+        raise CancelledError("pairing run cancelled.")
     resolved = resolve_2026_ruleset(request.ruleset)
     system = resolved.system
     if system == "dutch":

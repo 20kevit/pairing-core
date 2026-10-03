@@ -348,7 +348,8 @@ def pair_double_or_team(req: P26Request, *, system: str) -> P26Pairing:
     count_repeat = not req.is_last_round and not (
         is_team and req.round_number >= req.total_rounds - 1)
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
-                                      wall_clock_seconds=req.wall_clock_seconds))
+                                      wall_clock_seconds=req.wall_clock_seconds),
+                      req.cancel_token)
     players = list(req.players)
     by_id = {p.id: p for p in players}
     by_tpn = {p.tpn: p for p in players}

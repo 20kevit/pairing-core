@@ -628,3 +628,79 @@ def test_olympiad_bye_lowest_rank_not_number():
     req2 = P26Request(players=tuple(tie), ruleset="olympiad-2022",
                       round_number=2, total_rounds=9)
     assert pair_2026(req2).bye_id == 6
+
+
+# ------------------------------------------------- closure: budgets/policy
+
+def test_cancel_token_pre_cancelled_typed():
+    """Ceiling policy: pre-cancelled token -> CancelledError (typed, never
+    partial), uniformly across engines."""
+    from pairing_core.controls import CancelToken
+    from pairing_core.errors import CancelledError
+    for ruleset in ("dutch-2026", "dubov-2026", "lim-2026", "double-2026",
+                    "olympiad-2022"):
+        tok = CancelToken()
+        tok.cancel()
+        players = [P(1, 1, 0.0, rating=1800), P(2, 2, 0.0, rating=1800)]
+        req = P26Request(players=tuple(players), ruleset=ruleset,
+                         round_number=1, total_rounds=5, cancel_token=tok)
+        with pytest.raises(CancelledError):
+            pair_2026(req)
+
+
+def test_huge_values_terminate_typed():
+    """Security: giant scores/ratings/histories terminate (typed or paired)."""
+    big = 10 ** 18
+    players = [P26Player(id=1, tpn=1, score=float(big), rating=big,
+                         colors="W" * 2000, opponents=(), played=2000),
+               P26Player(id=2, tpn=2, score=float(big), rating=big,
+                         colors="B" * 2000, opponents=(), played=2000)]
+    req = P26Request(players=tuple(players), ruleset="dutch-2026",
+                     round_number=2001, total_rounds=4000)
+    out = pair_2026(req)
+    assert len(out.pairs) == 1
+
+
+def test_caller_duty_omissions_typed():
+    """Contracts: omitted caller data raises typed errors, never guesses."""
+    from pairing_core.errors import InvalidPlayerError, UnsupportedRulesetError
+    base = [P(1, 1, 0.0), P(2, 2, 0.0)]
+    norating = [P26Player(id=1, tpn=1, rating=None),
+                P26Player(id=2, tpn=2, rating=None)]
+    with pytest.raises(InvalidPlayerError):
+        pair_2026(P26Request(players=tuple(norating), ruleset="dubov-2026",
+                             round_number=1, total_rounds=5))
+    with pytest.raises(InvalidPlayerError):
+        pair_2026(P26Request(players=tuple(base), ruleset="burstein-2026",
+                             round_number=6, total_rounds=9))
+    with pytest.raises(UnsupportedRulesetError):
+        pair_2026(P26Request(players=tuple(base), ruleset="dutch-2025",
+                             round_number=1, total_rounds=5))
+
+
+def test_exact_search_cutoff_deterministic():
+    """Closure §6/§16: same input + same budget -> same typed error, twice.
+    No partial results, no hang."""
+    from pairing_core.errors import EngineTimeoutError
+    players = [P26Player(id=i, tpn=i, score=1.0 if i <= 13 else 0.0,
+                         rating=1800, colors="WB", opponents=(), played=2)
+               for i in range(1, 27)]
+    req = P26Request(players=tuple(players), ruleset="dutch-2026",
+                     round_number=2, total_rounds=5, max_steps=20000)
+    with pytest.raises(EngineTimeoutError):
+        pair_2026(req)
+    with pytest.raises(EngineTimeoutError):
+        pair_2026(req)
+
+
+def test_team_identity_space_divergence():
+    """Closure §16 team-TPN category: team engine works when id != TPN
+    (shared identifier machinery with double-2026)."""
+    players = [P26Player(id=i, tpn=100 + i, score=1.0 if i <= 2 else 0.0,
+                         rating=1800, secondary=float(i), colors="",
+                         opponents=(), played=0) for i in range(1, 5)]
+    req = P26Request(players=tuple(players), ruleset="team-2026",
+                     round_number=2, total_rounds=5)
+    out = pair_2026(req)
+    paired = {i for p in out.pairs for i in (p.white_id, p.black_id)}
+    assert paired == {1, 2, 3, 4}
