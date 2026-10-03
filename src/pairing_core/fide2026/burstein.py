@@ -20,7 +20,7 @@ the caller.
 from __future__ import annotations
 
 from itertools import permutations
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from pairing_core.controls import ExecutionBudgets
 from pairing_core.errors import ImpossiblePairingError, InvalidPlayerError
@@ -106,10 +106,11 @@ def burstein_colour(a: P26Player, b: P26Player, ra: tuple, rb: tuple, *,
         return (hr.id, opp.id) if pa[0] == "W" else (opp.id, hr.id)
     if pb[1] > pa[1] and pb[0] is not None:
         return (opp.id, hr.id) if pb[0] == "W" else (hr.id, opp.id)
-    for ca, cb in zip(reversed(sa), reversed(sb)):
-        if ca != cb:
-            w = hr.id if ca == "B" else opp.id
-            return (w, opp.id if w == hr.id else hr.id)
+    last_diff = C.last_differing_round(hr, opp)  # 5.2.4 (round-aligned)
+    if last_diff is not None:
+        ca, _cb = last_diff
+        w = hr.id if ca == "B" else opp.id
+        return (w, opp.id if w == hr.id else hr.id)
     if pa[0] == "W":
         return (hr.id, opp.id)
     if pa[0] == "B":
@@ -134,7 +135,6 @@ def enumerate_burstein_pairings(
     n = len(ordered)
     n_float = n - 2 * n_pairs
     slots = bsns + [0] * n_float
-    seen = set()
     out = []
 
     def rec(remaining: Tuple[int, ...],
@@ -143,8 +143,18 @@ def enumerate_burstein_pairings(
             out.append(list(acc))
             return
         first = remaining[0]
+        if first == 0 and all(o == 0 for o in remaining[1:]):
+            # only virtual floaters left: they never pair among themselves
+            # (0-0 slot pairs are excluded) — prune instead of generating.
+            return
+        seen_here = set()
         for i in range(1, len(remaining)):
             other = remaining[i]
+            if other in seen_here:
+                continue  # identical BSN values (virtual zeroes): pair once
+            if first == 0 and other == 0:
+                continue  # 0-0 slot pairs are excluded downstream: skip
+            seen_here.add(other)
             # canonical dedup: identical (first, other) BSN pairs once
             rec(remaining[1:i] + remaining[i + 1:], acc + [(first, other)])
 
@@ -223,40 +233,42 @@ def pair_burstein(req: P26Request) -> P26Pairing:
     if len(remaining) % 2:
         bye_id = _select_pab(remaining, by_id, rank_of, blocked, stepper)
         remaining = [p for p in remaining if p.id != bye_id]
-    guard = 0
+    paired: Set[int] = {bye_id} if bye_id is not None else set()
     incoming: List[P26Player] = []  # 1.2.2: unpaired leftovers of the previous
-    # bracket only (never the whole lower field).
-    while remaining:
-        guard += 1
-        if guard > len(players) + 2:
-            raise ImpossiblePairingError("scoregroup loop did not terminate.")
-        top = max(p.score for p in remaining)
-        residents = [p for p in remaining if p.score == top]
-        bracket = residents + [p for p in incoming if p in remaining]
+    # bracket only (never the whole lower field). Floaters stay unpaired and
+    # MUST join the next bracket (a join-filter against consumed players
+    # silently drops them and strands the round).
+    for score in sorted({p.score for p in remaining}, reverse=True):
+        residents = [p for p in remaining
+                     if p.score == score and p.id not in paired]
+        bracket = residents + [p for p in incoming if p.id not in paired]
+        if not bracket:
+            continue
         n_pairs = _max_pairs(bracket, by_id, blocked, stepper)
-        rest_after = [p for p in remaining if p not in bracket]
+        rest_after = [p for p in remaining
+                      if p.id not in paired
+                      and p.id not in {q.id for q in bracket}]
         chosen = _choose_pairing(bracket, by_id, rank_of, n_pairs, blocked,
                                  stepper, req=req, rest_after=rest_after)
-        out_ids = set()
         new_incoming: List[P26Player] = []
         for xa, xb in chosen:
             if xa == 0:
                 new_incoming.append(by_id[xb])
                 floats.append((xb, "D"))
-                out_ids.add(xb)
             elif xb == 0:
                 new_incoming.append(by_id[xa])
                 floats.append((xa, "D"))
-                out_ids.add(xa)
             else:
                 a, b = by_id[xa], by_id[xb]
                 w, bl = burstein_colour(a, b, rank_of[a.id], rank_of[b.id],
                                         initial_colour=req.initial_colour)
                 pairs.append((w, bl))
-                out_ids.add(xa)
-                out_ids.add(xb)
-        remaining = [p for p in remaining if p.id not in out_ids]
+                paired.add(xa)
+                paired.add(xb)
         incoming = new_incoming
+    if len(paired) != len(players):
+        raise ImpossiblePairingError(
+            "burstein round pairing incomplete (unpaired players remain).")
     ordered = C.board_order([(by_id[w], by_id[b]) for w, b in pairs])
     return P26Pairing(
         pairs=tuple(P26Pair(white_id=w, black_id=b) for w, b in ordered),
@@ -330,13 +342,15 @@ def _choose_pairing(bracket, by_id, rank_of, n_pairs, blocked, stepper, *,
                 break
         if not ok:
             continue
-        # C6: outgoing-floater scores descending (players tied to virtual 0).
+        # C6 (Art.2.3.2): minimise outgoing-floater scores, taken in
+        # descending order (lexicographic min over the desc list: weaker
+        # floaters out first). NB: negating here would maximise instead.
         out_scores = sorted(
             [by_id[x].score for x, y in pairing if y == 0] +
             [by_id[y].score for x, y in pairing if x == 0], reverse=True)
         misses = _colour_misses(pairing, by_id, rank_of,
                                 initial_colour=req.initial_colour)
-        vec = (tuple(-s for s in out_scores), misses)
+        vec = (tuple(out_scores), misses)
         key = (vec, _pairing_order_key(pairing, rank_of, by_id, bracket))
         cands.append((key, pairing))
     cands.sort(key=lambda c: c[0])
@@ -349,23 +363,22 @@ def _choose_pairing(bracket, by_id, rank_of, n_pairs, blocked, stepper, *,
 
 
 def _next_bracket_ok(pairing, rest_after, by_id, blocked, stepper) -> bool:
-    """C7 probe: players left for later brackets (outgoing floaters + untouched
-    lower groups) admit at least one legal next bracket (C1/C3/C4-class)."""
+    """C7 probe (Art.2.3.3): the outgoing floaters join the next bracket, so
+    the probe scope is the DETERMINED next bracket (outgoing floaters + all
+    top residents of the untouched lower groups — the real flow absorbs every
+    incoming floater, no k-choice). Requires a C1/C3-legal pairing covering
+    all of it (even) or all-but-one (odd, one floats on)."""
+    outgoing = ([by_id[x] for x, y in pairing if y == 0]
+                + [by_id[y] for x, y in pairing if x == 0])
     if not rest_after:
         return True
     top = max(p.score for p in rest_after)
-    residents = [p for p in rest_after if p.score == top]
-    lower = [p for p in rest_after if p.score < top]
-    for k in range(0, len(lower) + 1):
-        if (len(residents) + k) % 2:
-            continue
-        from itertools import combinations as _cb
-        for combo in _cb([p.id for p in lower], k):
-            cand = residents + [by_id[i] for i in combo]
-            if _subset_c3_ok(cand, blocked) and \
-                    exists_complete_pairing(cand, blocked, stepper):
-                return True
-    return False
+    scope = outgoing + [p for p in rest_after if p.score == top]
+    if len(scope) % 2 == 0:
+        return _subset_c3_ok(scope, blocked)
+    return any(
+        _subset_c3_ok([p for p in scope if p.id != skip.id], blocked)
+        for skip in scope)
 
 
 def _c1c3_ok(a: P26Player, b: P26Player) -> bool:

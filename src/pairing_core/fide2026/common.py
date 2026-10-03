@@ -34,6 +34,25 @@ def played_colors(p: P26Player) -> str:
     return "".join(c for c in p.colors if c in ("W", "B"))
 
 
+def last_differing_round(a: P26Player, b: P26Player):
+    """Most recent round where both played AND had opposite colours.
+
+    Returns (colour_of_a, colour_of_b) or None. Round-index aligned (unplayed
+    'u' rounds keep their slots): C.04.2 Art.3.4 played-only semantics applied
+    per-round, NOT by zipping played-only sequences (which misaligns whenever
+    either side has unplayed rounds). Used by every Art.5/4.3/5.4/7.6
+    alternation walkback (Dutch 5.2.3, Dubov 5.2.4, Burstein 5.2.4,
+    Double 4.3.3, Team 4.3.6, Lim 5.4, Olympiad 7.6).
+    """
+    ca = a.colors
+    cb = b.colors
+    for i in range(min(len(ca), len(cb)) - 1, -1, -1):
+        xa, xb = ca[i], cb[i]
+        if xa in ("W", "B") and xb in ("W", "B") and xa != xb:
+            return (xa, xb)
+    return None
+
+
 def colour_difference(p: P26Player) -> int:
     """White games minus Black games over played games (Dutch 1.6)."""
     seq = played_colors(p)

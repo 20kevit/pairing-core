@@ -91,7 +91,10 @@ def _alternate_from_encounter(a: P26Player, b: P26Player):
 # ============================================================ generation
 
 def _bsn(players: Sequence[P26Player]) -> Dict[int, int]:
-    order = sorted(players, key=lambda p: (p.score, p.tpn))
+    """Art.4.1.1: BSNs 1,2,3... in Article 1.2 ranking order (score desc,
+    TPN asc) before any shuffle. (Ascending-score tagging inverts every
+    heterogeneous-bracket BSN and corrupts 4.2/4.3/4.4 orderings.)"""
+    order = sorted(players, key=lambda p: (-p.score, p.tpn))
     return {p.id: i + 1 for i, p in enumerate(order)}
 
 
@@ -136,17 +139,19 @@ def _resident_exchanges(s1: List[P26Player], s2: List[P26Player],
 
 
 def _mdp_sets(m0: List[P26Player], max_m1: int, bsn: Dict[int, int]):
-    """Art.4.4.2: sets ordered by smallest differing BSN; larger kept-sets
-    first (complement-lexicographic, matching the annotated {1-5},{1-4}...
-    example). Yields frozensets of kept (paired) MDP ids."""
+    """Art.4.4.2: larger kept-sets first (annotated: "the larger is the number
+    of MDPs in the set, the better is the set"); within a size, kept sets in
+    smallest-differing-BSN order (annotated worked example {1,3} < {1,4} <
+    {3,4}: compare first BSNs, then second). Yields frozensets of kept
+    (paired) MDP ids. (Complement-lexicographic order is NOT equivalent:
+    it yields {3,4} first in the example.)"""
     from itertools import combinations as _cb
     order = sorted((p.id for p in m0), key=lambda i: bsn[i])
-    rank = {pid: i for i, pid in enumerate(order)}
     all_sets = []
     for k in range(min(max_m1, len(order)), -1, -1):
         for combo in _cb(order, k):
-            comp = tuple(i for i in order if i not in combo)
-            all_sets.append((((len(comp), comp), combo)))
+            kept_bsns = tuple(sorted(bsn[i] for i in combo))
+            all_sets.append(((-k, kept_bsns), combo))
     all_sets.sort(key=lambda s: s[0])
     for _, s in all_sets:
         yield frozenset(s)
@@ -232,13 +237,17 @@ def _c8_next_vector(downfloater_ids: Sequence[int],
                     paired_after: Set[int], all_ids: Set[int]):
     """C8: optimal (C6 count, C7 scores-desc) achievable in the next bracket
     (residents + these downfloaters as MDPs), restricted to C1–C7 (colours
-    excluded), with C4 continuation probe."""
-    nxt = list(next_residents) + [ctx.by_id[i] for i in downfloater_ids]
-    if not nxt:
+    excluded), with C4 continuation probe. Heterogeneous machinery when the
+    next bracket has MDPs (MDPs pair with residents only — a homogeneous
+    probe would over-pair via MDP-MDP pairs and understate C6)."""
+    mdps = [ctx.by_id[i] for i in downfloater_ids]
+    residents = list(next_residents)
+    if not residents and not mdps:
         return (0, ())
+    iters = (_iter_heterogeneous(residents, mdps, ctx) if mdps
+             else _iter_homogeneous(residents, ctx))
     best = None
-    for cand_pairs, cand_down, _ in _iter_homogeneous(
-            sorted(nxt, key=lambda p: (p.score, p.tpn)), ctx):
+    for cand_pairs, cand_down, _ in iters:
         if not _abs_ok(cand_pairs, ctx):
             continue
         if not _rest_pairable(paired_after | {i for pr in cand_pairs
@@ -361,7 +370,7 @@ def _iter_homogeneous(residents: List[P26Player], ctx: _Ctx,
     # (BSNs are unique within the bracket: 1.2 order has no ties.)
     player_of_bsn = {bsn[p.id]: p for p in residents}
     # S1 = first MaxPairs in Article 1.2 order (3.2.2).
-    first = sorted(residents, key=lambda p: (p.score, p.tpn))[:max_pairs]
+    first = sorted(residents, key=lambda p: (-p.score, p.tpn))[:max_pairs]
     rest = [p for p in residents if p not in set(first)]
     compositions = [(frozenset(bsn[p.id] for p in first),
                      frozenset(bsn[p.id] for p in rest))]
@@ -394,10 +403,12 @@ def _iter_heterogeneous(residents: List[P26Player], mdps: List[P26Player],
     max_m1 = min(len(mdps), len(residents), max_pairs)
     bsn = _bsn(residents + mdps)
     for kept in _mdp_sets(mdps, max_m1, bsn):
-        m1 = sorted(kept, key=lambda i: ctx.by_id[i].tpn)
+        # M1 in Article 1.2 order (score desc, TPN asc): positional S1[i]<->S2[i]
+        # pairing follows ranking, not raw TPN.
+        m1 = sorted(kept,
+                    key=lambda i: (-ctx.by_id[i].score, ctx.by_id[i].tpn))
         limbo = [p for p in mdps if p.id not in kept]
         s2pool = sorted(residents, key=lambda p: bsn[p.id])
-        n1 = len(m1)
         n1 = len(m1)
         for s2order in _s2_transpositions(s2pool, n1, bsn):
             ctx.stepper.tick()
@@ -440,10 +451,11 @@ def _best_in_bracket(residents: List[P26Player], mdps: List[P26Player],
             return (pairs, down, mdp_pairs, None, vec, True)
         cands.append((vec, pairs, down, mdp_pairs, None))
     # last-bracket PAB options (C5/C9/C2): leave one eligible player unpaired.
-    # Order: C5 score, then C9 unplayed, then largest TPN (family-consistent
-    # final tiebreak: Dubov 3.1.5, Double/Team 3.4.4, Burstein 3.1.5 all use
-    # largest-TPN/lowest-rank last; C.04.3 states no further rule, so the
-    # family convention governs deterministically — documented reading).
+    # INTERPRETATION (conformance matrix I-D-PAB): C.04.3 Art.2.3.1/2.4.4 fix
+    # only (score, unplayed) minimisation and state no further rule, so the
+    # final tiebreak follows the family convention used explicitly by Dubov
+    # 3.1.5, Double/Team 3.4.4 and Burstein 3.1.5 (largest TPN = lowest rank
+    # takes the bye). Deterministic; revisited if FIDE clarifies C.04.3.
     if is_last and not c1c7_only:
         pool = residents + mdps
         for cand in sorted(pool, key=lambda p: (p.score, p.unplayed,
@@ -553,7 +565,8 @@ def pair_dutch(req: P26Request) -> P26Pairing:
         paired_so_far |= {i for pr in bpairs for i in pr}
         if bye_id is not None:
             paired_so_far.add(bye_id)
-        mdps = [by_id[i] for i in sorted(bdown, key=lambda i: by_id[i].tpn)]
+        mdps = [by_id[i] for i in
+                sorted(bdown, key=lambda i: (-by_id[i].score, by_id[i].tpn))]
     if len(paired_so_far) != len(players):
         raise ImpossiblePairingError(
             "round pairing incomplete (Art.1.9.3: Chief Arbiter decides).")

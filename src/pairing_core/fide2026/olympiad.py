@@ -54,11 +54,12 @@ def board1_colour(a: P26Player, b: P26Player, *,
     if na != nb:
         w = a.id if na < nb else b.id
         return (w, b.id if w == a.id else a.id)
-    # 7.5.2 alternation + 7.6 walkback
-    for ca, cb in zip(reversed(sa), reversed(sb)):
-        if ca != cb:
-            w = a.id if ca == "B" else b.id
-            return (w, b.id if w == a.id else a.id)
+    # 7.5.2 alternation + 7.6 walkback (round-aligned; unplayed = no colour)
+    last_diff = C.last_differing_round(a, b)
+    if last_diff is not None:
+        ca, _cb = last_diff
+        w = a.id if ca == "B" else b.id
+        return (w, b.id if w == a.id else a.id)
     if sa:
         # always same colours: higher ranked alternated from last (7.6)
         hi = a if (a.score, -a.tpn) >= (b.score, -b.tpn) else b
@@ -184,7 +185,8 @@ def pair_olympiad(req: P26Request) -> P26Pairing:
         is_below = score < med
         # odd group -> floater per 8.2/8.3 with fallback chains
         while len(work) % 2:
-            f = _select_floater(work, is_below, by_id, stepper)
+            f = _select_floater(work, is_below, by_id, stepper,
+                                queue=queue, order=order, gi=gi)
             work.remove(f)
             floats.append((f.id, "U" if is_below else "D"))
         res = pair_9x(work, by_id, stepper,
@@ -234,26 +236,34 @@ def _assign_board_colour(a: P26Player, b: P26Player, *,
     return (w, bl)
 
 
-def _select_floater(work, is_below, by_id, stepper):
+def _select_floater(work, is_below, by_id, stepper, *, queue, order, gi):
     """Art.8.2/8.3: below-median odd -> highest ranked up (8.2.1); above ->
-    lowest ranked down (8.3.1); fallbacks: remainder-completeness (8.x.2),
-    played-all (8.x.3), float-two-groups (8.x.4), re-floater (8.4)."""
+    lowest ranked down (8.3.1); fallbacks: remainder-completeness (8.x.2:
+    rest must admit a 9.x pairing), played-all/re-float (8.x.3/8.4: keep
+    rank order), float-two-groups (8.x.4: route one step further).
+
+    The floater is routed into the queue of the next group in processing
+    order (toward the median), so it is paired there — never dropped.
+    """
     cands = list(work) if is_below else list(reversed(work))
     # 8.4 last resort handled by caller loop; here: try each candidate.
     for cand in cands:
         rest = [p for p in work if p.id != cand.id]
-        if pair_9x(rest, by_id, stepper) is not None:
-            _route_floater(cand, is_below, queue, order, gi)
+        if pair_9x(rest, by_id, stepper,
+                   reverse_scrutiny=is_below) is not None:
+            _route_floater(cand, queue, order, gi)
             return cand
     # 8.2.4/8.3.4: float two groups (route further); 8.4: re-choose.
     cand = cands[0]
-    _route_floater(cand, is_below, queue, order, gi, extra=True)
+    _route_floater(cand, queue, order, gi, extra=True)
     return cand
 
 
-def _route_floater(cand, is_below, queue, order, gi, extra=False):
+def _route_floater(cand, queue, order, gi, extra=False):
     # Processing always moves toward the median (above: top-down; below:
     # bottom-up), so floaters route to the next group in processing order.
+    # (Median is provably even when the field is even, so the clamp below
+    # is defensive only: total even minus even paired groups leaves even.)
     step = 2 if extra else 1
     di = max(0, min(len(order) - 1, gi + step))
     dest = order[di][0]

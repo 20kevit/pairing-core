@@ -6,13 +6,16 @@ model (Double Art.4 HRP chain vs Team Art.4 first-team chain), preferences
 (Double: none; Team: Type A/B/none), quality sets (Team C8/C9/C10; Double C7/C8;
 Team C7/C10 skip the last TWO rounds, Double C7/C8 only the last).
 
-Selection semantics (documented reading, applied uniformly): generation order
-(Art.3.5.4 / Art.3.6.3) defines priority; among generated candidates the one
-with the minimal quality-violation vector wins; ties break to the earlier
-generated candidate. This generalises Dutch Art.3.8 ("better ... or generated
-earlier") to the Double/Team "first ... that complies" phrasing, and coincides
-with it whenever a zero-violation candidate exists. C6 (next-bracket
-compliance) is a hard filter on upfloater sets, per Art.3.5.5.
+Selection semantics (documented reading I-T-C7, see conformance matrix):
+generation order (Art.3.5.4 / Art.3.6.3) defines priority; C4/C5 hold by
+construction (3.5.2 + worked example: minimum count, maximal score profile);
+among the constructed candidates the one with the minimal quality-violation
+vector wins; ties break to the earlier generated candidate. This coincides
+with the "first ... that complies" phrasing (3.5.5/3.6.4) whenever a
+zero-violation candidate exists, and degrades gracefully (fewest violations)
+when repeats are unavoidable; a strict zero-filter reading would instead
+fail the round (3.3.3) in ordinary forced-imperfection positions. C6
+(next-bracket compliance) is a hard filter on upfloater sets, per Art.3.5.5.
 
 All section refs verified FULL_TEXT from the Council bundle.
 """
@@ -85,52 +88,60 @@ def _rest_next_bracket_ok(remaining: Sequence[P26Player],
 
 
 def select_upfloaters(residents: Sequence[P26Player],
-                      lower: Sequence[P26Player],
-                      remaining: Sequence[P26Player],
-                      by_id: Dict[int, P26Player],
-                      blocked: Sequence[Tuple[int, int]],
-                      stepper: Stepper, *,
-                      count_repeat: bool) -> List[P26Player]:
-    """Art.3.5: minimum-k sets with C5-maximal score profile first; within a
-    profile, lexicographic TPN order (worked example); C6 hard filter; C7
-    (previous-round floaters among upfloaters) minimised, ties -> earlier set.
-    count_repeat=False skips C7 (last round(s))."""
+                       lower: Sequence[P26Player],
+                       remaining: Sequence[P26Player],
+                       by_id: Dict[int, P26Player],
+                       blocked: Sequence[Tuple[int, int]],
+                       stepper: Stepper, *,
+                       count_repeat: bool) -> List[P26Player]:
+    """Art.3.5 (Double/Team): C4/C5 hold BY CONSTRUCTION (3.5.2 + worked
+    {2,6,1}<{2,6,3} example): the count is the minimum with a legal bracket
+    pairing, and the scores are the maximal score profile among sets of that
+    count. Candidate sets are then in 3.5.4 lexicographic order; the winner
+    is the first set with a legal pairing that also complies with C6 (hard
+    filter, 3.5.5), with C7 minimised and ties to the earlier set
+    (documented reading I-T-C7: min-vector + generation tiebreak coincides
+    with "first complying" whenever a zero-violation set exists)."""
     pool_ids = [p.id for p in lower]
-    best: Optional[Tuple[int, Tuple[int, ...], List[P26Player]]] = None
     for k in range(0, len(pool_ids) + 1):
         if (len(residents) + k) % 2:
             continue
         combos = list(combinations(pool_ids, k))
-        # C5: highest score profile first
-        profiles: Dict[Tuple[float, ...], List[Tuple[int, ...]]] = {}
-        for combo in combos:
-            profiles.setdefault(_score_profile(combo, by_id), []).append(combo)
-        for profile in sorted(profiles, reverse=True):
-            ordered = sorted(profiles[profile],
-                             key=lambda c: _inner_key(c, by_id))
-            for combo in ordered:
-                stepper.tick()
-                ups = [by_id[i] for i in combo]
-                bracket = list(residents) + ups
-                if not exists_complete_pairing(bracket, blocked, stepper):
-                    continue
-                used = [p.id for p in bracket]
-                if not _rest_next_bracket_ok(remaining, used, by_id,
-                                             blocked, stepper):
-                    continue  # C6 filter
-                rep = sum(1 for u in ups if u.last_float in ("D", "U"))
-                key = (k, (rep if count_repeat else 0),
-                       _inner_key(combo, by_id))
-                if best is None or key < best[0]:
-                    best = (key, _inner_key(combo, by_id), ups)
-            if best is not None and best[0][0] == k:
-                break
+        if not any(exists_complete_pairing(
+                list(residents) + [by_id[i] for i in combo],
+                blocked, stepper) for combo in combos):
+            continue  # C4: this count cannot yield a legal pairing
+        # C5: maximal score profile among k-sets (legality-independent,
+        # per the worked example deriving scores from C4/C5 alone).
+        best_profile = max(_score_profile(c, by_id) for c in combos)
+        ordered = sorted(
+            (c for c in combos
+             if _score_profile(c, by_id) == best_profile),
+            key=lambda c: _inner_key(c, by_id))
+        best = None
+        for combo in ordered:
+            stepper.tick()
+            ups = [by_id[i] for i in combo]
+            bracket = list(residents) + ups
+            if not exists_complete_pairing(bracket, blocked, stepper):
+                continue  # not a legal pairing (3.5.5)
+            used = [p.id for p in bracket]
+            if not _rest_next_bracket_ok(remaining, used, by_id,
+                                         blocked, stepper):
+                continue  # C6 filter
+            rep = sum(1 for u in ups if u.last_float in ("D", "U"))
+            key = ((rep if count_repeat else 0), _inner_key(combo, by_id))
+            if best is None or key < best[0]:
+                best = (key, ups)
         if best is not None:
-            break
-    if best is None:
+            return best[1]
+        # The C5-best profile yields no legal C6-compliant set: per
+        # 3.5.5/3.3.3 the round-pairing cannot be completed this way.
         raise ImpossiblePairingError(
-            "no upfloater set yields a C6-compliant bracket (Art.3.5).")
-    return best[2]
+            "no C5-profile upfloater set yields a legal C6-compliant "
+            "bracket (Art.3.5/3.3.3: Chief Arbiter decides).")
+    raise ImpossiblePairingError(
+        "no upfloater set yields a C6-compliant bracket (Art.3.5).")
 
 
 # ---------------------------------------------------------- identifiers
@@ -175,10 +186,11 @@ def double_colour(a: P26Player, b: P26Player, *,
     if na != nb:  # 4.3.2 fewer Whites gets White
         w = hrp.id if na < nb else opp.id
         return (w, opp.id if w == hrp.id else hrp.id)
-    for ca, cb in zip(reversed(sa), reversed(sb)):  # 4.3.3
-        if ca != cb:
-            w = hrp.id if ca == "B" else opp.id
-            return (w, opp.id if w == hrp.id else hrp.id)
+    last_diff = C.last_differing_round(hrp, opp)  # 4.3.3 (round-aligned)
+    if last_diff is not None:
+        ca, _cb = last_diff
+        w = hrp.id if ca == "B" else opp.id
+        return (w, opp.id if w == hrp.id else hrp.id)
     if sa:  # 4.3.4 alternate HRP
         w = hrp.id if sa[-1] == "B" else opp.id
         return (w, opp.id if w == hrp.id else hrp.id)
@@ -191,14 +203,15 @@ def double_colour(a: P26Player, b: P26Player, *,
 
 def team_colour(a: P26Player, b: P26Player, *, initial_colour: str,
                 kind: str, is_last_round: bool) -> Tuple[int, int]:
-    """C.04.6 Art.4. first-team = higher primary -> secondary (unless kind
-    'none', when secondary is dropped entirely) -> smaller TPN."""
-    if kind == "none":
-        ka = (a.score, -a.tpn)
-        kb = (b.score, -b.tpn)
-    else:
-        ka = (a.score, a.secondary, -a.tpn)
-        kb = (b.score, b.secondary, -b.tpn)
+    """C.04.6 Art.4. first-team = higher primary -> higher secondary (unless
+    the competition does not use it: callers then pass secondary 0 for all,
+    which ties through to TPN — the engine never drops a provided secondary
+    on colour-type grounds) -> smaller TPN. Chain: 4.3.1 unplayed-odd,
+    4.3.2 sole preference, 4.3.3 opposite, 4.3.4 Type-B sole strong, 4.3.5
+    lower CD, 4.3.6 walkback, 4.3.7 first-team preference, 4.3.8/4.3.9
+    alternation."""
+    ka = (a.score, a.secondary, -a.tpn)
+    kb = (b.score, b.secondary, -b.tpn)
     first, other = (a, b) if ka >= kb else (b, a)
     sf, so = C.played_colors(first), C.played_colors(other)
     if not sf and not so:  # 4.3.1
@@ -232,9 +245,15 @@ def team_colour(a: P26Player, b: P26Player, *, initial_colour: str,
     if cdf != cdo:  # 4.3.5 lower CD gets White
         w = first.id if cdf < cdo else other.id
         return (w, other.id if w == first.id else first.id)
-    for cf, co in zip(reversed(sf), reversed(so)):  # 4.3.6
-        if cf != co:
-            w = first.id if cf == "B" else other.id
+    last_diff = C.last_differing_round(first, other)  # 4.3.6
+    if last_diff is not None:
+        cf, _co = last_diff
+        w = first.id if cf == "B" else other.id
+        return (w, other.id if w == first.id else first.id)
+    if kind != "none":
+        pf = pref(first)[0]  # 4.3.7 grant the first-team's preference
+        if pf is not None:
+            w = first.id if pf == "W" else other.id
             return (w, other.id if w == first.id else first.id)
     if sf:  # 4.3.8 first-team alternation
         w = first.id if sf[-1] == "B" else other.id
@@ -258,23 +277,25 @@ def _granted_colour(a: P26Player, b: P26Player, *, system: str, kind: str,
 
 
 def _violation_vector(rec: Sequence[Tuple[int, int]], by_id: Dict[int, P26Player],
-                      *, system: str, kind: str, initial_colour: str,
-                      is_last_round: bool, up_ids: frozenset,
-                      count_opp_repeat: bool) -> Tuple[int, ...]:
+                       by_tpn: Dict[int, P26Player], *,
+                       system: str, kind: str, initial_colour: str,
+                       is_last_round: bool, up_ids: frozenset,
+                       count_opp_repeat: bool) -> Tuple[int, ...]:
     """Quality-violation vector (lower wins): team -> (ungranted prefs,
     ungranted strong [B only], upfloat-opponents floated); double ->
-    (upfloat-opponents floated,). up_ids = chosen upfloaters of this bracket.
-    """
+    (upfloat-opponents floated,). rec holds TPN identifiers (Art.3.6);
+    up_ids holds player ids. Identity spaces are mapped explicitly here —
+    never interchange TPNs and ids (cf. Burstein BSN fix)."""
     ungranted = 0
     strong = 0
     opp_float = 0
-    for xa, xb in rec:
-        a, b = by_id[xa], by_id[xb]
+    for ta, tb in rec:
+        a, b = by_tpn[ta], by_tpn[tb]
         w, _ = _granted_colour(a, b, system=system, kind=kind,
                                initial_colour=initial_colour,
                                is_last_round=is_last_round)
         if system == "team" and kind != "none":
-            for p, _ in ((a, b), (b, a)):
+            for p in (a, b):
                 pr = C.team_preference(p, kind=kind,
                                        is_last_round=is_last_round)
                 if pr[0] is None:
@@ -343,7 +364,7 @@ def pair_double_or_team(req: P26Request, *, system: str) -> P26Pairing:
             w, bl = _granted_colour(a, b, system=system, kind=kind,
                                     initial_colour=req.initial_colour,
                                     is_last_round=req.is_last_round)
-            pairs.append((by_id[w].id, by_id[bl].id))
+            pairs.append((w, bl))
         used_tpns = {t for pr in chosen for t in pr}
         remaining = [p for p in remaining if p.tpn not in used_tpns]
     ordered = C.board_order([(by_id[w], by_id[b]) for w, b in pairs])
@@ -370,10 +391,10 @@ def _choose_bracket_pairing(bracket, by_id, by_tpn, blocked, stepper, *,
             if C.rematch(a, b):
                 ok = False
                 break
-            rec.append((a.id, b.id))
+            rec.append((t_top, t_bot))  # TPN identifiers, not ids
         if not ok:
             continue
-        vec = _violation_vector(rec, by_id, system=system, kind=kind,
+        vec = _violation_vector(rec, by_id, by_tpn, system=system, kind=kind,
                                 initial_colour=initial_colour,
                                 is_last_round=is_last_round, up_ids=up_ids,
                                 count_opp_repeat=count_opp_repeat)
