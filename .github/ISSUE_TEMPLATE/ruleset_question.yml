@@ -1,0 +1,25 @@
+name: "Ruleset question"
+description: "Ask about a pairing rule, interpretation, or limitation"
+title: "[RULE] "
+labels: ["ruleset"]
+body:
+  - type: textarea
+    id: rule
+    attributes:
+      label: "Rule / article reference"
+      description: "FIDE Handbook article (with effective date) or ruleset id, plus what is unclear"
+      placeholder: "e.g. C.04.3 C12 (effective 2026-02-01), ruleset dutch-2026"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Evidence consulted"
+      description: "Which matrix/evidence files you already checked"
+      placeholder: "docs/audit/FIDE_CONFORMANCE_MATRIX.md §..., RULE_SOURCE_MATRIX.md ..."
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Acknowledged"
+      options:
+        - label: "I understand interpretations are registered, not endorsed (see README)"

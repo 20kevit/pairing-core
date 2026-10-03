@@ -1,0 +1,56 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Full test suite (oracle tests skip without BYO binaries)
+        run: python3 -m pytest tests/ -q
+      - name: Determinism under a second hash seed
+        run: PYTHONHASHSEED=12345 python3 -m pytest tests/test_determinism.py tests/test_canonical.py tests/test_v010_behavioral.py -q
+      - name: Suite leaves the tree clean (no baseline/cache churn)
+        run: test -z "$(git status --porcelain)" || (git status --porcelain && exit 1)
+      - name: Build wheel + sdist (warning-free)
+        run: |
+          python3 -m pip install --upgrade pip build
+          rm -rf dist/ build/
+          python3 -m build --wheel --sdist 2>&1 | tee build.log
+          grep -iE "warning.*license|deprecated.*license" build.log && exit 1 || true
+          ls dist/
+      - name: Inspect artifacts (no caches, version + license present)
+        run: |
+          python3 - <<'EOF'
+          import glob, tarfile, zipfile
+          whl = glob.glob("dist/*.whl")[0]
+          sdist = glob.glob("dist/*.tar.gz")[0]
+          zn = zipfile.ZipFile(whl).namelist()
+          assert not any("__pycache__" in n or n.endswith(".pyc") for n in zn), zn
+          assert any(n.endswith("licenses/LICENSE") or n.endswith("LICENSE") for n in zn), "LICENSE missing from wheel"
+          meta = zipfile.ZipFile(whl).read([n for n in zn if n.endswith("METADATA")][0]).decode()
+          assert "Version: " in meta
+          tn = tarfile.open(sdist).getnames()
+          assert not any("__pycache__" in n or n.endswith(".pyc") for n in tn), "caches in sdist"
+          print("artifacts OK:", whl, sdist)
+          EOF
+      - name: Clean install + public-API smoke (no repo on sys.path)
+        run: |
+          python3 -m venv /tmp/pc-ci-check
+          /tmp/pc-ci-check/bin/python -m pip install --quiet dist/*.whl
+          /tmp/pc-ci-check/bin/python examples/basic_swiss.py > /dev/null && echo SMOKE-OK
+      - name: No build outputs left in tree
+        run: |
+          rm -rf dist/ build/ src/*.egg-info src/pairing_core/__pycache__
+          test -z "$(git status --porcelain)" || (git status --porcelain && exit 1)

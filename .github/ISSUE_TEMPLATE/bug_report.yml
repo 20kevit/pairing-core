@@ -1,0 +1,36 @@
+name: "Bug report"
+description: "Report a reproducible defect"
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Minimal reproducer"
+      description: "Smallest code snippet + pairing-core version that shows the bug"
+      placeholder: |
+        pairing-core version:
+        ```python
+        from pairing_core import ...
+        ```
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: "Observed vs expected"
+      description: "What happened, and what the docs/tests say should happen"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Area"
+      options: ["pairing result", "validation", "API/serialization", "2026 ruleset", "adapter (BBP/JaVaFo/TRF)", "packaging/install", "docs", "performance", "other"]
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Pre-checks"
+      options:
+        - label: "I ran the full test suite (`python3 -m pytest tests/ -q`)"
+        - label: "No FIDE-endorsement claim is involved (see README)"
