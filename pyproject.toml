@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pairing-core"
-version = "0.4.0"
+version = "0.4.1"
 description = "Deterministic FIDE-family Swiss pairing library (Dutch till-2026 kernel + 2026 systems, Berger round-robin, BYO external-engine adapters)"
 readme = "README.md"
 requires-python = ">=3.10"

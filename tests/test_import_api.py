@@ -4,14 +4,31 @@
 - No internal machinery leaked as top-level names.
 - Package version consistent with pyproject.toml.
 """
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 has no stdlib tomllib
+    tomllib = None
+from pathlib import Path
 
 import pairing_core
 
 
 def _pyproject_version():
-    with open("/opt/projects/pairing-core/pyproject.toml", "rb") as fh:
-        return tomllib.load(fh)["project"]["version"]
+    # Location-independent: pyproject next to the test tree when running
+    # from a checkout; installed dist metadata when running against an
+    # installed wheel (no repository-relative assumptions).
+    candidate = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    if candidate.is_file():
+        if tomllib is not None:
+            with open(candidate, "rb") as fh:
+                return tomllib.load(fh)["project"]["version"]
+        import re
+        text = candidate.read_text(encoding="utf-8")
+        match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.M)
+        assert match, "version not found in pyproject.toml"
+        return match.group(1)
+    from importlib.metadata import version
+    return version("pairing-core")
 
 
 def test_all_entries_resolve():

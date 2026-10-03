@@ -8,6 +8,7 @@
 """
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -122,10 +123,14 @@ def test_describe_systems():
 def test_canonical_module_isolation():
     # Load canonical.py standalone WITHOUT executing pairing_core/__init__
     # (which legitimately wires the whole package): true unit isolation.
+    # Paths resolve from this file's location — no checkout-location
+    # assumptions (the suite must pass from any clone path).
+    repo_root = Path(__file__).resolve().parents[1]
+    canonical_src = repo_root / "src" / "pairing_core" / "canonical.py"
     code = (
         "import sys, importlib.util; "
         "spec = importlib.util.spec_from_file_location("
-        "'canonical_standalone', 'src/pairing_core/canonical.py'); "
+        f"'canonical_standalone', {str(canonical_src)!r}); "
         "mod = importlib.util.module_from_spec(spec); "
         "sys.modules['canonical_standalone'] = mod; "
         "spec.loader.exec_module(mod); "
@@ -134,7 +139,7 @@ def test_canonical_module_isolation():
         "print('LEAK:' + ','.join(leak));"
     )
     out = subprocess.run([sys.executable, "-c", code], capture_output=True,
-                         text=True, cwd="/opt/projects/pairing-core")
+                         text=True, cwd=str(repo_root))
     assert out.returncode == 0, out.stderr
     assert out.stdout.strip() == "LEAK:", out.stdout
     # Static check: module-level imports must be stdlib-only (every
@@ -143,7 +148,7 @@ def test_canonical_module_isolation():
     # if ever hoisted; engine-ish modules are banned at any depth of
     # a top-level import statement.
     import ast
-    src = open("/opt/projects/pairing-core/src/pairing_core/canonical.py").read()
+    src = canonical_src.read_text(encoding="utf-8")
     tree = ast.parse(src)
     for node in tree.body:
         if isinstance(node, (ast.Import, ast.ImportFrom)):
