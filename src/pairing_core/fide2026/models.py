@@ -96,14 +96,24 @@ ALIASES_2026: Dict[str, P26RulesetId] = {
 
 
 def resolve_2026_ruleset(ruleset: object) -> P26RulesetId:
-    """Exact-match resolver for 2026 rulesets (no fallback, typed errors)."""
+    """Exact-match resolver for 2026 rulesets (no fallback, typed errors).
+
+    Team-2026 colour-type options (Art.1.7: "A" default, "B", "none") are
+    facets of the same dated ruleset, not distinct rulesets: any of the
+    three (or unset) resolves.
+    """
     candidate = None
     if isinstance(ruleset, P26RulesetId):
         candidate = ruleset
     elif isinstance(ruleset, str) and ruleset in ALIASES_2026:
         return ALIASES_2026[ruleset]
-    if candidate is not None and candidate in SYSTEM_RULESETS:
-        return candidate
+    if candidate is not None:
+        if candidate in SYSTEM_RULESETS:
+            return candidate
+        if (candidate.system, candidate.effective_date,
+                candidate.acceleration) == ("team", "2026-02-01", None) \
+                and candidate.team_colour_type in ("A", "B", "none"):
+            return candidate
     known = sorted(ALIASES_2026)
     raise UnsupportedRulesetError(
         f"Unsupported 2026 ruleset {ruleset!r}. Known: {', '.join(known)}.")

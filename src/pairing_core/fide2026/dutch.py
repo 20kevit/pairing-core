@@ -357,23 +357,23 @@ def _iter_homogeneous(residents: List[P26Player], ctx: _Ctx,
         yield (), tuple(p.id for p in residents), ()
         return
     bsn = _bsn(residents)
-    # S1 = first MaxPairs in Article 1.2 order (score, then TPN); homogeneous
-    # residents share one score, so this is ascending TPN (3.2.2).
-    s1_ids = sorted((p.id for p in residents),
-                    key=lambda i: (ctx.by_id[i].score,
-                                   ctx.by_id[i].tpn))[:max_pairs]
-    s2_ids = [p.id for p in residents if p.id not in set(s1_ids)]
-    compositions = [(set(s1_ids), set(s2_ids))]
-    s1p = [ctx.by_id[i] for i in s1_ids]
-    s2p = [ctx.by_id[i] for i in s2_ids]
-    for ns1, ns2 in _resident_exchanges(s1p, s2p, bsn):
-        compositions.append((ns1, ns2))
+    # All compositions live in BSN space (Art.4.1); map back via inverse.
+    # (BSNs are unique within the bracket: 1.2 order has no ties.)
+    player_of_bsn = {bsn[p.id]: p for p in residents}
+    # S1 = first MaxPairs in Article 1.2 order (3.2.2).
+    first = sorted(residents, key=lambda p: (p.score, p.tpn))[:max_pairs]
+    rest = [p for p in residents if p not in set(first)]
+    compositions = [(frozenset(bsn[p.id] for p in first),
+                     frozenset(bsn[p.id] for p in rest))]
+    for ns1, ns2 in _resident_exchanges(first, rest, bsn):
+        compositions.append((frozenset(ns1), frozenset(ns2)))
     for comp_s1, comp_s2 in compositions:
-        s1 = sorted((ctx.by_id[i] for i in comp_s1),
+        # 3.6.1: re-sort the newly formed S1/S2 according to Article 1.2.
+        s1 = sorted((player_of_bsn[b] for b in comp_s1),
                     key=lambda p: (p.score, p.tpn))
         # S2 pool in BSN order so permutations() yields Art.4.2
         # lexicographic order (never raw set order — undetermined).
-        s2pool = sorted((ctx.by_id[i] for i in comp_s2),
+        s2pool = sorted((player_of_bsn[b] for b in comp_s2),
                         key=lambda p: bsn[p.id])
         for s2order in _s2_transpositions(s2pool, len(s1), bsn):
             ctx.stepper.tick()
@@ -440,9 +440,14 @@ def _best_in_bracket(residents: List[P26Player], mdps: List[P26Player],
             return (pairs, down, mdp_pairs, None, vec, True)
         cands.append((vec, pairs, down, mdp_pairs, None))
     # last-bracket PAB options (C5/C9/C2): leave one eligible player unpaired.
+    # Order: C5 score, then C9 unplayed, then largest TPN (family-consistent
+    # final tiebreak: Dubov 3.1.5, Double/Team 3.4.4, Burstein 3.1.5 all use
+    # largest-TPN/lowest-rank last; C.04.3 states no further rule, so the
+    # family convention governs deterministically — documented reading).
     if is_last and not c1c7_only:
         pool = residents + mdps
-        for cand in sorted(pool, key=lambda p: (p.score, p.tpn)):
+        for cand in sorted(pool, key=lambda p: (p.score, p.unplayed,
+                                                -p.tpn)):
             if not C.pab_eligible(cand):
                 continue
             sub_res = [p for p in residents if p.id != cand.id]
@@ -476,11 +481,12 @@ def _quality_zero(vec) -> bool:
 
 
 def _pab_pool_minimal(bye: int, pool: Sequence[P26Player], ctx: _Ctx) -> bool:
-    """C5+C9 minimality within the eligible pool (score, then unplayed)."""
+    """C5+C9 minimality within the eligible pool (score, unplayed, -TPN)."""
     me = ctx.by_id[bye]
     for p in pool:
         if p.id != bye and C.pab_eligible(p):
-            if (p.score, p.unplayed) < (me.score, me.unplayed):
+            if (p.score, p.unplayed, -p.tpn) < (me.score, me.unplayed,
+                                               -me.tpn):
                 return False
     return True
 
