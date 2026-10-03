@@ -70,6 +70,17 @@ from pairing_core.explain import (
     Explanation,
     explain,
 )
+from pairing_core.canonical import (
+    CANONICAL_REQUEST_SCHEMA,
+    KNOWN_SYSTEMS,
+    SYSTEM_DUTCH,
+    SYSTEM_ROUND_ROBIN,
+    CanonicalPlayer,
+    CanonicalRequest,
+    canonical_json,
+    describe_systems,
+    pair_canonical,
+)
 
 __version__ = "0.1.0"
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
@@ -112,6 +123,15 @@ __all__ = [
     "Explanation",
     "BoardExplanation",
     "ByeExplanation",
+    "CanonicalPlayer",
+    "CanonicalRequest",
+    "pair_canonical",
+    "canonical_json",
+    "describe_systems",
+    "CANONICAL_REQUEST_SCHEMA",
+    "KNOWN_SYSTEMS",
+    "SYSTEM_DUTCH",
+    "SYSTEM_ROUND_ROBIN",
     "PairingError",
     "InvalidRequestError",
     "InvalidPlayerError",
