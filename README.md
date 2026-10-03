@@ -31,6 +31,22 @@ engine = NativeDutchEngine()
 result = engine.pair(PairingRequest(players=players, round_number=1))
 ```
 
+Preferred canonical API (implementation-independent; see
+`docs/MIGRATION_V010_TO_CANONICAL.md`):
+
+```python
+from pairing_core import (
+    CanonicalPlayer, CanonicalRequest, pair_canonical,
+    DUTCH_TILL2026_COMPAT,
+)
+
+players = (CanonicalPlayer(id=1, pairing_no=1, rating=2000, points=0.0),)
+request = CanonicalRequest(players=players,
+                           ruleset=DUTCH_TILL2026_COMPAT,
+                           round_number=1)
+result = pair_canonical(request)  # RoundPairing envelope
+```
+
 ## Layout
 
 - `src/pairing_core/` — engine (models, engine, pairer, bracket, color, floats, exchange, bye, validator, api)

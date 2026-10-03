@@ -82,7 +82,7 @@ from pairing_core.canonical import (
     pair_canonical,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
 
 __all__ = [

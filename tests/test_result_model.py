@@ -9,6 +9,7 @@ from pairing_core import (
     DUTCH_TILL2026_COMPAT,
     EngineRequest,
     RoundPairing,
+    __version__,
     pair_detailed,
 )
 from pairing_core.envelope import input_digest
@@ -44,10 +45,10 @@ def test_detailed_matches_goldens_and_carries_metadata():
                 for p in exp["pairings"]]
         assert rp.bye_player_id == exp["bye_player_id"]
         assert rp.engine_id == "native-dutch"
-        assert rp.engine_version == "0.1.0"
+        assert rp.engine_version == __version__
         assert rp.ruleset == RulesetId(system="dutch",
                                        effective_date="2026-01-31")
-        assert rp.library_version == "0.1.0"
+        assert rp.library_version == __version__
         assert rp.input_digest == input_digest(
             [_player(p) for p in case["players"]], case["round"], rp.ruleset)
         want_warn = tuple(sorted(

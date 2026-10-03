@@ -36,6 +36,8 @@ listed evidence — tests alone never suffice.
 | TRF interchange (subset) | VALIDATED | round-trips + live BBP acceptance; PAB-U verified; absentee/accel limits documented |
 | BBP adapter | VALIDATED | stub failure-paths + live runs (BYO) |
 | JaVaFo adapter | VALIDATED | stub failure-paths + live runs (BYO JVM+jar) |
+| Canonical consumer contract (`CanonicalPlayer`/`CanonicalRequest`/`pair_canonical`) | VALIDATED | isolation tests (subprocess + AST), pair-equivalence, serialization round-trips; 2026-10-03 |
+| Migration guide v0.1.0 → canonical | VALIDATED | O08 window restated; compat suites green; 2026-10-03 |
 | Differential harness | VALIDATED | taxonomy + corpus + native self-differential |
 | Benchmarks | VALIDATED | 50–1000 + pathological, baselines recorded |
 

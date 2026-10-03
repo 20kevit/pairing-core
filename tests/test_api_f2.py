@@ -11,6 +11,7 @@ from pairing_core import (
     EngineRequest,
     PlayerData,
     RulesetId,
+    __version__,
     pair,
     validate_request,
     versions,
@@ -241,7 +242,7 @@ def test_wrapper_translates_kernel_failures():
 
 def test_versions_report_statuses():
     v = versions()
-    assert v["library"] == {"version": "0.1.0", "status": "implemented"}
+    assert v["library"] == {"version": __version__, "status": "implemented"}
     assert v["engines"]["native-dutch"]["status"] == "implemented"
     assert "dutch@2026-01-31" in v["rulesets"]
     assert v["external"]["status"] == "not-implemented"

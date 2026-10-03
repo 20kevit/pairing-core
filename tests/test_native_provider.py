@@ -2,7 +2,7 @@
 
 import pytest
 
-from pairing_core import EngineRequest, pair_detailed
+from pairing_core import EngineRequest, __version__, pair_detailed
 from pairing_core.errors import (
     ImpossiblePairingError,
     InvalidRequestError,
@@ -38,7 +38,7 @@ def _fp(result):
 def test_identity_and_capability():
     p = NativeDutchProvider()
     assert p.provider_id == "native-dutch"
-    assert p.engine_version == "0.1.0"
+    assert p.engine_version == __version__
     caps = p.capabilities
     assert isinstance(caps, Capability)
     assert caps.rulesets == (resolve_ruleset(COMPAT),)

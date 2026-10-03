@@ -2,9 +2,26 @@
 
 All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
-is the `pyproject.toml` version. No release (and no version bump) has been
-cut during the 0.1.0-development line documented here — entries describe
-main-branch milestones. Dates are commit dates (UTC).
+is the `pyproject.toml` version. Dates are commit dates (UTC).
+
+## [0.2.0] — 2026-10-03
+
+Additive canonical consumer contract (no v0.1.0 behavior change):
+
+- `CanonicalPlayer` / `CanonicalRequest` / `pair_canonical()` — stable,
+  implementation-independent pairing contract (system + mandatory ruleset +
+  schema version + provider hint + deterministic flag), with legacy
+  converters, canonical JSON serialization, and module-isolation tests.
+- Migration guide `v0.1.0 → canonical`
+  (`docs/MIGRATION_V010_TO_CANONICAL.md`); O08 two-minor support window
+  restated, nothing deprecated yet.
+- Determinism contract (`docs/spec/DETERMINISM_CONTRACT.md`), API tiers
+  (`docs/spec/API_TIERS.md`), canonical contract spec, forensic baseline.
+- Import-boundary tests (`__all__` allow-list, version consistency).
+- Version-reporting tests now track the package version instead of pinning
+  `0.1.0` (historical goldens/records unchanged).
+- v0.1.0 compatibility: 41/41 goldens + 15/15 contract tests green,
+  kernel outputs byte-identical.
 
 ## [Unreleased] (main branch, post-0.1.0 development)
 
