@@ -32,3 +32,19 @@
 - Q-02: manual browser fetch of F-0105/0108/0110/0112/0114/0115/0117 article bodies
   (handbook bot-protection blocks machine fetch) → per-article SHA-256 records.
 - Q-03: direct re-verification of F-0106 chapter URL.
+
+## Closure-wave retrieval (2026-10-03, F-0601 Olympiad chapter text)
+
+- F-0601 chapter text: `http://web.archive.org/web/2023id_/https://handbook.fide.com/chapter/OlympiadPairingRules2022`
+  (official Handbook content via archive; live handbook fetch blocked by
+  bot-wall, doc.fide.com Annex URL 404). Retrieved 2026-10-03 via curl.
+  HTML SHA-256: `f2b50d0346a679376fe7493ad56f40570a7d259337532227cc3edf604d97b0a3`
+  (82,436 bytes); stripped article text (21,210 chars) SHA-256:
+  `d92b378efbce05a3e16e45a2d422f318c08b89e3d954e1272c975be86c32ffbd`.
+  Artifact: /tmp only, nothing vendored. Full §§1–11 read (8.x/9.x quoted
+  into implementation docstrings). Closes U-O-823 and U-O-88.
+- Direct PDF attempts (all failed, recorded): handbook
+  `.../files/handbook/Olympiad2026MainCompetition.pdf` (inaccessible);
+  doc.fide.com `.../3FC2021/Annex%203.2.3...pdf` (404 nginx);
+  `web.archive.org/web/2024/...` (empty). Chapter HTML is the complete
+  normative text (all articles + 15-table + 88-team example present).

@@ -601,6 +601,19 @@ def test_olympiad_seeding_helper_331():
     assert got == {3: 1, 1: 2, 2: 3, 4: 4}
 
 
+def test_olympiad_88_team_median_example():
+    """F-0601 §6.4 88-team example (retrieved chapter text): places 43–44 on
+    11pts, 45–46 on 10pts -> median team is #45 (lower middle), so the 10pt
+    group is the median group."""
+    from pairing_core.fide2026.olympiad import median_score_group
+    from pairing_core.fide2026.models import P26Player
+    teams = [P26Player(id=i, tpn=i, score=11.0 if i <= 44 else 10.0)
+             for i in range(1, 89)]
+    ranked = sorted(teams, key=lambda p: (-p.score, p.tpn))
+    assert ranked[44].tpn == 45
+    assert median_score_group(ranked) == 10.0
+
+
 def test_olympiad_bye_lowest_rank_not_number():
     """Art.4.1 (retrieved text): bye to the LOWEST ranking eligible team
     (lowest MP; ties: largest initial number)."""

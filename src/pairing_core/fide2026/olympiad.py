@@ -1,16 +1,20 @@
-"""Olympiad Pairing Rules engine (2022, F-0601, FULL_TEXT annex PDF).
+"""Olympiad Pairing Rules engine (2022, F-0601: FULL_TEXT annex PDF record +
+retrieved Handbook chapter text, closure wave).
 
-Implements: bye 4.x (lowest initial number eligible; 4.2.1–4.2.3), median
-routing 6.4 (top→pre-median, bottom→pre-median, median last; even-field
-lower-middle = median; 88-team example), board-1 colours 7.x (R1 lot 7.2;
-CD ±2 + 3-in-row bans 7.3; float-necessity override 7.4; equalise→alternate
-7.5; walkback 7.6; unplayed = no colour 7.7), floaters 8.x (up 8.2.1–8.2.4 /
-down 8.3.1–8.3.4 chains + 8.4 re-floater fallback), pairing 9.x (top-half vs
-bottom-half 9.1; rank-priority 9.2; 1v(N+1)→(N+2)…→(2N)→(N−1)… search 9.3 with
-worked 15-combination table; 9.4 played-all float-out; 9.5 max-in-group).
+Implements: bye 4.x (lowest rank eligible; 4.2.1–4.2.3), initial seeding 3.1
+(helper), median routing 6.4 (top→pre-median, bottom→pre-median, median last;
+even-field lower-middle = median; 88-team example), board-1 colours 7.x (R1
+lot 7.2; CD ±2 + 3-in-row bans 7.3; float-necessity override 7.4;
+equalise→alternate 7.5; walkback 7.6; unplayed = no colour 7.7), floaters 8.x
+(8.2.1 designated-opponent pairing; 8.2.2 remainder-completeness 7.4-aware;
+8.2.3 moved-back/next-candidate; 8.2.4 skip-loop; 8.3 mirror; 8.4 re-floater)
++ 9.4 played-all floaters, pairing 9.x (top-half vs bottom-half 9.1;
+rank-priority 9.2; subgroup-relative 9.3 search with worked 15-combination
+table; 9.5 max-in-group), publication order 11.1.
 
-Arts.10 (presence) and 11 (publication/management) are tournament management
-(OUT — engine pairs present teams; bye value 1MP+2GP is manager-side).
+Arts.10 (presence) and 11.2–11.3 (publication management) are tournament
+management (OUT — engine pairs present teams; bye value 1MP+2GP is
+manager-side).
 """
 
 from __future__ import annotations
