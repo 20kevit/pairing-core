@@ -94,16 +94,33 @@ def test_dutch_heterogeneous_pairing_golden():
         assert pr.black_id not in by_id[pr.white_id].opponents
 
 
-def test_dutch_pab_largest_tpn_interpretation():
-    """B20 (INTERPRETATION I-D-PAB): C.04.3 fixes only (score, unplayed);
-    the final tiebreak follows the family convention (largest TPN takes the
-    bye), as Dubov 3.1.5 / Double-Team 3.4.4 / Burstein 3.1.5 state."""
+def test_dutch_pab_emerges_from_generation_order():
+    """I-D-PAB RESOLVED (closure): C.04.3 has no PAB-assignment step — the
+    assignee emerges from Art.4 generation order + 3.8.1 (C5, C9, then
+    earlier-generated). No largest-TPN rule exists; the old enumeration
+    with its invented tiebreak is gone."""
     players = [P(1, 1, 1.0, played=2), P(2, 2, 1.0, played=2),
                P(3, 3, 1.0, played=2)]
     req = P26Request(players=tuple(players), ruleset="dutch-2026",
                      round_number=2, total_rounds=5)
     out = pair_2026(req)
-    assert out.bye_id == 3  # equal score+unplayed -> largest TPN
+    # first S2 transposition leaves TPN 3 downfloat -> PAB (3.8.1 order).
+    assert out.bye_id == 3
+
+
+def test_dutch_pab_global_best_beats_per_taker_first():
+    """I-D-PAB discriminator: FIDE 3.8.1 compares ALL generated candidates
+    globally. The old per-taker-first construction picked taker id3 (1 miss);
+    the unified search finds the clean pairing (0 misses) for taker id5."""
+    players = [P(1, 1, 1.0, colors="B"), P(2, 2, 1.0, colors="W"),
+               P(3, 3, 1.0, colors="B"), P(4, 4, 1.0, colors="W"),
+               P(5, 5, 1.0, colors="W")]
+    req = P26Request(players=tuple(players), ruleset="dutch-2026",
+                     round_number=2, total_rounds=5)
+    out = pair_2026(req)
+    assert out.bye_id == 5
+    got = {frozenset((p.white_id, p.black_id)) for p in out.pairs}
+    assert got == {frozenset((1, 4)), frozenset((2, 3))}
 
 
 # --------------------------------------------------------------- Burstein
@@ -438,7 +455,8 @@ def test_lim_44_floats_lowest_numbered_on_failure():
     res = _apply_44(list(work), None, 0.5, 0.0, True, queue,
                     P26Request(players=tuple(work), ruleset="lim-2026",
                                round_number=3, total_rounds=5),
-                    step(), by_id, floater_of, dest_pool, [], True, 1.0)
+                    step(), by_id, floater_of, dest_pool, [], True, 1.0, {},
+                    False)
     assert res is not None
     assert {frozenset(pr) for pr in res} == {frozenset((3, 4))}
     assert sorted(queue[0.5]) == [1, 2]  # culprit + lowest remaining
@@ -480,3 +498,120 @@ def test_preference_dutch_family_unchanged():
     assert C.preference(P(1, 1, colors="WB")) == ("W", 1)
     assert C.preference(P(1, 1, colors="")) == (None, 0)
     assert C.preference(P(1, 1, colors=""), dubov_zero_game=True) == ("B", 1)
+
+
+# ------------------------------------------------------- closure resolutions
+
+def test_lim_33_exclusion_avoids_claimed_partners():
+    """I-L-334 RESOLVED: 3.3/3.4 exclude other floaters' opponents. A (TPN1)
+    is compatible only with claimed X; B (TPN2) also with free Y -> B floats
+    although A is lower-numbered (old code took A)."""
+    x = P(10, 10, 0.5)
+    y = P(11, 11, 0.5)
+    a = P(1, 1, 1.0, opponents=(11,))
+    b = P(2, 2, 1.0)
+    work = [a, b]
+    dest_pool = [x, y]
+    f = LIM._select_floater(work, dest_pool, set(), downward=True,
+                            maxi=False, claimed={10})
+    assert f.id == 2
+
+
+def test_lim_38_target_is_forced_not_tried():
+    """I-L-38 RESOLVED: 3.8 "is paired with" is mandatory. Forcing F-T
+    dead-ends (A-B incompatible), so the search fails (4.4 takes over);
+    try-first backtracking would have paired F-A/T-B instead."""
+    from pairing_core.fide2026.lim import _exchange_pair
+    f = P(1, 1, 1.0, colors="WB")  # due W
+    a = P(2, 2, 1.0, colors="WB")  # due W
+    b = P(3, 3, 1.0, colors="BW", opponents=(2,))  # due B; A-B barred
+    t = P(4, 4, 1.0, colors="BW")  # due B, highest TPN -> 3.8 target
+    a2 = P(2, 2, 1.0, colors="WB", opponents=(3,))
+    work = [f, a2, b, t]
+    by_id = {p.id: p for p in work}
+    res = _exchange_pair(work, by_id, downward=True, upper=True,
+                         floater_of={1: (2.0, "D")}, group_score=1.0,
+                         stepper=step(), maxi=False)
+    assert res is None
+
+
+def test_lim_44_culprit_follows_scrutiny_order():
+    """I-L-44 RESOLVED: the 4.4 culprit mirrors sequential scrutiny (first
+    player left without a free compatible partner), not lowest TPN. Upward
+    scrutiny starts at the highest TPN."""
+    from pairing_core.fide2026.lim import _culprit
+    p1 = P(1, 1, 1.0)
+    p2 = P(2, 2, 1.0)
+    p3 = P(3, 3, 1.0)
+    p4 = P(4, 4, 1.0, opponents=(1, 2, 3))  # no compatible partner at all
+    work = [p1, p2, p3, p4]
+    # upward: scrutiny [4,3,2,1]; 4 has nothing -> culprit 4 (not TPN 1).
+    assert _culprit(work, False, False, {}).id == 4
+    # downward: column-order greedy assigns 1-3, then 2 finds only taken or
+    # played partners -> culprit 2 (mirrors the 4.4 example's stuck #2).
+    assert _culprit(work, True, True, {}).id == 2
+
+
+def test_lim_55_even_round_equalises_identical():
+    """I-L-55 RESOLVED: 5.4 even-round clause — identical (W,W,B) histories
+    (CD +1) give the designate the EQUALISING colour (Black), not the
+    alternate (White)."""
+    from pairing_core.fide2026.lim import _lim_colour
+    a = P(1, 1, 1.0, colors="WWB")
+    b = P(2, 2, 1.0, colors="WWB")
+    req = P26Request(players=(a, b), ruleset="lim-2026", round_number=4,
+                     total_rounds=9)
+    assert _lim_colour(a, b, req=req, upper=True) == (2, 1)
+    req_odd = P26Request(players=(a, b), ruleset="lim-2026", round_number=5,
+                         total_rounds=9)
+    assert _lim_colour(a, b, req=req_odd, upper=True) == (1, 2)
+
+
+def test_double_forfeit_both_excluded_from_opponents():
+    """I-T-C1FB RESOLVED: a forfeit-ended match (Preface) was never played,
+    so it is NOT listed in opponents (C.04.2 Art.3.5 played-only) and the
+    pairing may repeat. Single-forfeit matches stay listed (treated as
+    played) and still bar repeats."""
+    players = [P(1, 1, 2.0), P(2, 2, 2.0),
+               P(3, 3, 0.0), P(4, 4, 0.0)]
+    req = P26Request(players=tuple(players), ruleset="double-2026",
+                     round_number=2, total_rounds=5)
+    out = pair_2026(req)
+    assert len(out.pairs) == 2
+    # and a listed repeat stays barred:
+    players2 = [P(1, 1, 2.0, opponents=(2,)), P(2, 2, 2.0, opponents=(1,)),
+                P(3, 3, 2.0), P(4, 4, 2.0)]
+    req2 = P26Request(players=tuple(players2), ruleset="double-2026",
+                      round_number=2, total_rounds=5)
+    out2 = pair_2026(req2)
+    got = {frozenset((p.white_id, p.black_id)) for p in out2.pairs}
+    assert frozenset((1, 2)) not in got
+
+
+def test_olympiad_seeding_helper_331():
+    """I-O-RANK RESOLVED: Art.3.1 deterministic helper — avg top-4 desc,
+    fifth desc, alphabetical, id final."""
+    from pairing_core.fide2026.olympiad import seed_initial_numbers
+    got = seed_initial_numbers([
+        (1, [2400, 2350, 2300, 2250, 2200], "Zeta"),
+        (2, [2400, 2350, 2300, 2250, 2100], "Alpha"),
+        (3, [2400, 2350, 2300, 2250, 2200], "Alpha"),
+        (4, [2500, 2500, 2500], "Mango"),
+    ])
+    assert got == {3: 1, 1: 2, 2: 3, 4: 4}
+
+
+def test_olympiad_bye_lowest_rank_not_number():
+    """Art.4.1 (retrieved text): bye to the LOWEST ranking eligible team
+    (lowest MP; ties: largest initial number)."""
+    players = [P(1, 1, 0.0), P(2, 2, 2.5), P(3, 3, 2.5), P(4, 4, 1.0),
+               P(5, 5, 1.0)]
+    req = P26Request(players=tuple(players), ruleset="olympiad-2022",
+                     round_number=2, total_rounds=9)
+    out = pair_2026(req)
+    assert out.bye_id == 1
+    tie = [P(2, 2, 1.0), P(5, 5, 1.0), P(6, 6, 1.0), P(7, 7, 2.0),
+           P(8, 8, 2.0)]
+    req2 = P26Request(players=tuple(tie), ruleset="olympiad-2022",
+                      round_number=2, total_rounds=9)
+    assert pair_2026(req2).bye_id == 6

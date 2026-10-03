@@ -122,7 +122,13 @@ def pab_eligible(p: P26Player) -> bool:
 
 
 def rematch(a: P26Player, b: P26Player) -> bool:
-    """C.04.1 Art.2: opponents who met (played) may not meet again."""
+    """C.04.1 Art.2: opponents who met (played) may not meet again.
+
+    Played-only (C.04.2 Art.3.4): forfeit-ended matches (Double Preface:
+    a match ends by forfeit only if a side forfeits both games) were never
+    played, so callers EXCLUDE them from opponents and the Preface repeat
+    exception holds structurally. Single-game forfeits count as played
+    (Preface) and stay listed."""
     return b.id in a.opponents or a.id in b.opponents
 
 

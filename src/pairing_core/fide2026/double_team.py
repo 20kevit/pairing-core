@@ -6,16 +6,17 @@ model (Double Art.4 HRP chain vs Team Art.4 first-team chain), preferences
 (Double: none; Team: Type A/B/none), quality sets (Team C8/C9/C10; Double C7/C8;
 Team C7/C10 skip the last TWO rounds, Double C7/C8 only the last).
 
-Selection semantics (documented reading I-T-C7, see conformance matrix):
-generation order (Art.3.5.4 / Art.3.6.3) defines priority; C4/C5 hold by
+Selection semantics (closure-resolved I-T-C7, see conformance matrix):
+Art.2.3 frames every quality criterion as optimisation ("comply as much as
+possible"), so "complies with [C6]/[C7]" (3.5.5) and "[C1]/[C8]" (3.6.4) mean
+attaining the minimum; "first" is the generation-order tiebreak (3.5.4/3.6.3
+lexicographic). Hence min-vector + earlier-generated wins — coinciding with a
+strict zero-filter reading whenever a zero-violation candidate exists. The
+strict reading is rejected as contrary to Art.2.3: it would fail ordinary
+rounds with unavoidable repeats (e.g. Team C10, where upfloaters' opponents
+very commonly floated last round) instead of optimising them. C4/C5 hold by
 construction (3.5.2 + worked example: minimum count, maximal score profile);
-among the constructed candidates the one with the minimal quality-violation
-vector wins; ties break to the earlier generated candidate. This coincides
-with the "first ... that complies" phrasing (3.5.5/3.6.4) whenever a
-zero-violation candidate exists, and degrades gracefully (fewest violations)
-when repeats are unavoidable; a strict zero-filter reading would instead
-fail the round (3.3.3) in ordinary forced-imperfection positions. C6
-(next-bracket compliance) is a hard filter on upfloater sets, per Art.3.5.5.
+C6 (next-bracket compliance) is a hard filter per Art.3.5.5.
 
 All section refs verified FULL_TEXT from the Council bundle.
 """
