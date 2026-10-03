@@ -134,12 +134,22 @@ def create_bye_card(
 #  Internal Helpers
 # ═══════════════════════════════════════════════════════════════════
 
+def _unplayed_count(player: EnginePlayer) -> int:
+    """Rounds with no game (colorless '-'): requested byes, absences,
+    forfeits-without-colour. PAB rounds are also colorless but their
+    holders are excluded earlier via received_bye (C2-compatible)."""
+    return player.data.color_hist.count("-")
+
+
 def _ordered_bye_candidates(
     players: List[EnginePlayer],
 ) -> List[EnginePlayer]:
     """
-    Global FIDE-style bye ordering:
-        - lower score first
+    Global FIDE-style bye ordering (C5 then C9):
+        - lower score first (C5: minimize recipient score)
+        - within same score: fewer unplayed games first (C9: minimize
+          recipient's unplayed games; BBP dutch_2025_C9 test + C.04.3
+          C9 criterion + BBP dutch.cpp "C9" minimization weights)
         - within same score: lower-ranked first (= higher pno)
         - stable final tie-break by id
     """
@@ -147,6 +157,7 @@ def _ordered_bye_candidates(
         players,
         key=lambda p: (
             p.points,
+            _unplayed_count(p),
             -p.pno,
             p.id,
         ),

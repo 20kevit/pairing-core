@@ -123,6 +123,61 @@ def test_rtg_differential_recorded(tmp_path):
 
 
 @needs_bbp
+def test_c9_bye_unplayed_games(tmp_path):
+    """BBP's own C9 fixture shape: unplayed-heavy player skipped for bye."""
+    import subprocess
+    from pairing_core import (
+        ConstraintSet,
+        EngineRequest,
+        PlayerData,
+        pair,
+    )
+    from pairing_core.adapters.trf import (
+        TournamentInput,
+        TrfPlayer,
+        TrfRound,
+        build_trf,
+    )
+    histories = {
+        1: [("w", 3, "1")], 2: [("b", 4, "1")], 3: [("b", 1, "0")],
+        4: [("w", 2, "0")], 5: [("-", None, "Z")],
+    }
+    tplayers = tuple(
+        TrfPlayer(pairing_id=i, name=f"P{i}", rating=2700 - (i - 1) * 10,
+                  points={1: 1.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 0.0}[i],
+                  rounds=tuple(
+                      TrfRound(opponent=o, color=c, result=r)
+                      for (c, o, r) in histories[i]))
+        for i in range(1, 6))
+    src = tmp_path / "c9.trf"
+    src.write_text(build_trf(TournamentInput(
+        players=tplayers, rounds_total=3, name="C9",
+        initial_color="w")), encoding="utf-8")
+    out = tmp_path / "c9.out"
+    r = subprocess.run([BBP_EXE, "--dutch", str(src), "-p", str(out)],
+                       capture_output=True, text=True, timeout=120)
+    assert r.returncode == 0, r.stderr[:300]
+    bbp_bye = None
+    for ln in out.read_text(encoding="utf-8").splitlines()[1:]:
+        if ln.strip():
+            w, b = ln.split()
+            if b == "0":
+                bbp_bye = int(w)
+    assert bbp_bye == 4
+    pds = [PlayerData(id=i, pairing_no=i, rating=2700 - (i - 1) * 10,
+                      points={1: 1.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 0.0}[i],
+                      color_hist={"w": "w", "b": "b", "-": "-"}[
+                          histories[i][0][0]],
+                      opponents=frozenset(
+                          {o for (_, o, _) in histories[i]
+                           if o is not None}))
+             for i in range(1, 6)]
+    res = pair(EngineRequest(
+        players=pds, ruleset="dutch-till2026-compat", round_number=2,
+        constraints=ConstraintSet()))
+    assert res.bye_player_id == 4 == bbp_bye
+
+
 @needs_bbp
 def test_forbidden_pairs_agree(tmp_path):
     """XXP avoidance agrees with BBP (pair sets; colors excluded: E.5)."""

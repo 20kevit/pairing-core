@@ -1149,6 +1149,66 @@
     "outcome": "valid",
     "bye": 1
    }
+  },
+  {
+   "id": "Y5",
+   "category": "bye",
+   "desc": "C9: unplayed-heavy player skipped for bye (BBP dutch_2025_C9 agreement)",
+   "round": 2,
+   "players": [
+    {
+     "id": 1,
+     "pairing_no": 1,
+     "rating": 2000,
+     "points": 1.0,
+     "color_hist": "w",
+     "opponents": [
+      3
+     ]
+    },
+    {
+     "id": 2,
+     "pairing_no": 2,
+     "rating": 1900,
+     "points": 1.0,
+     "color_hist": "b",
+     "opponents": [
+      4
+     ]
+    },
+    {
+     "id": 3,
+     "pairing_no": 3,
+     "rating": 1800,
+     "points": 0.0,
+     "color_hist": "b",
+     "opponents": [
+      1
+     ]
+    },
+    {
+     "id": 4,
+     "pairing_no": 4,
+     "rating": 1700,
+     "points": 0.0,
+     "color_hist": "w",
+     "opponents": [
+      2
+     ]
+    },
+    {
+     "id": 5,
+     "pairing_no": 5,
+     "rating": 1600,
+     "points": 0.0,
+     "color_hist": "-",
+     "opponents": []
+    }
+   ],
+   "expect": {
+    "outcome": "valid",
+    "bye": 4
+   }
   }
  ]
 }

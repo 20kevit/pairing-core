@@ -159,6 +159,24 @@ def test_forbidden_order_irrelevant():
     assert run([(1, 3), (2, 4)]) == run([(2, 4), (1, 3)])
 
 
+def test_bye_prefers_fewer_unplayed_games_c9():
+    # BBP dutch_2025_C9 scenario: {3,4,5} tied at 0.0; player 5 has an
+    # unplayed (Z) round, so the bye goes to lowest-ranked of {3,4}.
+    players = [_pd(1, points=1.0, color_hist="w", opponents={3}),
+               _pd(2, pairing_no=2, rating=1400, points=1.0,
+                   color_hist="b", opponents={4}),
+               _pd(3, pairing_no=3, rating=1300, points=0.0,
+                   color_hist="b", opponents={1}),
+               _pd(4, pairing_no=4, rating=1200, points=0.0,
+                   color_hist="w", opponents={2}),
+               _pd(5, pairing_no=5, rating=1100, points=0.0,
+                   color_hist="-", opponents=set())]
+    result = pair(_req(players, round_number=2))
+    assert result.bye_player_id == 4
+    assert {(c.white_id, c.black_id) for c in result.pairings
+            if not c.is_bye} == {(2, 1), (3, 5)}
+
+
 def test_forbid_01_validator_code():
     from pairing_core import PairingCard, RoundResult, validate_round
     players = [_pd(1), _pd(2, pairing_no=2, rating=1400)]
