@@ -15,10 +15,13 @@ Structure per bracket (Art.3):
   next pairable-MDP set from Limbo with S2 restored.
 - C8 look-ahead: exactly one bracket deep (computed via restricted C1–C7
   optimisation of the next bracket, no deeper recursion).
-- PAB: no separate formula exists in C.04.3 (unlike Double/Team 3.4); the bye
-  emerges from last-bracket pairing via C5 (minimise assignee score) + C9
-  (minimise assignee unplayed) + C2. The last bracket enumerates leave-one-
-  unpaired (PAB) options for C2-eligible players alongside full pairing.
+- PAB: no separate formula exists in C.04.3 (unlike Double/Team 3.4) and no
+  separate assignment step either: the last bracket's single leftover (odd
+  brackets leave exactly one per candidate) IS the assignee, evaluated via
+  C5 (minimise assignee score) + C9 (minimise assignee unplayed) + C2, with
+  residual ties resolved by Art.4 generation order per 3.8.1 (closure wave:
+  the previous leave-one-unpaired enumeration with a largest-TPN tiebreak
+  was an invented mechanism — removed).
 - Budgets: Stepper guards every enumeration; exhaustion -> EngineTimeoutError.
 
 Documented approximation: C8 evaluates the next bracket's optimal (C6, C7)
@@ -311,7 +314,7 @@ def _vector(pairs: Sequence[Tuple[int, int]], down: Sequence[int],
     for xa, xb in pairs:
         w, _ = allocate_colour(by_id[xa], by_id[xb],
                                initial_colour=ctx.req.initial_colour)
-        alloc[xa], alloc[xb] = w, (xb if w == xa else xa)
+        alloc[xa], alloc[xb] = w, w  # white-holder id for both seats
     tops = ctx.topscorers
     c10 = c11 = c12 = c13 = 0
     for xa, xb in pairs:
@@ -455,55 +458,43 @@ def _best_in_bracket(residents: List[P26Player], mdps: List[P26Player],
                      next_residents: Sequence[P26Player], ctx: _Ctx,
                      is_last: bool, c1c7_only: bool = False):
     """Evaluate all generated candidates; perfect (3.4.1) short-circuits;
-    else best per 3.8.1. In the last bracket, plain candidates are valid only
-    with no leftover (even close); odd leftovers go through leave-one-unpaired
-    PAB options (C5/C9/C2)."""
+    else best per 3.8.1 (PAB criterion C5 first, then quality; ties keep
+    Art.4 generation order via stable sort).
+
+    Last-bracket PAB (I-D-PAB resolved): FIDE has NO separate PAB-assignment
+    step — the assignee emerges from generation order + 3.8.1. Odd brackets
+    always leave exactly one downfloater per candidate; that leftover IS the
+    PAB taker (C5/C9 evaluated, C2 filtered). Candidates leaving more than
+    one unpaired are incomplete (1.9.1) and skipped. Equal vectors resolve
+    to the earlier-generated candidate — no invented tiebreak."""
     cands = []
     iters = (_iter_heterogeneous(residents, mdps, ctx) if mdps
              else _iter_homogeneous(residents, ctx))
     for pairs, down, mdp_pairs in iters:
-        if not _abs_ok(pairs, ctx):
+        bye = None
+        if is_last and not c1c7_only:
+            if len(down) > 1:
+                continue  # incomplete: at most one may take the PAB (1.9.1)
+            if len(down) == 1:
+                bye = down[0]
+        elif is_last and down:
             continue
-        if is_last and not c1c7_only and down:
-            continue  # last bracket: leftovers must be the PAB (see below)
+        if not _abs_ok(pairs, ctx, extra_bye=bye):
+            continue
         now_paired = paired_so_far | {i for pr in pairs for i in pr}
+        if bye is not None:
+            now_paired = now_paired | {bye}
         if not _rest_pairable(now_paired, all_ids, ctx):
             continue  # C4
         mdp_ids = {p.id for p in mdps}
-        vec = _vector(pairs, down, mdp_pairs, mdp_ids, None,
+        vec = _vector(pairs, down, mdp_pairs, mdp_ids, bye,
                       next_residents, ctx, now_paired, all_ids,
                       is_last=is_last, c1c7_only=c1c7_only)
-        if not c1c7_only and _quality_zero(vec):
-            return (pairs, down, mdp_pairs, None, vec, True)
-        cands.append((vec, pairs, down, mdp_pairs, None))
-    # last-bracket PAB options (C5/C9/C2): leave one eligible player unpaired.
-    # INTERPRETATION (conformance matrix I-D-PAB): C.04.3 Art.2.3.1/2.4.4 fix
-    # only (score, unplayed) minimisation and state no further rule, so the
-    # final tiebreak follows the family convention used explicitly by Dubov
-    # 3.1.5, Double/Team 3.4.4 and Burstein 3.1.5 (largest TPN = lowest rank
-    # takes the bye). Deterministic; revisited if FIDE clarifies C.04.3.
-    if is_last and not c1c7_only:
-        pool = residents + mdps
-        for cand in sorted(pool, key=lambda p: (p.score, p.unplayed,
-                                                -p.tpn)):
-            if not C.pab_eligible(cand):
-                continue
-            sub_res = [p for p in residents if p.id != cand.id]
-            sub_mdp = [p for p in mdps if p.id != cand.id]
-            sub_iter = (_iter_heterogeneous(sub_res, sub_mdp, ctx) if sub_mdp
-                        else _iter_homogeneous(sub_res, ctx))
-            for pairs, down, mdp_pairs in sub_iter:
-                if down:
-                    continue
-                if not _abs_ok(pairs, ctx, extra_bye=cand.id):
-                    continue
-                mdp_ids = {p.id for p in sub_mdp}
-                now_paired = (paired_so_far
-                              | {i for pr in pairs for i in pr} | {cand.id})
-                vec = _vector(pairs, down, mdp_pairs, mdp_ids, cand.id, (),
-                              ctx, now_paired, all_ids, is_last=True)
-                cands.append((vec, pairs, down, mdp_pairs, cand.id))
-                break  # first (generation-order) pairing per PAB taker
+        if not c1c7_only and _quality_zero(vec) and (
+                bye is None or _pab_pool_minimal(bye, residents + mdps,
+                                                 ctx)):
+            return (pairs, down, mdp_pairs, bye, vec, True)
+        cands.append((vec, pairs, down, mdp_pairs, bye))
     if not cands:
         return None
     cands.sort(key=lambda c: c[0])
@@ -519,12 +510,13 @@ def _quality_zero(vec) -> bool:
 
 
 def _pab_pool_minimal(bye: int, pool: Sequence[P26Player], ctx: _Ctx) -> bool:
-    """C5+C9 minimality within the eligible pool (score, unplayed, -TPN)."""
+    """C5+C9 minimality within the eligible pool (score, then unplayed).
+    No TPN tiebreak: residual ties resolve to Art.4 generation order (3.8.1),
+    never to an invented rule."""
     me = ctx.by_id[bye]
     for p in pool:
         if p.id != bye and C.pab_eligible(p):
-            if (p.score, p.unplayed, -p.tpn) < (me.score, me.unplayed,
-                                               -me.tpn):
+            if (p.score, p.unplayed) < (me.score, me.unplayed):
                 return False
     return True
 

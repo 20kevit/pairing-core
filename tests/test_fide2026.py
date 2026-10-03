@@ -382,10 +382,14 @@ def test_team_first_team_and_types():
 
 # --------------------------------------------------------------- olympiad
 
-def test_olympiad_bye_lowest_number():
-    ps = [P(i, tpn=i, score=float(i)) for i in range(1, 8)]
+def test_olympiad_bye_lowest_rank():
+    # Art.4.1: lowest RANKING in 3.2 order (lowest matchpoints first;
+    # ties: largest initial number) — not the lowest number.
+    ps = [P(i, tpn=i, score=float(8 - i)) for i in range(1, 8)]
     ps[0] = P26Player(id=1, tpn=1, score=1.0, got_pab=True)
-    assert select_olympiad_bye(ps).id == 2
+    assert select_olympiad_bye(ps).id == 7
+    tie = [P(2, tpn=2, score=3.0), P(5, tpn=5, score=3.0)]
+    assert select_olympiad_bye(tie).id == 5
 
 
 def test_olympiad_9x_first_combination():
