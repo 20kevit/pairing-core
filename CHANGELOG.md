@@ -4,6 +4,26 @@ All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
 is the `pyproject.toml` version. Dates are commit dates (UTC).
 
+## [0.4.0] — 2026-10-03
+
+Closure wave (minor: additive API + conformance corrections; ruleset
+identities unchanged — same FIDE effective dates; no deprecations/breaks):
+
+- New optional `P26Request.cancel_token` (cooperative cancellation, typed
+  `CancelledError`, never partial; entry-point + per-tick checkpoints).
+- Dutch PAB unified with generation order + 3.8.1 (invented enumeration and
+  largest-TPN tiebreak removed); fixed C12/C13 white-holder accounting.
+- Olympiad rewritten from retrieved Handbook chapter text (4.1 bye rank,
+  3.1 seeding helper, 7.2 R1 lot, 8.x designated/completion/skip/re-float
+  chains, 9.4 played-all floaters, subgroup-relative 9.3 search, 11.1
+  rating-key publication order).
+- Lim refinements (3.3/3.4 exclusion claims, mandatory 3.8 target,
+  sequential-scrutiny 4.4 culprit, round-parity 5.5/5.6 + 5.4 even clause).
+- Forfeit/match caller contracts formalized (`RESULT_CONTRACTS.md`);
+  exact-search ceiling policy (`SEARCH_CEILING_POLICY.md`).
+- 14 more discriminating regression tests (all old/new divergent cases
+  pinned). Full suite green; legacy byte-identical.
+
 ## [0.3.1] — 2026-10-03
 
 Hostile FIDE conformance audit of the 0.3.0 2026 engines (authoritative

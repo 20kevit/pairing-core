@@ -207,3 +207,37 @@ As Double, plus:
 - I-O-RANK: Olympiad initial seeding caller-side (TPN = initial number).
 - U-O-823: Olympiad 8.x.3 played-all preference unresolved (no PDF).
 - U-O-88: Olympiad 88-team example not re-executed (no PDF).
+
+## Closure resolutions (2026-10-03; §13 final statuses)
+
+Previous INTERPRETATION → final resolution. Statuses: VERIFIED |
+VERIFIED_OFFICIAL_EXAMPLE | DERIVED | EXPLICIT_ALTERNATIVE |
+GENUINE_AMBIGUITY | EVIDENCE_GAP. No item remains bare INTERPRETATION.
+
+| ID | Previous | Final | Evidence / derivation | Test |
+|---|---|---|---|---|
+| I-D-PAB | INTERPRETATION (largest-TPN) | VERIFIED | RESOLVED_BY_FIDE_TEXT: C.04.3 has no PAB-assignment step; Mastering worked example (15-6 + PAB #13) follows 4.4.2/4.2 generation + 3.8.1, matching the unified last-bracket evaluation. Invented enumeration + tiebreak removed. | H-PAB-emergence + H-PAB-global-best (old code picks taker id3; new id5) |
+| B-C12 (new) | — (undetected miscount) | VERIFIED | White-holder map inverted for Black recipients (found via hand-trace of unified PAB vectors). Fixed to white-holder id. | H-PAB-global-best vectors |
+| I-D-MDPVALID | INTERPRETATION | DERIVED | RESOLVED_BY_OFFICIAL_TECHNICAL_GUIDANCE: annotated 4.4.1/4.4.2 admits all sizes as valid + larger-first ordering ⇒ validity filter vacuous over constructible sets ⇒ global-min selection faithful. RSL is a facilitator, not normative (G3 merged here). | H-MDP + annotated triple order |
+| I-T-C7 | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: Art.2.3 "comply as much as possible" makes C6/C7/C8/C10 optimisation criteria; "first" (3.5.5/3.6.4) is the generation-order tiebreak. Strict zero-filter rejected: it would fail ordinary rounds (Team C10 repeats are routine), contradicting Art.2.3. No strategy parameter (single adopted reading). | H-graceful (min succeeds where filter would raise) |
+| I-T-MATCH | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: Preface (2-game matches, per-game points) + 1.4 (PAB value) + 1.6 (first-game colour) place game accounting caller-side; pairing uses match score/colours only. Contract: RESULT_CONTRACTS.md. No new input type. | properties (match-score pairing) |
+| I-T-C1FB | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: Preface ("same pairing may be repeated" after forfeit-ended match) + C.04.2 Art.3.5 played-only opponents ⇒ forfeit-both matches excluded from `opponents` structurally; single-forfeits stay listed. Contract + rematch docstring. | H-forfeit-both (excluded re-pairs; listed bars) |
+| I-T-C3 | INTERPRETATION | DERIVED | Next-bracket probe retained as the feasible operationalization (Double 2.3.3/Team 2.3.3 explicitly scope C6 to the mentioned scoregroup); full recursive lookahead intractable — permanent limitation L (not FIDE ambiguity). | properties (105 states × 7 rulesets, no stranding) |
+| I-L-334 | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: 3.3/3.4 exclusion operationalized as claimed-partner sets per destination (3.2 due-class → 3.9 type → exclusion → 3.2.4 number). | H-33-exclusion (old took TPN1; new TPN2) |
+| I-L-38 | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: "is paired with" (3.8) is mandatory (reading (a): partner due the opposite colour); global failure routes to 4.4, not to alternatives. | H-38-force (old succeeds alternatively; new None→4.4) |
+| I-L-412 | INTERPRETATION | GENUINE_AMBIGUITY | 4.1.2 fixes scrutiny start (lowest = highest TPN, consistent with 4.2's "#1 = highest") but no upward column table exists; mirror adopted by symmetry. Effect confined to below-median incompatibility repairs; deterministic default, no caller flag. | H-scrutiny (direction pinned; mirror documented) |
+| I-L-44 | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: culprit mirrors sequential scrutiny (column-order greedy; first stuck player — matches the worked #2); companion stays literal lowest-numbered (4.4.2). | H-44-culprit (upward: 4 not 1; downward: 2) |
+| I-L-55 | INTERPRETATION | VERIFIED | RESOLVED_BY_FIDE_TEXT: residual colours chosen by round parity (5.5 both ≤1; 5.6 both =0) over ban-free options, minmax then designate-alternation tiebreaks; 5.4 even-round equalising clause implemented. | H-55-even (old alternated; new equalises) |
+| I-O-RANK | INTERPRETATION | VERIFIED | Helper `seed_initial_numbers` implements 3.1 exactly (avg-top-4 → 5th → alpha → id); TPN assignment stays caller-side. Evidence upgraded: Handbook chapter text retrieved (archive). | H-seeding-331 |
+| G1 U-O-823 | EVIDENCE_GAP | VERIFIED | Chapter retrieved: 8.x.3 IS the moved-back/next-candidate chain (implemented); 8.2.4 skip-loop; 8.4 re-floater. | H-odd + properties |
+| G2 U-O-88 | EVIDENCE_GAP | VERIFIED_OFFICIAL_EXAMPLE | 88-team median example re-executed in miniature (#45 lower-middle → 10pt group). | H-88-team |
+| G3 RSL | EVIDENCE_GAP | DERIVED | Merged into I-D-MDPVALID (no normative RSL rule in C.04.3). | — |
+| G4 full-C3 | EVIDENCE_GAP | DERIVED | Retained approximation as derived execution policy (§6 ceilings); limitation L. | — |
+| B-O (new) | — | VERIFIED | Retrieved chapter forced fixes: 4.1 bye = lowest rank (was lowest number); 7.2 R1 lot pattern; 9.4 played-all floats; 8.2.1/8.3.1 designated partners; 9.3 subgroup-relative search; 11.1 rating-key order. | H-bye-rank, H-R1 (probes), H-94 (probe), corpus 15-table |
+| Ceilings | owner decision | VERIFIED (policy) | Derived execution policy: SEARCH_CEILING_POLICY.md (ticks + count guards + every-tick wall + entry cancel check + no partials). Deterministic cutoff pinned. | H-cutoff, H-cancel, benchmarks |
+| cancel_token | — (unwired) | VERIFIED (new API) | P26Request.cancel_token (optional, additive) threaded to all six Steppers + dispatcher entry check. | H-cancel |
+
+Olympiad evidence basis upgraded from record-only to retrieved Handbook
+chapter text (archive URL + SHAs in SOURCE_MANIFEST.md); F-0601 PDF itself
+remains unobtained (direct PDF attempts logged) but the chapter HTML is the
+complete normative text (§§1–11 + tables + examples present).
