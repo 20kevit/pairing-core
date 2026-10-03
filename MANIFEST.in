@@ -1,0 +1,6 @@
+# Keep regenerable build artifacts out of the sdist.
+global-exclude *.pyc *.pyo __pycache__/* .pytest_cache/*
+prune src/*.egg-info
+prune **/*.egg-info
+prune dist
+prune build

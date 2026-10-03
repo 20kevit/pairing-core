@@ -1,15 +1,26 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pairing-core"
 version = "0.4.0"
-description = "Standalone FIDE Dutch Swiss pairing engine (extracted from chess-manager)"
+description = "Deterministic FIDE-family Swiss pairing library (Dutch till-2026 kernel + 2026 systems, Berger round-robin, BYO external-engine adapters)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "20kevit" }]
+keywords = ["chess", "pairing", "swiss", "fide", "tournament"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Games/Entertainment :: Board Games",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 [project.urls]
 Repository = "https://github.com/20kevit/pairing-core"

@@ -326,6 +326,11 @@ def test_pathological_dense_rematch_bounded():
 
 
 def test_write_2026_benchmark_record():
+    # Record-only: file refresh is opt-in (PAIRING_UPDATE_BASELINES=1) so a
+    # plain suite run never dirties the working tree.
+    if os.environ.get("PAIRING_UPDATE_BASELINES") != "1":
+        assert RECORD
+        return
     path = os.path.join(BENCH_DIR, "benchmarks_2026.json")
     with open(path, "w") as fh:
         json.dump({"tool": __name__, "note": "machine-dependent durations; "

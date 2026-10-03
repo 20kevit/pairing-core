@@ -6,7 +6,8 @@ from kernel outputs + deterministic rating-based results). Each scenario
 records wall time + outcome. Assertions: realistic spreads must SUCCEED;
 pathological brackets must end in typed EngineTimeoutError (bounded failure,
 never hang) under an explicit wall-clock budget. No hard timing asserts
-(machine-dependent); durations are RECORDED to tests/data/benchmarks/.
+(machine-dependent); durations print to stdout and are refreshed on disk
+only with PAIRING_UPDATE_BASELINES=1 (tests/data/benchmarks/).
 
 Run: pytest tests/test_benchmarks.py -q -s (table prints with -s).
 """
@@ -195,6 +196,15 @@ def test_dense_rematch_bounded():
 
 
 def test_write_baseline_record():
+    # Record-only: file refresh is opt-in (PAIRING_UPDATE_BASELINES=1) so a
+    # plain suite run never dirties the working tree. Gates live in the
+    # scenario tests above; this test only pins that scenarios ran.
+    if os.environ.get("PAIRING_UPDATE_BASELINES") != "1":
+        print("\nBENCHMARK " + json.dumps(RECORD, indent=1))
+        assert RECORD
+        return
+    if not RECORD:
+        pytest.skip("no scenarios ran in this session; nothing to refresh")
     os.makedirs(BENCH_DIR, exist_ok=True)
     import subprocess
     try:
