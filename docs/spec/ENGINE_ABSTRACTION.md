@@ -11,6 +11,19 @@ into the domain.
   effective date + acceleration), `capabilities()` (systems, bye handling,
   seeds, forbidden/forced pairs, TRF dialects, max field hints).
 
+## 1b. Provider identity vs engine identity (provenance rule)
+
+- A **provider** (`EngineProvider.provider_id`) is the selected execution
+  route. An **engine** (`RoundPairing.engine_id`) is what actually computed
+  the pairing. They coincide for self-executing providers
+  (`native-dutch`), but a provider may legitimately DELEGATE (wrap another
+  engine or an external binary): the envelope then reports the EFFECTIVE
+  engine, never the selecting provider.
+- `pair_via()` never rewrites provenance: it returns the provider's
+  envelope unchanged (non-`RoundPairing` results are `InternalError`).
+  Requested-vs-actual distinction lives in the caller's selection
+  (`pair_via(provider_id, ...)`), not in rewritten metadata.
+
 ## 2. Call contract
 
 - `pair(request) -> RoundPairing` where request = (players, round, ruleset,
