@@ -4,3 +4,5 @@ prune src/*.egg-info
 prune **/*.egg-info
 prune dist
 prune build
+# Release record ships in the sdist (README/LICENSE come via metadata).
+include CHANGELOG.md
