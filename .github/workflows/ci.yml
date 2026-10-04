@@ -29,8 +29,9 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip build
           rm -rf dist/ build/
-          python3 -m build --wheel --sdist 2>&1 | tee build.log
-          grep -iE "warning.*license|deprecated.*license" build.log && exit 1 || true
+          LOG="${RUNNER_TEMP:-/tmp}/pairing-core-build.log"
+          python3 -m build --wheel --sdist 2>&1 | tee "$LOG"
+          grep -iE "warning.*license|deprecated.*license" "$LOG" && exit 1 || true
           ls dist/
       - name: Inspect artifacts (no caches, version + license present)
         run: |
