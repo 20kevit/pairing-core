@@ -47,10 +47,10 @@ Current capability authority: `docs/CAPABILITY.md`. Known limitations
 ## Installation
 
 ```bash
-pip install pairing-core
+pip install pairing-core   # once published (0.4.1 is not on PyPI yet)
 ```
 
-From source:
+From source (works today):
 
 ```bash
 pip install .

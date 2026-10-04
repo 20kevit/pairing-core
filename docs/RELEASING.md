@@ -4,6 +4,14 @@ Releases are cut from a clean `main` checkout. No developer-machine state,
 untracked files, or environment variables may affect the artifact. External
 engines (BBP, JaVaFo) stay bring-your-own and are never bundled.
 
+## Current status
+
+- `0.4.1` is the release candidate: committed on `main`, CI-gated, but
+  **not yet tagged, not published to PyPI, no GitHub Release exists**.
+  No document should imply otherwise.
+- Release procedure is manual (steps below); there is no publish
+  automation and no PyPI upload configured in CI.
+
 ## Preconditions
 
 - `git status` clean, branch `main`, remote `origin` =
@@ -54,3 +62,13 @@ engines (BBP, JaVaFo) stay bring-your-own and are never bundled.
 - Never commit `dist/`, `build/`, `*.egg-info/`, or refreshed benchmark
   baselines unless the refresh itself is the change (use
   `PAIRING_UPDATE_BASELINES=1` explicitly, then commit deliberately).
+
+## Owner-only actions (not automatable from this repository)
+
+- Creating the `v<ver>` tag push and any GitHub Release entry.
+- PyPI publication (requires owner credentials; no token lives in this
+  repo or CI by design).
+- Branch protection / required-checks policy on `main` (owner policy
+  choice; CI provides the `gate` job for it).
+- FIDE endorsement or conformance certification (explicitly out of
+  scope; see README).

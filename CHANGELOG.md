@@ -12,7 +12,7 @@ is the `pyproject.toml` version. Dates are commit dates (UTC).
   `tests/test_release.py::test_examples_run_on_public_api`.
 - `tests/test_release.py` now also requires `examples/custom_provider.py`.
 
-## [0.4.1] — 2026-10-03
+## [0.4.1] — 2026-10-03 (release candidate: committed on main, not yet tagged or published)
 
 Product-hardening wave (patch: no public API or pairing-behavior change —
 v0.1.0 goldens and 0.4.0 outputs byte-identical):
