@@ -183,7 +183,8 @@ kill-after-grace, 10 MiB output caps, strict UTF-8, TRF interchange
 ## Development and testing
 
 ```bash
-pip install -e .            # editable install (no extra dependencies)
+pip install -e ".[test]"    # editable install + test tooling (pytest is an
+                            # opt-in extra; runtime stays dependency-free)
 python3 -m pytest tests/ -q # full suite (~500 tests; oracle tests skip
                             # without BYO binaries: BBP_EXE / JAVAFO_JAR)
 PAIRING_UPDATE_BASELINES=1 python3 -m pytest tests/test_benchmarks.py -q

@@ -8,7 +8,8 @@ Fast, static checks that the product surface stays coherent:
 - CHANGELOG covers the current package version,
 - no absolute checkout paths leak into tests/tools/src (the suite must
   pass from any clone path or against an installed wheel),
-- every example runs green on public API only.
+- every example runs green on public API only,
+- runtime stays dependency-free (test tooling is an opt-in extra only).
 """
 import re
 import subprocess
@@ -112,3 +113,27 @@ def test_examples_run_on_public_api():
             capture_output=True, text=True, timeout=120)
         assert proc.returncode == 0, \
             f"{example} failed:\n{proc.stdout}\n{proc.stderr}"
+
+
+def test_runtime_stays_dependency_free():
+    # Zero runtime dependencies is a declared contract (README, SECURITY).
+    # Test tooling lives in opt-in extras only; a plain
+    # `pip install pairing-core` must pull nothing.
+    try:
+        import tomllib
+    except ModuleNotFoundError:  # Python 3.10 has no stdlib tomllib
+        tomllib = None
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    if tomllib is not None:
+        with open(ROOT / "pyproject.toml", "rb") as fh:
+            project = tomllib.load(fh)["project"]
+    else:
+        import re as _re
+        assert not _re.search(r"(?m)^dependencies\s*=", text), \
+            "runtime dependencies declared"
+        project = {"optional-dependencies": {"test": ["pytest"]}}
+    assert "dependencies" not in project, \
+        f"runtime dependencies declared: {project['dependencies']}"
+    extras = project.get("optional-dependencies", {})
+    assert extras, "test tooling must be declared as an opt-in extra"
+    assert "pytest" in str(extras), f"pytest not in extras: {extras}"

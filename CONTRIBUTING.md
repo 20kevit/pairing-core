@@ -28,7 +28,8 @@ explicit owner decision; bug fixes and hardening inside scope do not.
 1. Python `>=3.10`, zero runtime dependencies — keep it that way. New
    dependencies need justification; test-only dependencies must be
    optional and documented.
-2. Editable install: `pip install -e .`
+2. Editable install with test tooling: `pip install -e ".[test]"`
+   (runtime stays dependency-free; pytest is an opt-in extra).
 3. Full suite: `python3 -m pytest tests/ -q` (oracle tests skip without
    `BBP_EXE` / `JAVAFO_JAR`; benchmarks refresh only with
    `PAIRING_UPDATE_BASELINES=1`).

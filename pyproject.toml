@@ -25,6 +25,11 @@ classifiers = [
 [project.urls]
 Repository = "https://github.com/20kevit/pairing-core"
 
+[project.optional-dependencies]
+# Test/dev tooling only. Runtime stays dependency-free: plain
+# `pip install pairing-core` pulls nothing. CI installs this extra.
+test = ["pytest>=8"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
