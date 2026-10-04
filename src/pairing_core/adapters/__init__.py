@@ -14,6 +14,7 @@ from pairing_core.adapters.trf import (
     from_engine_request,
     parse_pairing_output,
     parse_trf,
+    validate_external_pairs,
 )
 from pairing_core.adapters import bbp, javafo, trf
 from pairing_core.adapters.bbp import (
@@ -34,6 +35,7 @@ __all__ = [
     "from_engine_request",
     "parse_pairing_output",
     "parse_trf",
+    "validate_external_pairs",
     "BBPConfig",
     "BBPPairing",
     "pair_tournament",

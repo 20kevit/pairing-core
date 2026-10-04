@@ -376,6 +376,53 @@ def _split_rounds(tokens: List[str], lineno: int) -> List[Tuple[str, str, str]]:
             for i in range(0, len(body), 3)]
 
 
+def validate_external_pairs(pairs: List[Tuple[int, Optional[int]]],
+                              present_ids: Tuple[int, ...], *,
+                              absent_ids: Tuple[int, ...] = (),
+                              engine: str = "engine") -> None:
+    """Semantic validation of external pairing output against the roster.
+
+    Authoritative adapter-edge check (shared by BBP/JaVaFo): syntactic
+    parsing alone never confers trust. Every violation is an engine-output
+    fault -> InternalError (never silently accepted, never coerced).
+
+    Enforced: positive-int ids; no self-pair; no duplicate appearance
+    (a bye recipient is unpaired, so bye+paired or double-bye fails);
+    at most one bye; every appearing id is a rostered player (unknown
+    ids fail); every non-absent roster player appears exactly once
+    (missing players fail). Absent ids (XXZ) may appear at most once:
+    engines that ignore absentees still pair them, engines that honour
+    them omit them — both shapes validate.
+    """
+    roster = set(present_ids)
+    absent = set(absent_ids)
+    seen: set = set()
+    byes = 0
+    for white, black in pairs:
+        if black is not None and white == black:
+            raise InternalError(
+                f"{engine} self-paired player {white}.")
+        for pid in (white,) if black is None else (white, black):
+            if not isinstance(pid, int) or isinstance(pid, bool) or pid < 1:
+                raise InternalError(
+                    f"{engine} pairing id not a positive int: {pid!r}.")
+            if pid not in roster:
+                raise InternalError(
+                    f"{engine} paired unknown player {pid}.")
+            if pid in seen:
+                raise InternalError(
+                    f"{engine} lists player {pid} twice.")
+            seen.add(pid)
+        if black is None:
+            byes += 1
+    if byes > 1:
+        raise InternalError(f"{engine} granted {byes} byes (at most one).")
+    missing = sorted(set(present_ids) - absent - seen)
+    if missing:
+        raise InternalError(
+            f"{engine} omitted roster players {missing}.")
+
+
 def parse_pairing_output(text: str) -> List[Tuple[int, Optional[int]]]:
     """Parse shared BBP/JaVaFo pairing output (AUM §output).
 

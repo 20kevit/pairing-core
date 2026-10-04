@@ -2,7 +2,8 @@
 """Fixture stub emulating the BBP CLI surface used by adapters/bbp.py.
 
 Controlled by env: FAKE_BBP_MODE in {ok, impossible, invalid, crash, slow,
-malformed, badversion, noversion}. FAKE_BBP_CAPTURE=file copies the input
+malformed, badversion, noversion, unknownplayer, duplicate, selfpair,
+multibye, missing}. FAKE_BBP_CAPTURE=file copies the input
 TRF there for content assertions. NOT a pairing engine.
 """
 import os
@@ -48,6 +49,31 @@ def main():
         if out:
             with open(out, "w") as fh:
                 fh.write("hello pairs\n1 2 3\n")
+        return 0
+    if mode == "unknownplayer":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 2\n99 0\n")
+        return 0
+    if mode == "duplicate":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 2\n1 3\n")
+        return 0
+    if mode == "selfpair":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 1\n3 0\n")
+        return 0
+    if mode == "multibye":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 0\n3 0\n")
+        return 0
+    if mode == "missing":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("1\n1 2\n")
         return 0
     # ok
     if out:

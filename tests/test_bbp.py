@@ -89,6 +89,19 @@ def test_exit_mapping(monkeypatch):
             os.unlink(wrap)
 
 
+def test_semantic_output_faults_rejected(monkeypatch):
+    # Syntactically valid but semantically corrupt engine output must not
+    # become a trusted pairing: unknown/dup/self-paired/multi-bye/missing.
+    for mode in ("unknownplayer", "duplicate", "selfpair", "multibye",
+                 "missing"):
+        cfg, wrap = _run_with_python_stub(monkeypatch, mode)
+        try:
+            with pytest.raises(InternalError):
+                pair_tournament(cfg, _tournament())
+        finally:
+            os.unlink(wrap)
+
+
 def test_timeout_kills_and_reaps(monkeypatch):
     cfg, wrap = _run_with_python_stub(monkeypatch, "slow",
                                       timeout_seconds=1.0)

@@ -43,12 +43,16 @@ def _wrapper(monkeypatch, mode, **kw):
 
 
 def _tournament():
+    # Three players: the stub emits ((1, 2), (3, None)), so player 3 must
+    # be rostered — unknown-player output must never validate.
     return TournamentInput(
         players=(
             TrfPlayer(pairing_id=1, name="A", rating=2000, points=1.0,
                       rounds=(TrfRound(2, "w", "1"),)),
             TrfPlayer(pairing_id=2, name="B", rating=1900, points=0.0,
                       rounds=(TrfRound(1, "b", "0"),)),
+            TrfPlayer(pairing_id=3, name="C", rating=1800, points=1.0,
+                      rounds=(TrfRound(None, "-", "F"),)),
         ),
         rounds_total=2, name="T")
 
@@ -87,6 +91,19 @@ def test_failure_modes(monkeypatch):
             pair_tournament(cfg, _tournament())
     finally:
         os.unlink(wrap)
+
+
+def test_semantic_output_faults_rejected(monkeypatch):
+    # Syntactically valid but semantically corrupt engine output must not
+    # become a trusted pairing: unknown/dup/self-paired/multi-bye/missing.
+    for mode in ("unknownplayer", "duplicate", "selfpair", "multibye",
+                 "missing"):
+        cfg, wrap = _wrapper(monkeypatch, mode)
+        try:
+            with pytest.raises(InternalError):
+                pair_tournament(cfg, _tournament())
+        finally:
+            os.unlink(wrap)
 
 
 def test_unavailable_paths():

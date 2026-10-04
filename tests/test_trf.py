@@ -10,6 +10,7 @@ from pairing_core.adapters.trf import (
     from_engine_request,
     parse_pairing_output,
     parse_trf,
+    validate_external_pairs,
 )
 from pairing_core import ConstraintSet, EngineRequest, PlayerData
 from pairing_core.errors import InternalError, InvalidRequestError
@@ -110,6 +111,31 @@ def test_output_parser_and_bye():
         parse_pairing_output("")
     with pytest.raises(InternalError):
         parse_pairing_output("many\n1 2\n")
+
+
+def test_validate_external_pairs_accepts_valid():
+    validate_external_pairs([(1, 2), (3, None)], (1, 2, 3),
+                            engine="t")
+    # absent player may be omitted (engines honouring XXZ) ...
+    validate_external_pairs([(1, 2)], (1, 2, 3), absent_ids=(3,),
+                            engine="t")
+    # ... or paired (engines ignoring absentees)
+    validate_external_pairs([(1, 2), (3, None)], (1, 2, 3),
+                            absent_ids=(3,), engine="t")
+
+
+def test_validate_external_pairs_rejects_faults():
+    roster = (1, 2, 3)
+    bad = [([(1, 2), (99, None)], "unknown"),
+           ([(1, 2), (1, 3)], "twice"),
+           ([(1, 2), (3, 3)], "self"),
+           ([(1, None), (3, None)], "byes"),
+           ([(1, 2)], "omitted"),
+           ([(0, 2), (3, None)], "positive"),
+           ([(1, True), (3, None)], "positive")]
+    for pairs, _ in bad:
+        with pytest.raises(InternalError):
+            validate_external_pairs(pairs, roster, engine="t")
 
 
 def test_malformed_trf_rejected():

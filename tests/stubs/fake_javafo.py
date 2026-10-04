@@ -3,7 +3,8 @@
 
 Bare invocation prints a release line (AUM behavior). Pairing mode:
 TRF -p OUT. Controlled by FAKE_JAVAFO_MODE in {ok, fail, slow, malformed,
-badversion}. FAKE_JAVAFO_CAPTURE=file copies the input TRF there.
+badversion, unknownplayer, duplicate, selfpair, multibye, missing}.
+FAKE_JAVAFO_CAPTURE=file copies the input TRF there.
 NOT a pairing engine.
 """
 import os
@@ -41,6 +42,31 @@ def main():
         if out:
             with open(out, "w") as fh:
                 fh.write("pairs are 1 and 2\n")
+        return 0
+    if mode == "unknownplayer":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 2\n99 0\n")
+        return 0
+    if mode == "duplicate":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 2\n1 3\n")
+        return 0
+    if mode == "selfpair":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 1\n3 0\n")
+        return 0
+    if mode == "multibye":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("2\n1 0\n3 0\n")
+        return 0
+    if mode == "missing":
+        if out:
+            with open(out, "w") as fh:
+                fh.write("1\n1 2\n")
         return 0
     if out:
         with open(out, "w") as fh:

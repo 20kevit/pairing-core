@@ -41,6 +41,7 @@ from pairing_core.adapters.trf import (
     TournamentInput,
     build_trf,
     parse_pairing_output,
+    validate_external_pairs,
 )
 from pairing_core.errors import (
     EngineTimeoutError,
@@ -133,6 +134,11 @@ def pair_tournament(config: JaVaFoConfig,
                 f"JaVaFo exit {run.returncode}; "
                 f"stderr={run.stderr[:500]!r}.")
         pairs = _read_output(out)
+        validate_external_pairs(
+            pairs,
+            tuple(p.pairing_id for p in tournament.players),
+            absent_ids=tuple(tournament.absent_ids),
+            engine="JaVaFo")
     return JaVaFoPairing(pairs=tuple(pairs), engine_version=version,
                          elapsed_seconds=run.elapsed_seconds,
                          command=tuple(argv), stdout=run.stdout,
