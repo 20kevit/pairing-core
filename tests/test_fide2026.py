@@ -12,6 +12,7 @@ import pytest
 from pairing_core.errors import (
     ImpossiblePairingError,
     InvalidPlayerError,
+    InvalidRequestError,
     UnsupportedRulesetError,
 )
 from pairing_core.fide2026 import baku
@@ -40,6 +41,8 @@ from pairing_core.fide2026.models import (
     LIM_2026,
     OLYMPIAD_2022,
     TEAM_2026,
+    P26Pair,
+    P26Pairing,
     P26Player,
     P26Request,
     P26RulesetId,
@@ -546,3 +549,54 @@ def test_budgets_exhaust_typed():
                      round_number=1, total_rounds=9, max_steps=1)
     with pytest.raises(EngineTimeoutError):
         D.pair_dutch(req)
+
+
+# ------------------------------------------------- P26Pairing invariants
+
+def _good_pairing(**kw):
+    args = dict(pairs=(P26Pair(1, 4), P26Pair(2, 3)), bye_id=None,
+                floats=((1, "D"),), ruleset=DUTCH_2026, notes=())
+    args.update(kw)
+    return P26Pairing(**args)
+
+
+def test_p26pairing_valid_constructs():
+    out = _good_pairing()
+    assert out.pairs[0] == P26Pair(1, 4)
+    # bye recipient legitimately carries a float tag (Dutch PAB model)
+    bye = _good_pairing(pairs=(P26Pair(1, 2),), bye_id=3,
+                        floats=((3, "D"), (1, "U")))
+    assert bye.bye_id == 3
+
+
+def test_p26pair_rejects_self_pair_and_non_int():
+    with pytest.raises(InvalidRequestError):
+        P26Pair(1, 1)
+    with pytest.raises(InvalidRequestError):
+        P26Pair(1, "2")
+    with pytest.raises(InvalidRequestError):
+        P26Pair(True, 2)
+
+
+def test_p26pairing_rejects_duplicate_players():
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(pairs=(P26Pair(1, 2), P26Pair(2, 3)))
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(pairs=(P26Pair(1, 2),), bye_id=1)
+
+
+def test_p26pairing_rejects_bad_floats_ruleset_notes():
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(floats=((1, "X"),))
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(floats=("D",))
+    # repeated tags are accepted: engines repeat the bye tag across passes
+    dup = _good_pairing(pairs=(P26Pair(1, 2),), bye_id=3,
+                        floats=((3, "D"), (3, "D")))
+    assert dup.floats == ((3, "D"), (3, "D"))
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(ruleset="")
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(notes=("ok", 7))
+    with pytest.raises(InvalidRequestError):
+        _good_pairing(bye_id="3")

@@ -18,7 +18,11 @@ from dataclasses import dataclass, field
 from typing import Dict, Optional, Tuple
 
 from pairing_core.controls import CancelToken
-from pairing_core.errors import InvalidPlayerError, UnsupportedRulesetError
+from pairing_core.errors import (
+    InvalidPlayerError,
+    InvalidRequestError,
+    UnsupportedRulesetError,
+)
 
 DUTCH_2026 = "dutch-2026"
 DUBOV_2026 = "dubov-2026"
@@ -257,6 +261,16 @@ class P26Pair:
     white_id: int
     black_id: int
 
+    def __post_init__(self) -> None:
+        for name in ("white_id", "black_id"):
+            value = getattr(self, name)
+            if not isinstance(value, int) or isinstance(value, bool):
+                raise InvalidRequestError(
+                    f"P26Pair {name} must be int, got {value!r}.")
+        if self.white_id == self.black_id:
+            raise InvalidRequestError(
+                f"P26Pair self-pairing is unrepresentable: {self.white_id}.")
+
 
 @dataclass(frozen=True)
 class P26Pairing:
@@ -267,6 +281,56 @@ class P26Pairing:
     floats: Tuple[Tuple[int, str], ...]  # (player id, 'D'/'U')
     ruleset: str
     notes: Tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        # Minimum result invariants, mirroring the RoundPairing contract
+        # where the 2026 model allows a check. Deliberately NOT required:
+        # float ids need not be paired (the bye recipient carries a 'D'
+        # tag by design), float entries need not be unique (engines may
+        # repeat a tag across bracket passes, e.g. bye + downfloat), and
+        # ruleset labels are not closed over the known table (producers
+        # own their labels).
+        object.__setattr__(self, "pairs", tuple(self.pairs))
+        object.__setattr__(self, "floats", tuple(self.floats))
+        object.__setattr__(self, "notes", tuple(self.notes))
+        seen = set()
+        for pair in self.pairs:
+            if not isinstance(pair, P26Pair):
+                raise InvalidRequestError(
+                    f"P26Pairing pairs must be P26Pair, "
+                    f"got {type(pair).__name__}.")
+            for pid in (pair.white_id, pair.black_id):
+                if pid in seen:
+                    raise InvalidRequestError(
+                        f"player {pid} appears twice in P26Pairing.")
+                seen.add(pid)
+        if self.bye_id is not None:
+            if not isinstance(self.bye_id, int) or \
+                    isinstance(self.bye_id, bool):
+                raise InvalidRequestError(
+                    f"bye_id must be int or None, got {self.bye_id!r}.")
+            if self.bye_id in seen:
+                raise InvalidRequestError(
+                    f"bye player {self.bye_id} is also paired.")
+        for entry in self.floats:
+            try:
+                fid, tag = entry
+            except (TypeError, ValueError) as exc:
+                raise InvalidRequestError(
+                    f"malformed floats entry {entry!r}: {exc}") from exc
+            if not isinstance(fid, int) or isinstance(fid, bool) or \
+                    tag not in ("D", "U"):
+                raise InvalidRequestError(
+                    f"floats entries must be (int id, 'D'/'U'), "
+                    f"got {entry!r}.")
+        if not isinstance(self.ruleset, str) or not self.ruleset:
+            raise InvalidRequestError(
+                f"ruleset must be a non-empty label, "
+                f"got {self.ruleset!r}.")
+        for note in self.notes:
+            if not isinstance(note, str):
+                raise InvalidRequestError(
+                    f"notes must be strings, got {note!r}.")
 
     def to_dict(self) -> Dict[str, object]:
         return {"pairs": [{"white": p.white_id, "black": p.black_id}
