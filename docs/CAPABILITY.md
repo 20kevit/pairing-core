@@ -29,7 +29,7 @@ conformance matrix.
 | Team Swiss-2026 (`team-2026`, lexicographic machinery) | VALIDATED | FULL_TEXT evidence, hostile audit fixes (4.3.7 + secondary); limitation L3 applies |
 | Olympiad team Swiss (`olympiad-2022`, median + 9.x) | VALIDATED | Retrieved chapter text (§§1–11), 0.4.0 rewrite (bye rank, 7.2 lot, 8.x chains, 9.x floaters, 11.1 order); limitation L5 (source PDF per se unobtained; chapter text complete and sufficient) |
 | Baku accelerated modifier (`baku`) | VALIDATED | FULL_TEXT evidence (C.04.7 GA/GB split + virtual points); caller-side duties documented |
-| Berger Round Robin (single/double) | VALIDATED | Handbook C.05 Annex 1 goldens (even 4–12), structural odds, balance bounds |
+| Berger Round Robin, `berger-rr` (single/double) | VALIDATED | Handbook C.05 Annex 1 goldens (even 4–12), structural odds, balance bounds |
 | Knockout/Match/Playoff | OUT_OF_SCOPE_WITH_REASON | No single authoritative pairing text; bracket generation is tournament management, outside the pairing-core boundary (`docs/spec/TOURNAMENT_BOUNDARIES.md`) |
 
 ## Cross-cutting capabilities

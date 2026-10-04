@@ -115,8 +115,7 @@ def test_examples_run_on_public_api():
             f"{example} failed:\n{proc.stdout}\n{proc.stderr}"
 
 
-def test_runtime_stays_dependency_free():
-    # Zero runtime dependencies is a declared contract (README, SECURITY).
+def test_runtime_stays_dependency_free():    # Zero runtime dependencies is a declared contract (README, SECURITY).
     # Test tooling lives in opt-in extras only; a plain
     # `pip install pairing-core` must pull nothing.
     try:
@@ -137,3 +136,18 @@ def test_runtime_stays_dependency_free():
     extras = project.get("optional-dependencies", {})
     assert extras, "test tooling must be declared as an opt-in extra"
     assert "pytest" in str(extras), f"pytest not in extras: {extras}"
+
+
+def test_package_metadata_matches_capability_catalog():
+    # Public metadata must not contradict docs/CAPABILITY.md (product
+    # authority): every served ruleset/system must be documented there.
+    from pairing_core import KNOWN_SYSTEMS
+    from pairing_core.fide2026.models import ALIASES_2026
+    from pairing_core.rulesets import ALIASES
+    catalog = (ROOT / "docs" / "CAPABILITY.md").read_text(encoding="utf-8")
+    for system in KNOWN_SYSTEMS:
+        assert system in catalog, f"system {system!r} missing from CAPABILITY.md"
+    for alias in list(ALIASES) + list(ALIASES_2026):
+        assert alias in catalog, f"ruleset {alias!r} missing from CAPABILITY.md"
+    assert isinstance(pairing_core.__fide_reference__, str) and \
+        pairing_core.__fide_reference__, "FIDE reference marker must be set"

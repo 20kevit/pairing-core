@@ -1,19 +1,28 @@
 """
-pairing-core — standalone FIDE Dutch Swiss pairing engine.
+pairing-core — deterministic chess pairing library.
 
-Extracted verbatim (behavior-preserving) from 20kevit/chess-manager
-``domain/pairing/``. No Flask, no SQLAlchemy, no persistence.
+Pairing systems: frozen ``dutch-till2026-compat`` Dutch kernel, the 2026
+family (``pairing_core.fide2026``: dutch/dubov/burstein/lim/double/team/
+olympiad + baku modifier), and Berger round robin. External engines
+(BBP, JaVaFo) are bring-your-own-binary adapters at
+``pairing_core.adapters`` (execution + TRF interchange; no provider
+integration, nothing bundled). No persistence, no network.
+
+Historical provenance: the frozen Dutch kernel was extracted
+behavior-preserving from 20kevit/chess-manager ``domain/pairing/``
+(v0.1.0 goldens pin it). Current capability authority:
+``docs/CAPABILITY.md``; conformance standing (explicit interpretations,
+no FIDE endorsement claimed):
+``docs/audit/FIDE_CONFORMANCE_MATRIX.md``.
 
 Public contract:
-    PlayerData, PairingCard, RoundResult,
-    PairingRequest, PairingEngine, NativeDutchEngine,
-    pair_round(...), validate_round(...), ValidationReport, Finding
+    pair_canonical(...), CanonicalPlayer, CanonicalRequest,
+    pair(...), pair_detailed(...), pair_via(...), EngineRequest,
+    EngineProvider, Registry, RulesetId, ExecutionBudgets, CancelToken,
+    PlayerData, PairingCard, RoundResult, validate_round(...), ...
 
 Canonical engine abstraction:
     PairingEngine.pair(request) -> RoundResult
-
-Future engines (JavaFo, BBP) will be adapters to this contract.
-They are NOT implemented here.
 """
 
 from pairing_core.models import PlayerData, PairingCard, RoundResult
