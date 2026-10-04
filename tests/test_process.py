@@ -57,6 +57,36 @@ def test_finite_oversize_stdout_rejected():
             timeout_seconds=60)
 
 
+def test_simultaneous_stdout_stderr_floods_rejected():
+    # Both pipes flooding at once: no deadlock (concurrent pumps), and
+    # the first stream past the cap kills the child -> InternalError.
+    start = time.monotonic()
+    prog = ("import sys;"
+            "so=sys.stdout.buffer.write;se=sys.stderr.buffer.write;"
+            "c=b'x'*65536\nwhile True:\n so(c);se(c)")
+    with pytest.raises(InternalError, match="capture cap"):
+        run_command([PY, "-c", prog], timeout_seconds=60)
+    assert time.monotonic() - start < 50
+
+
+def test_exactly_at_cap_accepted():
+    # Boundary: the cap trips only when EXCEEDED (len > cap), so exactly
+    # OUTPUT_CAP bytes are a complete successful capture.
+    run = run_command(
+        [PY, "-c",
+         f"import sys;sys.stdout.buffer.write(b'e'*{OUTPUT_CAP})"],
+        timeout_seconds=60)
+    assert len(run.stdout) == OUTPUT_CAP
+
+
+def test_one_byte_over_cap_rejected():
+    with pytest.raises(InternalError, match="capture cap"):
+        run_command(
+            [PY, "-c",
+             f"import sys;sys.stdout.buffer.write(b'o'*{OUTPUT_CAP + 1})"],
+            timeout_seconds=60)
+
+
 def test_just_under_cap_accepted():
     under = OUTPUT_CAP - 1024
     run = run_command(
