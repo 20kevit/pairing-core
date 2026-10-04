@@ -32,6 +32,7 @@ REQUIRED_FILES = [
     "docs/RELEASING.md",
     "docs/PERFORMANCE.md",
     "docs/CAPABILITY.md",
+    "docs/INDEX.md",
     "docs/MIGRATION_V010_TO_CANONICAL.md",
     "docs/spec/API_TIERS.md",
     "docs/spec/VERSIONING.md",
@@ -162,3 +163,84 @@ def test_package_metadata_matches_capability_catalog():
     for entry in served:
         assert set(entry) >= {"system", "status", "served_by"}, entry
         assert entry["status"] in vocabulary, entry
+
+
+README_ENTRY_POINTS = [
+    # (module, attribute) pairs named in README as public API.
+    ("pairing_core", "pair_canonical"),
+    ("pairing_core", "CanonicalPlayer"),
+    ("pairing_core", "CanonicalRequest"),
+    ("pairing_core", "canonical_json"),
+    ("pairing_core", "describe_systems"),
+    ("pairing_core", "KNOWN_SYSTEMS"),
+    ("pairing_core", "pair"),
+    ("pairing_core", "pair_detailed"),
+    ("pairing_core", "pair_via"),
+    ("pairing_core", "EngineRequest"),
+    ("pairing_core", "validate_request"),
+    ("pairing_core", "versions"),
+    ("pairing_core", "round_robin"),
+    ("pairing_core", "EngineProvider"),
+    ("pairing_core", "EngineMetadata"),
+    ("pairing_core", "Capability"),
+    ("pairing_core", "Registry"),
+    ("pairing_core", "create_default_registry"),
+    ("pairing_core", "NativeDutchProvider"),
+    ("pairing_core", "RulesetId"),
+    ("pairing_core", "ConstraintSet"),
+    ("pairing_core", "resolve_ruleset"),
+    ("pairing_core", "DUTCH_TILL2026_COMPAT"),
+    ("pairing_core", "Pairing"),
+    ("pairing_core", "RoundPairing"),
+    ("pairing_core", "ExecutionBudgets"),
+    ("pairing_core", "CancelToken"),
+    ("pairing_core", "explain"),
+    ("pairing_core", "validate_round"),
+    ("pairing_core", "PairingError"),
+    ("pairing_core.fide2026", "pair_2026"),
+    ("pairing_core.fide2026", "P26Player"),
+    ("pairing_core.fide2026", "P26Request"),
+    ("pairing_core.fide2026", "DUTCH_2026"),
+]
+
+
+def test_readme_entry_points_resolve():
+    import importlib
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    for module_name, attr in README_ENTRY_POINTS:
+        # Documented either as `Name` in prose or as code in a fenced
+        # example; either way the name must exist on the module.
+        assert re.search(rf"`{attr}`|`{attr}\(|\b{attr}\b", text), \
+            f"README no longer documents {attr}"
+        module = importlib.import_module(module_name)
+        assert hasattr(module, attr), \
+            f"README names {module_name}.{attr}, which does not exist"
+
+
+def test_readme_ruleset_ids_resolve():
+    # Every ruleset id in the README systems table must resolve through
+    # the real resolvers (`baku` is helpers, Berger goes via round_robin).
+    from pairing_core import resolve_ruleset
+    from pairing_core.fide2026.models import resolve_2026_ruleset
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    table_rows = [ln for ln in text.splitlines() if ln.startswith("|")]
+    table_ids = set()
+    for row in table_rows:
+        table_ids.update(re.findall(r"`([a-z]+-[a-z0-9-]+)`", row))
+    assert "dutch-till2026-compat" in table_ids
+    for alias in sorted(table_ids):
+        if alias == "berger-rr":
+            continue  # system name, served by round_robin()
+        try:
+            resolve_ruleset(alias)
+        except Exception:
+            resolve_2026_ruleset(alias)
+
+
+def test_readme_code_blocks_parse():
+    import ast
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    blocks = re.findall(r"```python\n(.*?)```", text, re.S)
+    assert len(blocks) >= 4, "README lost its executable examples"
+    for block in blocks:
+        ast.parse(block)  # syntax drift fails loudly, not silently
