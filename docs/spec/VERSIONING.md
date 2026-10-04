@@ -1,4 +1,8 @@
-# Versioning Specification (STAGE 3 SPEC — PROPOSED)
+# Versioning Specification (ADOPTED)
+
+Status: adopted and enforced — CHANGELOG practice, O08 deprecation window,
+and version-consistency tests (`test_import_api.py`, `test_release.py`).
+(Stage-3 draft label removed 0.4.1; body unchanged.)
 
 Five independent versions (mission §3.13), never conflated:
 

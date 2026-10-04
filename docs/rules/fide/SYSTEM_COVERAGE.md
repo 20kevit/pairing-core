@@ -1,5 +1,12 @@
 # SYSTEM COVERAGE MATRIX
 
+> HISTORICAL RESEARCH SNAPSHOT: per-system "NO engine / RESEARCH CONTINUES /
+> rejected" cells below predate the FULL_TEXT retrieval and the 0.3.x–0.4.0
+> implementation + closure waves. Current catalog:
+> `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md`; current capability:
+> `docs/CAPABILITY.md`. Preserved unmodified; do not cite cells as current
+> status.
+
 No cell populated by inference; gaps say so. As of 2026-10-03.
 
 | System | Latest source | Effective date | Full algorithm? | Official examples? | Implementation possible? | pairing-core status |

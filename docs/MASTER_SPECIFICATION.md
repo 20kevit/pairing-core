@@ -1,4 +1,4 @@
-# pairing-core — Master Specification (product entry map; v0.4.0)
+# pairing-core — Master Specification (product entry map; v0.4.1)
 
 > Authority note: this document maps the product and points to authorities;
 > it is not itself the conformance record. Current capability authority is
@@ -26,7 +26,7 @@ Tournament management (registration, money, accounts, notifications, UI,
 publishing, admin), REST APIs, databases, ratings, tie-break engines,
 scheduling, arbiter judgment. See `docs/spec/TOURNAMENT_BOUNDARIES.md`.
 
-## 4. Current state (v0.4.0)
+## 4. Current state (v0.4.1; unchanged behaviorally since v0.4.0)
 
 Deterministic, zero-runtime-dependency pairing library: frozen
 `dutch-till2026-compat` Dutch kernel (41 goldens pin behavior) + seven

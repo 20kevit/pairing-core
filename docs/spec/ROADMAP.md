@@ -35,6 +35,7 @@ the capability-wave notes below are preserved as history.
 8. **Scale/performance** — DONE (baselines 50–1000 + pathological; two
    measured bounding fixes; budgets explicit).
 9. **Open-source maturity** — PARTIAL (LICENSE, CHANGELOG, API stability via
-   harness; templates/docs-site/SBOM still open).
+   harness, CI, release docs, templates done; docs-site/SBOM remain OPTIONAL
+   future enhancements, not release blockers).
 10. **Endorsement preparation** — NOT STARTED (correctly late; readiness
     sheet maintained).

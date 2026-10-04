@@ -1,5 +1,12 @@
 # Remaining closure items (enumerated 2026-10-03)
 
+> SUPERSEDED AS A WORK LIST: the 12 interpretations and 4 evidence gaps
+> below were closed by the 0.4.0 closure wave — see
+> `docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md` (§§B–D, K–M) and the
+> conformance matrix interpretation register. Preserved unmodified as the
+> enumeration record; do not treat rows as open items. Residual
+> limitations live on as L1/L3/L4/L5 and I-L-412 (closure report §L).
+
 Source: `FIDE_CONFORMANCE_MATRIX.md` interpretation register + final report
 §§8–9, 16. No "miscellaneous" category: every row is individually closable.
 

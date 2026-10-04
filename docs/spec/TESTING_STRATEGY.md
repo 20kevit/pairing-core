@@ -1,7 +1,14 @@
-# Testing Strategy (STAGE 3 SPEC — PROPOSED)
+# Testing Strategy (ADOPTED)
 
 Rule: every discovered bug becomes a regression test; every FIDE claim gets an
-oracle anchor. Suites (all PROPOSED, phased by ROADMAP.md):
+oracle anchor. Status as of 0.4.1: suites 1–5, 7–10 and 12 are implemented
+in `tests/`; suite 6 is implemented stdlib-only (seeded properties, no
+hypothesis dependency — decided, not pending); suite 11 is implemented
+except the TRFx dialect (absent; TRF26 tags 240/162 out of subset by design).
+(Stage-3 "all PROPOSED" label retired 0.4.1; suite descriptions preserved
+below as the standing plan.)
+
+Suites (phased by ROADMAP.md):
 
 1. **Unit**: colour/float derivation tables (incl. `-` streak-breaks, UU/DD
    edges), bracket splits, exchange enumeration order, bye ordering, error
