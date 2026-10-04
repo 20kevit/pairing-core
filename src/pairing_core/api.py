@@ -310,6 +310,10 @@ def versions() -> Dict[str, object]:
 
     Implemented parts carry data; everything else is an explicit
     not-implemented/deferred marker — never silently complete (O03).
+    Status vocabulary: "implemented" (in the supported consumer contract),
+    "adapter-edge" (code exists outside the consumer contract with the
+    qualifications in "note": bring-your-own binaries, documented subset
+    limits, no provider integration), "not-implemented" (absent).
     """
     from pairing_core import __version__ as lib_version
     from pairing_core.rulesets import describe_known_rulesets
@@ -322,13 +326,18 @@ def versions() -> Dict[str, object]:
                              "status": "implemented"},
         },
         "rulesets": describe_known_rulesets(),
-        "external": {"status": "not-implemented",
-                     "note": "later-phase adapters (BBP, JaVaFo); "
-                             "bring-your-own-binary"},
-        "formats": {"TRF16": "not-implemented",
-                    "TRF26": "not-implemented",
+        "external": {"status": "adapter-edge",
+                     "note": "BBP/JaVaFo execution adapters implemented "
+                             "(bring-your-own binaries, stub-tested failure "
+                             "paths, live-verified); no EngineProvider "
+                             "integration yet"},
+        "formats": {"TRF16": "subset-implemented",
+                    "TRF26": "subset-implemented",
                     "TRFx": "not-implemented",
-                    "note": "adapter edge; Dutch phase"},
+                    "note": "adapter-edge TRF subset (fixed-width + token "
+                            "modes, BBP-verified); TRF26 tags 240/162, "
+                            "accel/XXA and TRFx extensions out of subset "
+                            "(documented limits)"},
     }
 
 

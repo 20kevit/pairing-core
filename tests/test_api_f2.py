@@ -245,8 +245,25 @@ def test_versions_report_statuses():
     assert v["library"] == {"version": __version__, "status": "implemented"}
     assert v["engines"]["native-dutch"]["status"] == "implemented"
     assert "dutch@2026-01-31" in v["rulesets"]
-    assert v["external"]["status"] == "not-implemented"
-    assert v["formats"]["TRF16"] == "not-implemented"
+    # Truthful scoped statuses (closure-corrected): adapter-edge code
+    # exists for externals/TRF subset; TRFx extensions remain absent.
+    assert v["external"]["status"] == "adapter-edge"
+    assert v["formats"]["TRF16"] == "subset-implemented"
+    assert v["formats"]["TRF26"] == "subset-implemented"
+    assert v["formats"]["TRFx"] == "not-implemented"
+
+
+def test_versions_report_matches_adapter_reality():
+    # Drift guard: the report must not contradict implementation.
+    from pairing_core.adapters import bbp, javafo, trf
+    v = versions()
+    assert callable(bbp.pair_tournament)
+    assert callable(javafo.pair_tournament)
+    assert v["external"]["status"] != "not-implemented"
+    assert callable(trf.build_trf) and callable(trf.parse_trf)
+    assert callable(trf.parse_pairing_output)
+    for dialect in ("TRF16", "TRF26"):
+        assert v["formats"][dialect] != "not-implemented"
 
 
 def test_new_names_do_not_shadow_legacy():
