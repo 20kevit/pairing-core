@@ -35,8 +35,8 @@ Suites (phased by ROADMAP.md):
    corpus + both outputs + engine pins + triage label.
 6. **Property-based**: absolute bars hold over generated tournaments
    (no-rematch, colour limits, float caps, exactly-≤1-bye, completeness);
-   determinism over input permutation; id-typed (hypothesis-style; library TBD
-   without adding hard deps — PROPOSED dev-dependency).
+   determinism over input permutation; stdlib-only seeded properties
+   (no hypothesis dependency — decided, not pending).
 7. **Randomized deterministic**: fixed-seed fuzz of states incl. pathological
    densities (Stage-1 differential shape promoted to CI).
 8. **Regression**: one test per bug + per endorsement-style discrepancy.

@@ -139,7 +139,7 @@ dependency; no tournament-core.
 
 ## 19. Licensing
 
-MIT retained (PROPOSED); Apache-2.0 NOTICE hygiene if vendored; no in-process
+MIT retained (FINAL per O06; see LICENSE); Apache-2.0 NOTICE hygiene if vendored; no in-process
 GPL; JaVaFo bring-your-own-binary + attribution, no bundling.
 
 ## 20. Roadmap
@@ -155,8 +155,9 @@ tiebreak-core, timeout); D17–D19 rejections stand.
 
 ## 22. Open questions
 
-`docs/OPEN_QUESTIONS.md` — only genuinely unresolved items (retrieval debts,
-oracle pin, tiering detail, budgets); O01–O10 decided.
+`docs/OPEN_QUESTIONS.md` — only genuinely unresolved items (frozen
+deviations, I-L-412, execution boundary, bye variant, engine posture,
+testing, budgets — retrieval is resolved); O01–O10 decided.
 
 ## 23. Documentation map
 

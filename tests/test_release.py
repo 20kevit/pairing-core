@@ -141,7 +141,7 @@ def test_runtime_stays_dependency_free():    # Zero runtime dependencies is a de
 def test_package_metadata_matches_capability_catalog():
     # Public metadata must not contradict docs/CAPABILITY.md (product
     # authority): every served ruleset/system must be documented there.
-    from pairing_core import KNOWN_SYSTEMS
+    from pairing_core import KNOWN_SYSTEMS, describe_systems
     from pairing_core.fide2026.models import ALIASES_2026
     from pairing_core.rulesets import ALIASES
     catalog = (ROOT / "docs" / "CAPABILITY.md").read_text(encoding="utf-8")
@@ -151,3 +151,14 @@ def test_package_metadata_matches_capability_catalog():
         assert alias in catalog, f"ruleset {alias!r} missing from CAPABILITY.md"
     assert isinstance(pairing_core.__fide_reference__, str) and \
         pairing_core.__fide_reference__, "FIDE reference marker must be set"
+    # describe_systems() must cover KNOWN_SYSTEMS using only the defined
+    # status vocabulary (Finding F: implemented / adapter-edge /
+    # subset-implemented / not-implemented / experimental / out-of-scope).
+    vocabulary = {"implemented", "adapter-edge", "subset-implemented",
+                  "not-implemented", "experimental", "out-of-scope"}
+    served = describe_systems()
+    assert set(KNOWN_SYSTEMS) <= {e["system"] for e in served}, \
+        f"KNOWN_SYSTEMS not covered by describe_systems(): {served}"
+    for entry in served:
+        assert set(entry) >= {"system", "status", "served_by"}, entry
+        assert entry["status"] in vocabulary, entry

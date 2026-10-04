@@ -92,6 +92,9 @@ from pairing_core.canonical import (
 )
 
 __version__ = "0.4.1"
+# Frozen-kernel reference marker (historical donor claim for the
+# pre-2026 Dutch formulation; kept byte-stable for consumers).
+# Current evidence posture: docs/CAPABILITY.md + conformance matrix.
 __fide_reference__ = "C.04.2 + C.04.3 (effective 1 July 2025)"
 
 __all__ = [

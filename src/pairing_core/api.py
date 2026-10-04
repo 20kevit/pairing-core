@@ -1,7 +1,8 @@
 """Stable engine abstraction for pairing-core.
 
-Canonical contract owned by pairing-core. External engines
-(JavaFo, BBP) will later be adapters to this interface.
+Canonical contract owned by pairing-core. External engines (BBP, JaVaFo)
+are bring-your-own-binary adapters at ``pairing_core.adapters``
+(execution + TRF interchange; no provider integration yet).
 """
 from __future__ import annotations
 

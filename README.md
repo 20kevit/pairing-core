@@ -9,6 +9,8 @@ reproducibility envelopes — under explicitly named, dated rulesets.
 - No FIDE endorsement claimed; no blanket conformance claimed. Explicit
   interpretations are registered in
   `docs/audit/FIDE_CONFORMANCE_MATRIX.md`.
+- Current version `0.4.1` is a release candidate (committed on `main`,
+  not yet tagged or published — see `docs/RELEASING.md`).
 
 ## Scope
 
@@ -23,7 +25,7 @@ notifications, ratings, or general tie-break calculation. Those belong to
 the caller (e.g. `chess-manager`). See
 `docs/spec/TOURNAMENT_BOUNDARIES.md`.
 
-## Supported pairing systems (v0.4.0)
+## Supported pairing systems (v0.4.1)
 
 | Ruleset id | System | Entry point |
 |---|---|---|
@@ -201,7 +203,7 @@ external-engine, input format) — see `docs/spec/VERSIONING.md`. The v0.1.0
 kernel behavior is a permanent golden reference (41 goldens + contract
 tests must stay green). Changelog: `CHANGELOG.md`.
 
-## Known limitations (v0.4.0)
+## Known limitations (v0.4.1)
 
 - **L1** — exact-search factorial ceilings (Dutch/Burstein big brackets):
   typed timeouts, no heuristic pruning.

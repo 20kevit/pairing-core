@@ -1,4 +1,4 @@
-# Capability & Maturity Matrix (product authority — v0.4.0, 2026-10-03)
+# Capability & Maturity Matrix (product authority — v0.4.1, 2026-10-04)
 
 Maturity scale: RESEARCHED (studied, not built) / EXPERIMENTAL (built,
 provisional) / VALIDATED (spec-anchored tests green) / PRODUCTION_READY

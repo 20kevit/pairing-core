@@ -1,4 +1,4 @@
-# Open Questions (v0.4.0 — only genuinely unresolved items)
+# Open Questions (v0.4.1 — only genuinely unresolved items)
 
 O01–O10 are DECIDED (see `docs/DECISIONS.md`). The 2026 retrieval questions
 from earlier revisions are RESOLVED (FULL_TEXT Council bundle retrieved,
