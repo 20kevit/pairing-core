@@ -126,7 +126,8 @@ result = pair_via("native-dutch", request, create_default_registry())
 Unknown provider id, ruleset, or capability raises a typed error
 (`EngineUnavailableError`, `UnsupportedRulesetError`,
 `UnsupportedCapabilityError`). Result metadata records requested engine,
-actual engine, reason, versions, and ruleset.
+actual engine, reason, versions, and ruleset. To add your own engine
+without touching the core, see `examples/custom_provider.py`.
 
 ## Determinism
 

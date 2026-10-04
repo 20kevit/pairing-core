@@ -7,9 +7,12 @@ Fast, static checks that the product surface stays coherent:
   disclaimer without certification claims,
 - CHANGELOG covers the current package version,
 - no absolute checkout paths leak into tests/tools/src (the suite must
-  pass from any clone path or against an installed wheel).
+  pass from any clone path or against an installed wheel),
+- every example runs green on public API only.
 """
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 import pairing_core
@@ -35,6 +38,7 @@ REQUIRED_FILES = [
     "docs/audit/FIDE_CONFORMANCE_MATRIX.md",
     "docs/audit/SEARCH_CEILING_POLICY.md",
     "examples/basic_swiss.py",
+    "examples/custom_provider.py",
     ".github/workflows/ci.yml",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
@@ -98,3 +102,13 @@ def test_no_absolute_checkout_paths():
             if pat in text:
                 offenders.append(f"{path.relative_to(ROOT)}: {pat}")
     assert not offenders, f"absolute paths leaked: {offenders}"
+
+
+def test_examples_run_on_public_api():
+    for example in ("examples/basic_swiss.py",
+                    "examples/custom_provider.py"):
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / example)],
+            capture_output=True, text=True, timeout=120)
+        assert proc.returncode == 0, \
+            f"{example} failed:\n{proc.stdout}\n{proc.stderr}"

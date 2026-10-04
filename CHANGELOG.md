@@ -4,6 +4,14 @@ All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
 is the `pyproject.toml` version. Dates are commit dates (UTC).
 
+## [Unreleased]
+
+- New `examples/custom_provider.py`: worked third-party provider guide
+  (implement `EngineProvider`, declare `Capability`, register, select via
+  `pair_via`); runs from repo checkout and clean install; pinned by
+  `tests/test_release.py::test_examples_run_on_public_api`.
+- `tests/test_release.py` now also requires `examples/custom_provider.py`.
+
 ## [0.4.1] — 2026-10-03
 
 Product-hardening wave (patch: no public API or pairing-behavior change —
