@@ -8,7 +8,9 @@ secrets, no authentication surface. The security-relevant surface is:
 - **External-engine adapters** (`pairing_core.adapters`): supervised
   subprocess execution — argv lists only (never shell), caller-supplied
   explicit binary paths (BYO, never downloaded/searched), required
-  timeouts with kill-after-grace, 10 MiB stdout/stderr caps, strict UTF-8
+  timeouts with kill-after-grace, 10 MiB stdout/stderr caps enforced
+  during collection (reader threads kill over-limit children; parent
+  memory stays bounded), strict UTF-8
   decoding, temp-dir scratch with cleanup. See
   `src/pairing_core/adapters/_process.py`.
 - **TRF/file handling** (`pairing_core.adapters.trf`): linear grammar,
