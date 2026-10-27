@@ -13,12 +13,16 @@ them for current behavior.
 - [`examples/custom_provider.py`](../examples/custom_provider.py) —
   third-party provider guide (runnable).
 - [`CHANGELOG.md`](../CHANGELOG.md) — **authority** for what changed,
-  per version. `0.4.1` is an untagged release candidate.
+  per version. `v0.4.1` is the immutable published release; `0.4.2.dev0`
+  is an unreleased development snapshot.
 
 ## Users
 
-- `docs/CAPABILITY.md` — **authority** for current supported systems
-  and maturity.
+- `docs/CAPABILITY.md` — current concise product/capability summary.
+- `docs/audit/GAP_REGISTER.md` — **authority** for current audit findings,
+  evidence, and closure status.
+- `docs/audit/COMPLETION_STANDARD.md` — **authority** for separate measurable
+  engineering, production, per-system, evaluation, and endorsement verdicts.
 - `docs/spec/API_TIERS.md` — **authority** for public vs internal API.
 - `docs/MIGRATION_V010_TO_CANONICAL.md` — legacy → canonical migration.
 - `docs/spec/CANONICAL_CONTRACT.md` — canonical request/result contract.
@@ -34,7 +38,9 @@ them for current behavior.
 
 - [`CONTRIBUTING.md`](../CONTRIBUTING.md) — scope, evidence-first
   workflow, test policy, commit style.
-- `docs/spec/ARCHITECTURE.md` — module layout and layering.
+- `docs/spec/ARCHITECTURE.md` — historical architecture blueprint; current
+  boundaries are in `docs/spec/TOURNAMENT_BOUNDARIES.md`.
+- `docs/audit/DEPENDENCIES.md` — current packaging/dependency audit.
 - `docs/spec/TESTING_STRATEGY.md` — adopted test policy + per-suite
   implementation status.
 - `docs/spec/VERSIONING.md` — **authority** for versioning (five axes,
@@ -46,19 +52,21 @@ them for current behavior.
 
 ## FIDE evidence and status
 
-- `docs/audit/FIDE_CONFORMANCE_MATRIX.md` — **authority** for
-  rule-by-rule conformance standing + interpretation register.
-- `docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md` — **authority** for
-  closure resolutions and the limitation register (L1/L3/L4/L5, I-L-412).
-- `docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md` — hostile-audit wave
-  report (**historical** record of that wave; conclusions carry forward).
+- `docs/audit/FIDE_CONFORMANCE_MATRIX.md` and
+  `FIDE_CONFORMANCE_CLOSURE_REPORT.md` — **historical project evidence**;
+  their prior conformance labels are not current independent evaluation.
+- `docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md` — hostile-audit wave report
+  (**historical**).
 - `docs/rules/fide/RULE_SOURCE_MATRIX.md` — rule → source → code → test
   traceability.
 - `docs/rules/fide/SOURCE_MANIFEST.md` + `evidence/` — retrieved sources.
 - `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md` — retrieved-system catalog.
-- `docs/DECISIONS.md` — O01–O10 final owner decisions.
-- `docs/OPEN_QUESTIONS.md` — genuinely unresolved items only.
-- `docs/spec/ROADMAP.md` — phase completion + future scope.
+- `docs/DECISIONS.md` — original owner decisions plus the current audit addendum;
+  older workflow/status entries are historical where marked.
+- `docs/OPEN_QUESTIONS.md` — historical v0.4.1 question snapshot;
+  current open items are in the audit gap register.
+- `docs/spec/ROADMAP.md` — historical phase plan; current scope/status is in
+  the audit register and capability summary.
 
 ## Operations
 
@@ -73,6 +81,11 @@ Stage-1 snapshots and superseded work lists — kept as evidence, each with
 a banner pointing at its current authority:
 
 - `docs/audit/CURRENT_CAPABILITIES.md`, `CURRENT_LIMITATIONS.md`
+  (Stage-1 snapshots)
+- `docs/spec/TOURNAMENT_SYSTEMS.md` and
+  `docs/spec/NON_FUNCTIONAL_REQUIREMENTS.md` (superseded/proposed design drafts)
+- `docs/spec/ROADMAP.md`, `docs/OPEN_QUESTIONS.md`,
+  `docs/MASTER_SPECIFICATION.md` (dated v0.4.1/v0.4.0 snapshots)
 - `docs/rules/fide/CURRENT_STATUS.md`, `SYSTEM_COVERAGE.md`
 - `docs/audit/FIDE_REMAINING_ITEMS.md`
 - `docs/FINAL_CAPABILITY_AND_PROFESSIONALIZATION_REPORT.md`,

@@ -1,21 +1,22 @@
 # SOURCE INDEX — Master Registry of FIDE Pairing Sources
 
 Master registry. Every claim in later pairing documentation must be traceable
-to a Source ID below.
+to a Source ID below. Current status and evidence limitations are summarized
+in [`../../audit/GAP_REGISTER.md`](../../audit/GAP_REGISTER.md).
 
-Evidence grades (completion wave, 2026-10-03): the Council bundle CM3-202517
-(F-0201) was retrieved in full via curl + pdftotext (SHA-256 `6b12df0e…4c94`,
-8 PDFs, 8,650 text lines, /tmp only — never vendored) and read cover to
-cover by the researcher. All 2026 chapters below are therefore FULL_TEXT
-(normative Council text = Handbook text), closing G-01. Interim 2025 texts
-are OFFICIAL_PDF (2024_1FC set, closing G-02). Pre-2026 Dubov/Burstein are
-OFFICIAL_PDF (interim-refs); pre-2026 Lim is OFFICIAL_EXCERPT (spp +
-old.fide.com search-cache, consistent verbatim with the 2026 text modulo
-headers — closing G-04). Handbook HTML bodies remain bot-protected but are
-no longer needed (same normative text in hand).
+**Evidence update (2026-10-27):** the current C.04 chapter pages, C.05 Annex 1,
+C.07, C.02.03, and Olympiad rules were fetched directly from their official
+Handbook URLs via the page-fetch interface. All returned content chunks were
+read; the interface exposes parsed Markdown, not raw response bytes, so no
+new source-text hashes are claimed. The earlier 2026-10-03 note below records
+the prior Council-bundle/PDF retrieval method and its evidence grades; its
+statement that current Handbook pages were bot-protected is superseded for
+this audit. See `SOURCE_MANIFEST.md` for retrieval details and limits.
 
-Status: CURRENT = in force on 2026-10-03; HISTORICAL = applicable in its era;
-SUPERSEDED = replaced by a named successor; UNKNOWN = applicability unconfirmed.
+Status labels below were assigned in the 2026-10-03 research wave; check the
+current audit register for the as-of-2026-10-27 evidence posture. HISTORICAL
+means applicable in its era; SUPERSEDED means replaced by a named successor;
+UNKNOWN means applicability unconfirmed.
 
 ---
 

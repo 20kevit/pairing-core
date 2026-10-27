@@ -1,4 +1,10 @@
-# Final Engineering Report — Master Development Wave (2026-10-03)
+# Historical engineering report — master development wave (2026-10-03)
+
+> This records the 2026-10-03 project wave only. Its statuses and verification
+> do not describe the current audit revision; use
+> [`CAPABILITY.md`](CAPABILITY.md),
+> [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md), and
+> [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md).
 
 ## Repository
 

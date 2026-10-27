@@ -1,4 +1,9 @@
-# FIDE Completion Baseline (completion-wave forensic start)
+# Historical FIDE completion baseline (v0.2.0 audit start)
+
+> This is a prior-wave forensic snapshot, not current capability, conformance,
+> or completion status. See the 2026-10-27
+> [`GAP_REGISTER.md`](GAP_REGISTER.md) and
+> [`COMPLETION_STANDARD.md`](COMPLETION_STANDARD.md).
 
 - Commit: `2fdba62` (branch `main`, clean tree)
 - Tags: `v0.1.0`, `v0.2.0`; package version `0.2.0`

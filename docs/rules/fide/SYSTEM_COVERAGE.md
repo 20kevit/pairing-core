@@ -1,11 +1,15 @@
 # SYSTEM COVERAGE MATRIX
 
-> HISTORICAL RESEARCH SNAPSHOT: per-system "NO engine / RESEARCH CONTINUES /
-> rejected" cells below predate the FULL_TEXT retrieval and the 0.3.x–0.4.0
-> implementation + closure waves. Current catalog:
-> `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md`; current capability:
-> `docs/CAPABILITY.md`. Preserved unmodified; do not cite cells as current
-> status.
+> HISTORICAL PROJECT SNAPSHOT: the tables below describe the 2026-10-03
+> research/completion wave, not the current audit outcome. The completion-wave
+> statuses are project claims, not independent FIDE evaluation. Current
+> source/effective-date catalog: `CURRENT_SYSTEM_CATALOG.md`; current audit
+> authority: `docs/audit/GAP_REGISTER.md` and `COMPLETION_STANDARD.md`.
+>
+> Update 2026-10-27: Burstein no longer calculates a local Index; its post-
+> seeding pairing path requires a complete external `BursteinIndexSet` and
+> provenance. Berger exact official-table tests now cover every field size
+> from 3 through 16. Do not cite the old rows below as current behavior.
 
 No cell populated by inference; gaps say so. As of 2026-10-03.
 

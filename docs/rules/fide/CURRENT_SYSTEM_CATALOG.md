@@ -1,21 +1,26 @@
-# Current System Catalog (complete C.04 family sweep, 2026-10-03)
+# FIDE system source catalog (reviewed 2026-10-27)
 
-| System | Article | Effective | Primary Source | Full Evidence | Algorithm Extracted | Implementable | Status |
-|---|---|---|---|---|---|---|---|
-| Dutch | C.04.3 | 01-02-2026 | F-0105 (Council PDF) | FULL_TEXT | YES | YES | implemented `dutch-2026` |
-| Dubov | C.04.4.1 | 01-02-2026 | F-0108 (Council PDF) | FULL_TEXT | YES | YES | implemented `dubov-2026` |
-| Burstein | C.04.4.2 | 01-02-2026 | F-0110 (Council PDF) | FULL_TEXT | YES | YES | implemented `burstein-2026` |
-| Lim | C.04.4.3 | 01-02-2026 | F-0112 (Council PDF) | FULL_TEXT | YES | YES | implemented `lim-2026` |
-| Double Swiss | C.04.5 | 01-02-2026 | F-0114 (Council PDF) | FULL_TEXT | YES | YES (+match model) | implemented `double-2026` |
-| Team Swiss | C.04.6 | 01-02-2026 | F-0115 (Council PDF) | FULL_TEXT | YES | YES (+team model) | implemented `team-2026` |
-| Baku accel. | C.04.7 | 01-02-2026 | F-0117 (Council PDF) | FULL_TEXT | YES | YES (modifier) | implemented `baku` modifier |
-| Olympiad | D.02 Rules | 01-01-2022 | F-0601 (annex PDF) | FULL_TEXT | YES | YES | implemented `olympiad-2022` |
-| Berger RR | C.05 Ann.1 | current | F-0501 (tables) | FULL_TEXT | YES | YES | implemented (pre-existing) |
-| KO/match | Hbk 07 art.3 | current | context | boundary | n/a | n/a | OUT_OF_SCOPE (boundary) |
+This catalog records system identifiers and the source/effective-date context.
+It does not certify code. Source availability, implementation, independent
+evidence, production suitability, formal evaluation, and endorsement are
+separate questions. Current implementation findings and readiness status are
+authoritatively recorded in [`../../audit/GAP_REGISTER.md`](../../audit/GAP_REGISTER.md)
+and [`../../audit/COMPLETION_STANDARD.md`](../../audit/COMPLETION_STANDARD.md).
 
-No other pairing system exists in the current C.04 family: C.04.1/2 are framework
-(not systems); C.04 Appendix A is endorsement (not a system); pre-2026 chapters
-are superseded (timeline); no further accelerated method is admitted in C.04.7
-("Other accelerated methods may be added" — none has been).
-Seven-stage state per system: located → verified → full-text → extracted →
-possible → implemented → tested (see FIDE_2026_COMPLETION_REPORT.md).
+| Pairing identifier | Source | Approval/effective date | Current Pairing-Core note |
+|---|---|---|---|
+| `dutch-till2026-compat` | Historical pre-2026 Dutch formulation | Superseded for current Swiss rules | Frozen compatibility behavior; documented deviations remain. |
+| `dutch-2026` | C.04.3 | Council approved 2025-10-28; effective 2026-02-01 | Code exists; exact-search ceiling and documented interpretations remain. |
+| `dubov-2026` | C.04.4.1 | Council approved 2025-10-28; effective 2026-02-01 | Code exists; rating/history inputs are caller-owned. |
+| `burstein-2026` | C.04.4.2 | Council approved 2025-10-28; effective 2026-02-01 | Pairing code requires complete external C.04 Index values after Dutch seeding; no local Index calculation. |
+| `lim-2026` | C.04.4.3 | Council approved 2025-10-28; effective 2026-02-01 | Code exists; documented scrutiny/order readings remain. |
+| `double-2026` | C.04.5 | Council approved 2025-10-28; effective 2026-02-01 | Code exists; event match facts are caller-owned; bounded lookahead is a strategy. |
+| `team-2026` | C.04.6 | Council approved 2025-10-28; effective 2026-02-01 | Code exists; team composition, lineup and score valuation are caller-owned. |
+| `baku` helper | C.04.7 | Council approved 2025-10-28; effective 2026-02-01 | Helper functions only; event integration is caller-owned. |
+| `olympiad-2022` | Olympiad Pairing Rules | Council approved 2021-10-27; effective 2022-01-01 | Separate dated team system; evidence and event assumptions differ from C.04. |
+| Berger round robin | C.05 Annex 1 | Handbook annex; no separate effective date identified on page | Official schedules for 3–16 players are pinned by exact tests; double-cycle reversal is recommended, not mandatory. |
+| KO/match/playoff orchestration | General competition context | Event-dependent | Tournament-management and bracket orchestration remain outside the library boundary. |
+
+For C.07 tie-break regulations and C.02.03 THP requirements, see the audit
+register. The separate `tiebreak-core` v1.2.0 library was inspected; its C.07
+calculations are not assumed equivalent to C.04.4.2 Burstein Index values.

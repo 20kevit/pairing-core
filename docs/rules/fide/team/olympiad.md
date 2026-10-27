@@ -1,4 +1,11 @@
-# Team Swiss + Olympiad — Research Note
+# Team Swiss + Olympiad — Historical research note
+
+> This note predates full direct Handbook retrieval and the 2026 team-engine
+> implementations. C.04.6 and the Olympiad rules were read from their official
+> pages on 2026-10-27; Pairing-Core now has `team-2026` and `olympiad-2022`
+> pairing code. The pending-body and RESEARCH-CONTINUES statements below are
+> historical, not current status. See `../CURRENT_SYSTEM_CATALOG.md` and
+> `../../../audit/GAP_REGISTER.md`.
 
 ## C.04.6 Swiss Team Pairing System [F-0115] (CURRENT, effective 01/02/2026)
 

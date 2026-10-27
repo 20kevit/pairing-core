@@ -1,65 +1,72 @@
-# Capability & Maturity Matrix (product authority — v0.4.1, 2026-10-04)
+# Capability and evidence status
 
-Maturity scale: RESEARCHED (studied, not built) / EXPERIMENTAL (built,
-provisional) / VALIDATED (spec-anchored tests green) / PRODUCTION_READY
-(evidence across spec/coverage/edge-cases/determinism/performance/docs) /
-DEPRECATED / UNSUPPORTED / BLOCKED (with reason). Promotion requires the
-listed evidence — tests alone never suffice.
+**Current source:** `0.4.2.dev0` (unreleased development snapshot). The
+published `v0.4.1` tag and artifacts are immutable. This file is a concise
+product view; the authoritative audit findings and exact closure evidence are
+in [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md), and measurable readiness
+gates are in [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md).
+Older conformance matrices and completion reports are historical project
+records, not independent FIDE evaluation.
 
-Supersedes the pre-0.3.0 matrix (which listed the 2026 systems as
-BLOCKED/RESEARCHED for lack of primary text). That assessment was retired
-when the Council-bundle FULL_TEXT evidence package arrived
-(`docs/rules/fide/evidence/`, `RULE_SOURCE_MATRIX.md`) and the seven 2026
-rulesets were implemented, audited, and closed (0.3.0 → 0.3.1 → 0.4.0;
-see `docs/audit/FIDE_CONFORMANCE_MATRIX.md` and
-`docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md`). No FIDE endorsement is
-claimed for any system; explicit interpretations are registered in the
-conformance matrix.
+## Product boundary
+
+Pairing-Core is a pairing-only Python library: it accepts caller-owned
+pairing-relevant state and produces one-round pairings. It is not a tournament
+manager, standings service, rating calculator, or general tie-break library.
+It has no runtime dependencies and does not silently select an external
+engine. External BBP/JaVaFo adapters remain explicit bring-your-own-binary
+integrations.
 
 ## Pairing systems
 
-| System | Maturity | Evidence |
+"Implemented" below means source code exists. It does not mean the system
+has been fully independently verified, is production-ready for every event,
+or has FIDE approval, certification, endorsement, or formal evaluation.
+
+| System | Effective source | Current scope/evidence statement |
 |---|---|---|
-| Dutch, `dutch-till2026-compat` (frozen kernel) | PRODUCTION_READY (compat scope) | F1 goldens (41), corpus (22), 42 live oracle runs, benchmarks, hash sweeps; deviations E.5/float-bar documented + frozen per O08 |
-| Dutch-2026 (`dutch-2026`, C1–C21 criteria engine) | VALIDATED | FULL_TEXT evidence, 47-suite + PAB/C12 vectors, hostile audit + closure fixes, property fuzzing; limitation L1 (exact-search ceilings) applies |
-| Dubov-2026 (`dubov-2026`, ARO engine) | VALIDATED | FULL_TEXT evidence, official-example tests, hostile audit fixes (G1 extremes, 3.2.4.1 shift, C7 real-pairing) |
-| Burstein-2026 (`burstein-2026`, Index engine) | VALIDATED | FULL_TEXT evidence, hostile audit fixes (C6 sign, C7 scope, enumeration); limitation L1 applies |
-| Lim-2026 (`lim-2026`, procedural engine) | VALIDATED | FULL_TEXT evidence, hostile audit + closure fixes (scrutiny, 3.3/3.8/4.4/5.5); limitations L4 (4.2 interleaving approx) and I-L-412 (upward-search mirror, genuine ambiguity, deterministic default) |
-| Double Swiss-2026 (`double-2026`, match engine) | VALIDATED | FULL_TEXT evidence, hostile audit fixes (C5 construction, TPN space); limitation L3 (full-C3 lookahead policy approx) |
-| Team Swiss-2026 (`team-2026`, lexicographic machinery) | VALIDATED | FULL_TEXT evidence, hostile audit fixes (4.3.7 + secondary); limitation L3 applies |
-| Olympiad team Swiss (`olympiad-2022`, median + 9.x) | VALIDATED | Retrieved chapter text (§§1–11), 0.4.0 rewrite (bye rank, 7.2 lot, 8.x chains, 9.x floaters, 11.1 order); limitation L5 (source PDF per se unobtained; chapter text complete and sufficient) |
-| Baku accelerated modifier (`baku`) | VALIDATED | FULL_TEXT evidence (C.04.7 GA/GB split + virtual points); caller-side duties documented |
-| Berger Round Robin, `berger-rr` (single/double) | VALIDATED | Handbook C.05 Annex 1 goldens (even 4–12), structural odds, balance bounds |
-| Knockout/Match/Playoff | OUT_OF_SCOPE_WITH_REASON | No single authoritative pairing text; bracket generation is tournament management, outside the pairing-core boundary (`docs/spec/TOURNAMENT_BOUNDARIES.md`) |
+| `dutch-till2026-compat` | Frozen legacy behavior | Golden-pinned compatibility mode with documented deviations; not the current 2026 Dutch formulation. |
+| `dutch-2026` | C.04.3, effective 2026-02-01 | Engine and tests exist. Exact-search ceilings and documented interpretations remain; no external FIDE evaluation. |
+| `dubov-2026` | C.04.4.1, effective 2026-02-01 | Engine and tests exist. Required ratings and event histories are caller-owned; no external FIDE evaluation. |
+| `burstein-2026` | C.04.4.2, effective 2026-02-01 | Pairing procedures consume a complete external `BursteinIndexSet` after Dutch seeding. Pairing-Core does not calculate or independently verify Buchholz/SB. No suitable C.04 calculator is evidenced in inspected `tiebreak-core` v1.2.0. |
+| `lim-2026` | C.04.4.3, effective 2026-02-01 | Engine and tests exist. Documented scrutiny/order approximations and unresolved readings remain. |
+| `double-2026` | C.04.5, effective 2026-02-01 | Engine and tests exist. Next-bracket lookahead is a bounded implementation strategy/limitation, not proof of full criterion conformance. |
+| `team-2026` | C.04.6, effective 2026-02-01 | Pairing mechanics exist. Team composition, lineups, match results, and score valuation remain caller-owned. |
+| `olympiad-2022` | Olympiad Pairing Rules, effective 2022-01-01 | Separate dated team system. Initial team ordering and event facts are caller-owned; evidence posture differs from C.04 Handbook chapters. |
+| Baku helper | C.04.7, effective 2026-02-01 | Acceleration helper only; group membership, standings, and use with a pairing engine remain caller responsibilities. |
+| Berger round robin | C.05 Annex 1 | Table generation exists. Official-table comparison coverage is documented in the tests; do not infer untested field sizes from algorithmic structure. |
 
-## Cross-cutting capabilities
+Official source identity and dates, direct text retrieval, interpretations,
+implementation strategies, policy choices, and unresolved questions are
+recorded separately in the audit register. The texts alone do not prove that
+an implementation conforms.
 
-| Capability | Maturity | Evidence |
-|---|---|---|
-| Forced / forbidden pairs | PRODUCTION_READY | e2e + validator FORBID-01 + BBP-XXP agreement |
-| Bye selection (fresh-first + C5 + C9) | PRODUCTION_READY (compat scope) | goldens + corpus Y1–Y5 + BBP C9 agreement |
-| Colour allocation (compat model) | PRODUCTION_READY (compat scope) | goldens; E.5 deviation documented + frozen |
-| Float model (compat 3-level) | PRODUCTION_READY (compat scope) | goldens; absolute-bar question documented + frozen |
-| Typed errors / budgets / cancellation | PRODUCTION_READY | suites + pathological bounds; 2026 `cancel_token` wired (0.4.0); ceilings per `docs/audit/SEARCH_CEILING_POLICY.md` |
-| Envelopes / digests / replay metadata | PRODUCTION_READY | round-trip + determinism suites |
-| Explainability (`explain`) | VALIDATED | unit + integration tests (no search-path exposure by design) |
-| Request serialization | VALIDATED | round-trip + malformed rejection |
-| TRF interchange (subset) | VALIDATED | round-trips + live BBP acceptance; PAB-U verified; absentee/accel limits documented |
-| BBP adapter | VALIDATED | stub failure-paths + live runs (BYO binary, never bundled) |
-| JaVaFo adapter | VALIDATED | stub failure-paths + live runs (BYO JVM + jar, never bundled) |
-| Canonical consumer contract (`CanonicalPlayer`/`CanonicalRequest`/`pair_canonical`) | VALIDATED | isolation tests (subprocess + AST), pair-equivalence, serialization round-trips |
-| Migration guide v0.1.0 → canonical | VALIDATED | O08 window restated; compat suites green |
-| Differential harness | VALIDATED | taxonomy + corpus + native self-differential |
-| Benchmarks | VALIDATED | 50–1000 + pathological, baselines recorded (`tests/data/benchmarks/`); refresh is opt-in (`PAIRING_UPDATE_BASELINES=1`) |
+## Cross-cutting engineering surface
 
-## Explicitly out of scope (product boundary)
+| Capability | Current statement |
+|---|---|
+| 2026 request validation | Value objects reject malformed types/ranges and non-finite numeric inputs; the public dispatcher validates exact roster coverage and core output invariants. These checks do not replace full clause-level conformance testing. |
+| Result provenance | 2026 public results carry a dated ruleset, engine/package version, round, normalized input digest, canonical result digest, and any Burstein Index source metadata. The digest provides integrity/replay support, not correctness proof. |
+| Determinism | Deterministic ordering and serialization are tested; declared engine budgets can return typed timeout/cancellation errors rather than partial results. Review the current CI evidence for the exact revision. |
+| External process handling | POSIX adapters use isolated process groups and terminate descendants on timeout, output overflow, and cleanup. Windows standard-library handling guarantees direct-child cleanup only. |
+| Tie-break calculations | Outside Pairing-Core. No dependency on `tiebreak-core`; C.07 outputs are not assumed to be C.04 Burstein values. |
+| Berger evidence (`berger-rr`) | Exact official C.05 Annex 1 comparisons cover every published field size 3–16; structural checks outside that table range do not imply additional official examples. The tests do not establish universal C.05 conformance. |
+| Packaging | Runtime dependency-free; MIT license text is present. CI is configured for CPython 3.10–3.15; Python 3.10 remains only as a compatibility check despite upstream end-of-life, and exact revision results must be verified. |
 
-Tournament lifecycle, standings/results management, ratings, general
-tie-break calculation (future independent tiebreak-core per O09),
-persistence, permissions, UI, payments, notifications, REST API, database.
-pairing-core owns one-round pairing decisions + validation +
-reproducibility; chess-manager owns everything else
-(see `docs/spec/TOURNAMENT_BOUNDARIES.md`).
+## Readiness and FIDE standing
 
-Promotion rule: any maturity upgrade needs a dated entry here with its
-evidence. Downgrades on contradictory evidence immediately.
+- **Engineering quality:** report against the gates in
+  [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md) for an exact
+  source revision; a green suite alone is not a universal readiness verdict.
+- **Production use:** limited to a named engine and operating subset whose
+  assumptions, evidence, state roll-forward, and constraints are validated by
+  the consuming product. There is no blanket production-ready claim.
+- **Formal FIDE evaluation:** Pairing-Core alone is a library, not a complete
+  Tournament Handler Program. It has not been formally evaluated.
+- **Endorsement:** no endorsement evidence found in the official list
+  retrieved for this audit; no endorsement claim is made. See G-12/G-13 in
+  the gap register.
+
+No general "FIDE-compliant" or "fully conformant" badge is supported by the
+current evidence. Reassess any capability statement when its primary source,
+implementation, independent tests, or evaluation status changes.

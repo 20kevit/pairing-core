@@ -1,4 +1,12 @@
-# FIDE Conformance Final Report (hostile audit wave, 2026-10-03)
+# Historical FIDE conformance report (hostile audit wave, 2026-10-03)
+
+> This report records a prior project audit wave, not current authoritative
+> status or independent proof of full FIDE conformance. Its claims are
+> superseded by the 2026-10-27 audit register; notably, the local Burstein
+> Index calculator described here has been removed. Use
+> [`GAP_REGISTER.md`](GAP_REGISTER.md) and
+> [`COMPLETION_STANDARD.md`](COMPLETION_STANDARD.md) for current findings and
+> separate readiness verdicts.
 
 ## 1. Baseline
 

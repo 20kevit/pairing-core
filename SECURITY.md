@@ -7,12 +7,13 @@ secrets, no authentication surface. The security-relevant surface is:
 
 - **External-engine adapters** (`pairing_core.adapters`): supervised
   subprocess execution — argv lists only (never shell), caller-supplied
-  explicit binary paths (BYO, never downloaded/searched), required
-  timeouts with kill-after-grace, 10 MiB stdout/stderr caps enforced
-  during collection (reader threads kill over-limit children; parent
-  memory stays bounded), strict UTF-8
-  decoding, temp-dir scratch with cleanup. See
-  `src/pairing_core/adapters/_process.py`.
+  explicit binary paths (BYO, never downloaded/searched), finite positive
+  timeouts, 10 MiB stdout/stderr caps enforced during collection, strict
+  UTF-8 decoding, temp-dir scratch with cleanup. POSIX launches each run in
+  an isolated process group and terminates descendants on timeout, output
+  overflow, and cleanup. Python's standard library does not provide a
+  portable Windows Job Object wrapper; Windows currently guarantees only
+  direct-child termination. See `src/pairing_core/adapters/_process.py`.
 - **TRF/file handling** (`pairing_core.adapters.trf`): linear grammar,
   malformed/oversized input rejected with typed errors, no path traversal
   (callers supply content or explicit paths; no globbing).

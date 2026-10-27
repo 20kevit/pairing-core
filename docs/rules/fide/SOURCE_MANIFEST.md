@@ -26,12 +26,41 @@
 | S-0106 Mastering Dutch | tec.fide.com …/2026/07/Mastering_the_Dutch_2026.pdf | 2026-10-03 | curl+pdftotext (3,346 lines) | none vendored | `00445682142f88899ecb7320ec49f027a9b38300a800ce1c76585e38dad745ca` |
 | F-0301/F-0302/F-0401 | fide.com / tec.fide.com pages | 2026-10-03 | webfetch full page | metadata only | n/a (HTML) |
 
-## Queued (next wave, manual path)
+## Direct Handbook re-verification (2026-10-27 audit)
 
-- Q-01: full binary of CM3-202517.pdf → SHA-256 + version/date record.
-- Q-02: manual browser fetch of F-0105/0108/0110/0112/0114/0115/0117 article bodies
-  (handbook bot-protection blocks machine fetch) → per-article SHA-256 records.
-- Q-03: direct re-verification of F-0106 chapter URL.
+The current audit accessed official FIDE Handbook chapter pages directly via
+Arena's page-fetch interface. Complete parsed page content was returned in one
+or more chunks and read for the current texts listed below:
+
+- C.04.1 Basic Rules; C.04.2 General Handling Rules; C.04.3 Dutch;
+  C.04.4.1 Dubov; C.04.4.2 Burstein; C.04.4.3 Lim; C.04.5 Double Swiss;
+  C.04.6 Swiss Team; and C.04.7 Accelerated Systems (all effective
+  2026-02-01).
+- C.05 Annex 1 Berger tables; Olympiad Pairing Rules (effective 2022-01-01);
+  C.07 Tie-Break Regulations (effective 2026-03-01); and C.02.03 (effective
+  2026-03-01).
+- Official C.04 Annex 3 FIDE Endorsed Programs PDF, vintage 2022, checked for
+  Pairing-Core's listing.
+
+The page-fetch interface exposes parsed Markdown chunks, not the original
+response bytes or downloadable HTML. No full source bodies are committed or
+hashed; the audit therefore records official URLs, source identity/effective
+dates, and retrieval date rather than claiming a source-text digest. The
+complete source list and verified dates are in
+[`../../audit/GAP_REGISTER.md`](../../audit/GAP_REGISTER.md). This is evidence
+of which texts were read, not evidence that Pairing-Core implements them
+conformantly.
+
+## Prior-wave retrieval queue (status updated 2026-10-27)
+
+- Q-01: raw CM3-202517.pdf binary/hash is not retained. Current effective
+  rules were read directly from the official Handbook pages; a raw Council
+  bundle hash is not required for the present audit.
+- Q-02: CLOSED for the current C.04 chapters listed above by direct official
+  Handbook page retrieval. Raw article hashes remain unavailable for the
+  reason stated above.
+- Q-03: direct re-verification of the superseded 2025 interim F-0106 chapter
+  remains historical research debt and is not a current-rule source gap.
 
 ## Closure-wave retrieval (2026-10-03, F-0601 Olympiad chapter text)
 

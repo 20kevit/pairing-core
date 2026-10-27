@@ -1,9 +1,16 @@
-# RULE → SOURCE MATRIX (with implementation traceability, §9)
+# Rule-to-source implementation traceability (project evidence)
+
+This is a project-maintained traceability index, not independent proof of
+conformance. A source/test link does not establish that the implementation
+fully matches FIDE. The current audit authority is
+[`../../audit/GAP_REGISTER.md`](../../audit/GAP_REGISTER.md); the separate
+readiness gates are in [`../../audit/COMPLETION_STANDARD.md`](../../audit/COMPLETION_STANDARD.md).
+Older `EVIDENCED` labels are repository claims and must be read with the
+current per-system limitations and open findings.
 
 Rule ID → Source ID → section → evidence → implementation → test → status.
-"FULL_TEXT" = Council-bundle/official-PDF text read in full (hashes in
-SOURCE_MANIFEST.md). Rule IDs stable: original 49 rows preserved verbatim;
-traceability appended, new rules appended (never renumbered).
+"FULL_TEXT" records that the cited source text was retrieved/read (hashes in
+SOURCE_MANIFEST.md); it does not independently verify engine behavior.
 
 | Rule ID | System | Requirement | Source | Section | Version / effective | Evidence | Implementation | Test / case | Status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -36,9 +43,9 @@ traceability appended, new rules appended (never renumbered).
 | R-U03 | Dubov | Completion C4; quality C5 max pairs | F-0108 | C4–C5 | 2026 / 01-02-2026   | FULL_TEXT | dubov.py:C4/C5 | set selection | EVIDENCED | |
 | R-U04 | Dubov | C6 max incoming floaters (number then score) | F-0108 | C6 | 2026 / 01-02-2026   | FULL_TEXT | dubov.py:_bracket_vector C6 | vector | EVIDENCED | |
 | R-U05 | Dubov | C7 outgoing floaters optimise next bracket | F-0108 | C7 | 2026 / 01-02-2026   | FULL_TEXT | dubov.py:_colour_misses C7 | C7 | EVIDENCED | |
-| R-B01 | Burstein | Ranking order = Buchholz then SB | F-0110 | ranking article | 2026 / 01-02-2026   | FULL_TEXT | burstein.py:rank_key | buchholz_sb test | EVIDENCED | |
-| R-B02 | Burstein | Median cracking §§2.6.1/2.6.2 | F-0110 | §2.6.1–2 | 2026 / 01-02-2026   | FULL_TEXT | burstein.py:median cracking ABSENT in 2026 (corrected) | n/a (correction) | CORRECTED | |
-| R-B03 | Burstein | Own acceleration default (no XXA) | F-0110 via S-0101 | accel. semantics | 2026 / 01-02-2026   | FULL_TEXT | own-accel note; virtual stripped caller-side | n/a | DOCUMENTED | |
+| R-B01 | Burstein | Pairing order uses supplied C.04 Index (Buchholz, SB, TPN) | F-0110 | 1.8 | 2026 / 01-02-2026 | FULL_TEXT | `BursteinIndexSet` + `burstein.py:_pairing_rank_key` (pairing order only; values externally supplied) | `test_burstein_facade_seals_input_and_result_digests` | EVIDENCED | |
+| R-B02 | Burstein | Median cracking §§2.6.1/2.6.2 | F-0110 | §2.6.1–2 | 2026 / 01-02-2026   | FULL_TEXT | burstein.py: median cracking ABSENT in 2026 (corrected) | n/a (correction) | CORRECTED | |
+| R-B03 | Burstein | Acceleration/virtual-point semantics remain external input obligations | F-0110 via S-0101 | 1.7.2.2 | 2026 / 01-02-2026 | FULL_TEXT | Pairing-Core records caller-declared Index provenance/scope; it does not strip or verify virtual points | boundary tests | DOCUMENTED | |
 | R-L01 | Lim | Bi-directional processing around median | F-0112 | procedure | 2026 / 01-02-2026   | FULL_TEXT | lim.py:median routing | R2 test | EVIDENCED | |
 | R-L02 | Lim | Median-group up/down pairing + exchanges | F-0112 | median article | 2026 / 01-02-2026   | FULL_TEXT | lim.py:median+cracking+exchanges | corpus tables | EVIDENCED | |
 | R-L03 | Lim | Strict colour rules | F-0112 | colour articles | 2026 / 01-02-2026   | FULL_TEXT | lim.py:_lim_colour | colour tests | EVIDENCED | |
@@ -52,7 +59,7 @@ traceability appended, new rules appended (never renumbered).
 | R-M04 | Olympiad | Board-1 colour rules | F-0601 | colour article | 2022 / 01-01-2022   | FULL_TEXT | olympiad.py:board colours | colour tests | EVIDENCED | |
 | R-A01 | Baku | GA/GB split + virtual points | F-0117 | accel. articles | 2026 / 01-02-2026   | FULL_TEXT | baku.py premise (parameterised) | schedule tests | EVIDENCED | |
 | R-A02 | Baku | Full XXA history for floater computation | F-0117 via S-0102 | input rule | 2026 / 01-02-2026   | FULL_TEXT | XXA carriage noted; caller-side history | n/a | DOCUMENTED | |
-| R-G01 | Berger | Fixed tables 3–16; odd N highest bye | F-0501 | Annex 1 | current   | FULL_TEXT | roundrobin.py (pre-existing) | RR goldens | EVIDENCED | |
+| R-G01 | Berger | Fixed tables 3–16; odd N highest bye | F-0501 | Annex 1 | current | FULL_TEXT | `roundrobin.py` | exact fixture comparison `test_all_published_berger_tables_exact` for each N=3..16 | EVIDENCED | |
 | R-G02 | Berger | Double-RR colour swap + last-two reversal | F-0501 + ECU | Annex 1 note | current / recommendation   | CONTEXT | roundrobin double cycle | RR tests | EVIDENCED | |
 | R-K01 | KO | Format/colour/pno regulated per event (Hbk 07 art. 3) | F-0601 parent ctx | Handbook 07 | current   | CONTEXT | boundary only (no engine) | n/a | OUT-OF-SCOPE | |
 | R-Q01 | All | QC authorisation for unpublished systems | F-0103 | C.04.2 §1.2–1.3 | 2026 / 01-02-2026   | FULL_TEXT | documented (no QC flow in library) | n/a | DOCUMENTED | |
@@ -62,10 +69,10 @@ traceability appended, new rules appended (never renumbered).
 | R-D28 | Dutch | 4.2/4.3/4.4 generation order | F-0105 | Art.4 | 2026 / 01-02-2026 | FULL_TEXT | dutch.py generators | R1 test | EVIDENCED |
 | R-U06 | Dubov | MaxT = 2+floor(Rnds/5) | F-0108 | 1.8 | 2026 / 01-02-2026 | FULL_TEXT | dubov.py:max_t + prior_upfloats | MaxT test | EVIDENCED |
 | R-U07 | Dubov | G1/G2 + ARO sort + shifters + T2 | F-0108 | 3.2.3-3.2.6/Art.4 | 2026 / 01-02-2026 | FULL_TEXT | dubov.py:_pair_bracket | R1/R2 tests | EVIDENCED |
-| R-U08 | Dubov | PAB order (eligible/completion/score/games/TPN) | F-0108 | 3.1 | 2026 / 01-02-2026 | FULL_TEXT | dubov.py:_select_pab | engine runs | EVIDENCED |
+| R-U08 | Dubov | PAB order (eligible/completion/score/games/TPN); completion includes C3 | F-0108 | 3.1, 2.1–2.2 | 2026 / 01-02-2026 | FULL_TEXT | dubov.py:_select_pab | `test_pab_completion_respects_absolute_colour_conflicts`; PAB engine cases | EVIDENCED |
 | R-B04 | Burstein | Seeding min(floor(R/2),4) Dutch rounds | F-0110 | 1.6 | 2026 / 01-02-2026 | FULL_TEXT | burstein.py + dutch delegation | seeding test | EVIDENCED |
-| R-B05 | Burstein | Index computation (BH/SB/self-game/virtual-excl) | F-0110 | 1.7 | 2026 / 01-02-2026 | FULL_TEXT | burstein.py:buchholz_sb | BH/SB test | EVIDENCED |
-| R-B06 | Burstein | PAB lowest-score/games/lowest-rank | F-0110 | 3.1 | 2026 / 01-02-2026 | FULL_TEXT | burstein.py:_select_pab | engine runs | EVIDENCED |
+| R-B05 | Burstein | Calculate C.04 Index (BH/SB, unplayed/self-game, zero-bye and virtual-point rules) | F-0110 | 1.7–1.7.2 | 2026 / 01-02-2026 | FULL_TEXT | Not implemented in Pairing-Core; external `BursteinIndexSet` seam only; C.04 calculator gap remains | missing-value/roster tests; separate-library audit | OUT-OF-SCOPE |
+| R-B06 | Burstein | PAB lowest-score/games/lowest-pairing-order rank; completion includes C3 | F-0110 | 3.1, 2.1–2.2 | 2026 / 01-02-2026 | FULL_TEXT | `burstein.py:_select_pab` uses supplied Index order (pairing procedure only) | `test_pab_completion_respects_absolute_colour_conflicts`; Burstein pairing tests | EVIDENCED |
 | R-L05 | Lim | Compatibility (unplayed + colour bans) | F-0112 | 2.1 | 2026 / 01-02-2026 | FULL_TEXT | lim.py:compatible | compat test | EVIDENCED |
 | R-L06 | Lim | Blocked-median cracking 2.6.1/2.6.2 | F-0112 | 2.6 | 2026 / 01-02-2026 | FULL_TEXT | lim.py:_pair_median | engine runs | EVIDENCED |
 | R-L07 | Lim | Floater a-d hierarchy + 3.10 guard | F-0112 | 3.9-3.10 | 2026 / 01-02-2026 | FULL_TEXT | lim.py selection order + _refloat_allowed | engine runs | EVIDENCED-READING |

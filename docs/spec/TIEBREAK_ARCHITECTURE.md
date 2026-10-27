@@ -1,75 +1,74 @@
-# Tiebreak-Core Architecture (O09 — boundary + contract, NO implementation)
+# Tie-break library boundary and Burstein integration contract
 
-Future independent project/library `tiebreak-core`, conceptually independent
-from chess-manager. Status: OWNER DECISION (boundary/contract specified);
-implementation DEFERRED (no phase assigned before Dutch conformance).
+**Status (2026-10-27):** the independent `20kevit/tiebreak-core` library is
+published at v1.2.0 (source commit
+`61491321d7886ab4abe1b7c64686dfce48d2c3dd`). Pairing-Core does not depend on,
+copy, or reimplement its algorithms. The inspected version exposes C.07
+calculations; it has no C.04.4.2 Burstein Index calculator. This document
+replaces the earlier proposal that implied an existing Pairing-Core →
+tiebreak-core dependency.
 
-## 1. Boundary
+## 1. Product boundary
 
-tiebreak-core OWNS: standardized tie-break calculation (Buchholz + cuts,
-Sonneborn-Berger + team variants, Direct Encounter, Performance/TPR, Progressive,
-Koya, Neustadtl, others subject to research), deterministic versioned APIs,
-per-system diagnostics/explanations, golden/reference suites. It does NOT own:
-pairing, standings publication, rating reports, tournament state.
-pairing-core OWNS pairing; chess-manager OWNS orchestration. No component
-duplicates another's calculations (single-source rule below).
+- **Pairing-Core** owns one-round pairing decisions and pairing-specific
+  ordering/procedures. It does not calculate tournament standings or tie-breaks.
+- **tiebreak-core** owns the tie-break algorithms it explicitly implements
+  and versions. It does not own pairing or tournament lifecycle.
+- **The integrating application/caller** owns event records and composition
+  between these libraries. It must select values whose semantics match the
+  consuming ruleset; one library's output is not presumed interchangeable
+  with another rules chapter's value.
 
-## 2. System taxonomy (PROPOSED, explicitly non-final)
+## 2. Current Burstein input contract
 
-Official FIDE-defined (Handbook 07 + C.04-referenced: BH/cuts, SB/ESB, DE, WIN/
-WON, PS, Koya, TPR/PTP) vs commonly used (Median, Cumulative, Kashdan,
-Hort, Baumbach — each with provenance note) vs application-specific (namespaced,
-never in the standard registry) vs deprecated/historical (marked, retained for
-verification of old events only). Registry closed for standard, open via
-namespace for application-specific.
+After the Dutch seeding rounds, Pairing-Core's `pair_2026` requires a complete
+`BursteinIndexSet`: for every entrant, caller-supplied Buchholz and
+Sonneborn–Berger values plus a `BursteinIndexProvenance` declaration. The
+engine consumes those values only to form C.04.4.2 pairing order and
+pairing-specific bye/order decisions. It does not recompute or verify the
+calculation. Missing or roster-mismatched values fail with a typed request
+error; no rating, score, or C.07 fallback is substituted.
 
-## 3. Proposed API shape (contract only)
+The provenance distinguishes `caller-supplied` from `library-calculated` and
+can record producer, producer version, producer ruleset, and scope. This is a
+caller declaration, not independent proof that the value is correct. A caller
+that marks output from `tiebreak-core` must identify the C.07 ruleset actually
+used and independently establish semantic equivalence to the required C.04
+Index for the event data in question. In particular, do not assume equivalence
+for unplayed rounds, consecutive zero-point byes, or acceleration virtual
+points. If a semantically suitable C.04 calculator is unavailable, Burstein
+pairing is unavailable for that request.
 
-`calculate(system_id, standings_view, options) -> TiebreakTable`;
-`explain(system_id, standings_view, player) -> breakdown`;
-`systems() -> registry` with rule-version per system; typed errors
-(unknown-system, insufficient-data, version-mismatch). Pure functions; no I/O.
+The legacy `P26Request.round_results` field is retained for compatibility
+with old serialized requests. The public dispatcher rejects non-empty values
+for Burstein requests, where the field might otherwise be mistaken for an
+Index calculator input; other systems retain but ignore it. It is never an
+algorithm input and never calculates the Burstein Index.
 
-## 4. Data contract (minimal standings view — NOT tournament state)
+## 3. Direction of composition
 
-Ordered player records: id, points, per-round (opponent id | bye-kind, colour
-where played, result class incl. forfeit/unplayed taxonomy), withdrawn/removed
-markers. Producers: chess-manager (primary), pairing-core test harnesses
-(synthetic). tiebreak-core never imports pairing-core or chess-manager.
-
-## 5. Versioning
-
-Per-system rule versions (`buchholz.cut1@2026-03`) + library semver; Handbook
-07 effective dates tracked; deprecated systems frozen, never silently changed.
-
-## 6. Relationships & dependency direction
-
+```text
+integrating application ──► Pairing-Core (pairing)
+          │
+          └───────────────► tiebreak-core (its supported tie-breaks)
 ```
-chess-manager ──► tiebreak-core ◄── pairing-core (narrow ranking/index inputs only)
-      │                  │                    │
-   owns state      owns calculation      owns pairing
-```
-pairing-core depends on tiebreak-core ONLY for Burstein-required
-ranking/index data, via the narrow data contract (scalar/vector inputs, never
-callbacks into calculation). chess-manager may use both independently.
-Dependency direction is one-way toward tiebreak-core; it depends on nothing
-domain-specific (stdlib-only, mirroring pairing-core core).
 
-## 7. Burstein interaction
+There is no runtime dependency between the two libraries. The application
+may pass an externally calculated value set to Pairing-Core after verifying
+that the source system/version and event assumptions are suitable.
 
-Burstein's Buchholz-ordered groups consume precomputed Buchholz/SB vectors
-through the narrow contract; ordering semantics versioned with the ruleset.
-If tiebreak-core is unavailable, Burstein is unavailable (typed
-unsupported-capability, never silent fallback to rating order — O03 applies).
+## 4. Anti-duplication rule
 
-## 8. Duplicate-calculation prevention
+No Burstein Buchholz/SB formula is to be added to Pairing-Core. If the
+separate library later implements C.04.4.2, the application may use it only
+after its exact ruleset version, semantics, input assumptions, and error
+behavior have been verified against the official C.04 text and independent
+fixtures. Do not copy its implementation into Pairing-Core.
 
-Single-source rule: exactly one implementation per (system, version); pairing-core
-and chess-manager both call it; conformance goldens shared. No vendored copies.
+## 5. General tie-break scope
 
-## 9. Anti tournament-core guard
-
-No shared "tournament-core" aggregating pairing + tie-break + state. Each
-library stays single-purpose; composition happens in managers. Revisit ONLY if
-a concrete duplicated need (not hypothetical elegance) forces it — OWNER
-DECISION REQUIRED.
+Pairing-Core does not provide a general standings/tie-break API. Any future
+extension to `tiebreak-core` is owned by that project and requires its own
+source review and verification. Pairing-Core remains a pairing-only library;
+there is no shared "tournament-core" layer combining pairing, standings,
+results, ratings, or tournament state.

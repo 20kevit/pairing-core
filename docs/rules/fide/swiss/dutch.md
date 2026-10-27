@@ -1,4 +1,10 @@
-# Dutch System — Structured Research Note
+# Dutch System — Historical structured research note
+
+> This research-phase note contains superseded retrieval and implementation
+> statuses (including statements that the 2026 engine was not implemented).
+> Current source identity/effective date is in `../CURRENT_SYSTEM_CATALOG.md`;
+> current limitations and readiness are in `../../../audit/GAP_REGISTER.md`.
+> Read the official Handbook source before relying on any rule interpretation.
 
 ## Identity
 - System name: FIDE (Dutch) System. FIDE terminology: "FIDE (Dutch) System", C.04.3.

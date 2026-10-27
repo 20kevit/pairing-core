@@ -8,18 +8,24 @@ envelopes, under explicitly named, dated rulesets.
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **Status:** version `0.4.1` is a release candidate — committed on `main`,
-> CI-green on Python 3.10/3.11/3.12, not yet tagged or published to PyPI.
-> See [`docs/RELEASING.md`](docs/RELEASING.md).
+> **Status:** the published `v0.4.1` release is immutable and available on PyPI.
+> This checkout contains unreleased audit work versioned `0.4.2.dev0`; it has
+> not been released, formally evaluated by FIDE, or endorsed. The CI workflow
+> is configured for CPython 3.10–3.15; results are revision-specific. Python
+> 3.10 reached upstream end-of-life on 2026-10-01 and remains in the matrix
+> only to preserve the declared compatibility floor. See
+> [`docs/audit/GAP_REGISTER.md`](docs/audit/GAP_REGISTER.md)
+> and [`docs/audit/COMPLETION_STANDARD.md`](docs/audit/COMPLETION_STANDARD.md)
+> for the current evidence and separate readiness verdicts.
 
 ## Why pairing-core?
 
 Running a chess tournament requires deciding, every round, who plays whom
-under intricate Swiss-system rules — while guaranteeing the result is
-**correct, explainable, and exactly reproducible**. pairing-core is that
-decision engine as an independent library: your application owns players,
-results, and rounds; pairing-core owns the pairing decision and proves
-what it did.
+under intricate pairing rules. pairing-core is an independent library for
+one-round pairing decisions: your application owns tournament lifecycle,
+players, results and standings; pairing-core validates pairing requests and
+returns deterministic results with explicit ruleset and provenance metadata.
+Those engineering checks are not a proof of full FIDE-system conformance.
 
 - **Library-first.** No server, no database, no UI. Pure Python, zero
   runtime dependencies, importable anywhere.
@@ -48,7 +54,9 @@ application (e.g. `chess-manager`). See
 
 ## Key features
 
-- Nine Swiss rulesets plus Berger round robin (see table below).
+- Seven explicitly named Swiss rulesets (including the frozen compatibility
+  ruleset), a separately dated Olympiad team-pairing ruleset, and Berger
+  round robin (see table below).
 - Canonical consumer API (`pair_canonical`) plus a frozen legacy API
   (v0.1.0 behavior permanently pinned by golden tests).
 - Typed errors for every failure mode (`PairingError` hierarchy).
@@ -58,46 +66,56 @@ application (e.g. `chess-manager`). See
   canonical JSON, digest-verified round-trips.
 - TRF interchange subset (BBP-verified) and supervised BBP/JaVaFo
   adapters with bounded output capture and roster validation.
-- ~500-test suite: goldens, conformance corpus, hostile audit cases,
-  property tests, hash-seed determinism sweeps, adversarial security
-  tests, performance gates, release gates.
+- Automated tests covering goldens, source-linked and adversarial cases,
+  property behavior, determinism, security, performance and packaging. Test
+  success is engineering evidence only; it is not external FIDE evaluation.
 
-## Supported pairing systems (v0.4.1)
+## Pairing systems in the current source
 
-| Ruleset id | System | Entry point | Standing |
+The ruleset identifiers below select code paths; they are not certification
+or blanket conformance claims. Engineering status and system-specific
+evidence are reported separately in the [gap register](docs/audit/GAP_REGISTER.md)
+and [completion standard](docs/audit/COMPLETION_STANDARD.md).
+
+| Ruleset id | System | Entry point | Scope / limitation |
 |---|---|---|---|
-| `dutch-till2026-compat` | Dutch, pre-2026 formulation (frozen kernel) | `pair` / `pair_canonical` | Behavior pinned by 41 goldens; two frozen deviations (E.5, float-bar) |
-| `dutch-2026` | Dutch 2026 (C1–C21 criteria search) | `pairing_core.fide2026.pair_2026` | Implemented, evidence-backed; limitation L1 |
-| `dubov-2026` | Dubov 2026 | `pair_2026` | Implemented, evidence-backed |
-| `burstein-2026` | Burstein 2026 | `pair_2026` | Implemented, evidence-backed; limitation L1 |
-| `lim-2026` | Lim 2026 | `pair_2026` | Implemented, evidence-backed; limitations L4, I-L-412 |
-| `double-2026` | Double Swiss 2026 (match play) | `pair_2026` | Implemented, evidence-backed; limitation L3 |
-| `team-2026` | Team Swiss 2026 | `pair_2026` | Implemented, evidence-backed; limitation L3 |
-| `olympiad-2022` | Olympiad Pairing Rules | `pair_2026` | Implemented, evidence-backed; limitation L5 |
-| `baku` helpers | Accelerated Baku method (group split + virtual points) | `pairing_core.fide2026.baku` | Implemented, evidence-backed |
-| Berger round robin | FIDE C.05 Annex 1 tables, single/double | `round_robin` | Validated |
+| `dutch-till2026-compat` | Dutch, pre-2026 formulation (frozen kernel) | `pair` / `pair_canonical` | Compatibility behavior is golden-pinned; it is not the current 2026 formulation and retains documented deviations. |
+| `dutch-2026` | Dutch 2026 | `pairing_core.fide2026.pair_2026` | Implementation exists; exact-search ceilings and documented rule readings remain. |
+| `dubov-2026` | Dubov 2026 | `pair_2026` | Implementation exists; caller-owned ratings/history and per-system evidence limits remain. |
+| `burstein-2026` | Burstein 2026 | `pair_2026` | Requires a complete externally supplied C.04 Burstein Index set and provenance after seeding; Pairing-Core does not calculate Buchholz or SB. |
+| `lim-2026` | Lim 2026 | `pair_2026` | Implementation exists; documented scrutiny/ordering approximations remain. |
+| `double-2026` | Double Swiss 2026 (match play) | `pair_2026` | Implementation exists; bounded next-bracket lookahead is a strategy/limitation, not proof of full conformance. |
+| `team-2026` | Team Swiss 2026 | `pair_2026` | Pairing mechanics exist; event composition, lineup and score valuation are caller-owned. |
+| `olympiad-2022` | Olympiad Pairing Rules | `pair_2026` | Separate dated team system; source/procedure evidence qualifications and caller-owned event facts remain. |
+| `baku` helper | Accelerated Baku method | `pairing_core.fide2026.baku` | Helper only; application of acceleration and standings data remain caller responsibilities. |
+| Berger round robin | Berger tables, single/double | `round_robin` | Table generation is implemented; official-example evidence is limited to the documented tests. |
 
-"Implemented, evidence-backed" means: built from retrieved source text,
-covered by rule→source→code→test traceability
-([`docs/rules/fide/RULE_SOURCE_MATRIX.md`](docs/rules/fide/RULE_SOURCE_MATRIX.md)),
-and passed through hostile conformance audit + closure
-([`docs/audit/FIDE_CONFORMANCE_MATRIX.md`](docs/audit/FIDE_CONFORMANCE_MATRIX.md)).
-It does **not** mean FIDE-endorsed.
+Pairing-Core's tests and rule-source maps are engineering evidence, not a
+FIDE checker certificate. Formal evaluation applies to a Tournament Handler
+Program, a broader product than this library; Pairing-Core is not shown on
+the official endorsed-program list retrieved for this audit. No endorsement
+or full-system conformance is claimed.
 
-Out of scope with reason: KO/match/playoff orchestration,
-general tie-break calculation (future independent `tiebreak-core`),
-ratings, persistence, UI, web APIs. Authority:
-[`docs/CAPABILITY.md`](docs/CAPABILITY.md).
+General tie-break calculation is outside this library. `tiebreak-core` is a
+separate project with a separate API; Pairing-Core has no dependency on it and
+does not treat C.07 values as C.04 Burstein Index values. See the explicit
+[Burstein integration boundary](docs/spec/TIEBREAK_ARCHITECTURE.md#2-current-burstein-input-contract).
+Other out-of-scope capabilities include KO/playoff orchestration, ratings,
+tournament management, standings and results persistence, UI, and web APIs.
 
 ## Installation
 
-Requires Python `>=3.10` (tested on 3.10, 3.11, 3.12). Zero runtime
+Requires Python `>=3.10`. The CI workflow matrix covers CPython 3.10–3.15;
+3.10 remains for compatibility despite upstream end-of-life. Zero runtime
 dependencies — a plain install pulls nothing but the library.
 
 ```bash
-# Once v0.4.1 is published (not on PyPI yet):
+# Installs the latest published release (v0.4.1 at the time of writing):
 pip install pairing-core
 ```
+
+The `0.4.2.dev0` source in this checkout is unreleased; use an explicit
+source checkout only when you intentionally want the audit branch's changes.
 
 From source (works today):
 
@@ -294,52 +312,52 @@ compatible for legacy callers):
 
 Bring-your-own binaries at the adapter edge (`pairing_core.adapters`):
 supervised subprocess (argv only, no shell), required timeouts,
-kill-after-grace with reaping, 10 MiB per-stream output caps enforced
-*during* collection, strict UTF-8, TRF interchange (BBP-verified subset),
-and roster validation of every external result (unknown, duplicate,
-self-paired, multi-bye, or incomplete output → `InternalError`). Nothing
-is vendored, downloaded, or PATH-searched.
+10 MiB per-stream output caps enforced *during* collection, strict UTF-8,
+TRF interchange (BBP-verified subset), and roster validation of every
+external result. On POSIX each run is isolated and timeout/output-overflow
+cleanup terminates its process group; on Windows the standard-library
+fallback guarantees direct-child cleanup only. Nothing is vendored,
+downloaded, or PATH-searched.
 
 `versions()` reports adapters truthfully as `adapter-edge` (code exists
 with BYO/limit qualifications) rather than `implemented` or
 `not-implemented`.
 
-## FIDE rules and conformance status
+## Evidence, conformance and limitations
 
-Rulesets are named after the FIDE Handbook articles they implement, with
-effective dates, and every rule maps to source → code → test
-([`docs/rules/fide/RULE_SOURCE_MATRIX.md`](docs/rules/fide/RULE_SOURCE_MATRIX.md)).
-Conformance standing — including every explicit interpretation where FIDE
-is silent — is registered rule-by-rule in
-[`docs/audit/FIDE_CONFORMANCE_MATRIX.md`](docs/audit/FIDE_CONFORMANCE_MATRIX.md),
-closed in
-[`docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md`](docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md).
+The official sources and effective dates, direct source retrieval, known
+interpretations, implementation strategies and unresolved system limitations
+are tracked in the current [audit gap register](docs/audit/GAP_REGISTER.md).
+Older conformance matrices and closure reports are historical project
+records, not independent or current certification evidence. The gap register
+and [completion standard](docs/audit/COMPLETION_STANDARD.md) govern the
+current readiness statements.
 
-> Pairing-Core does not claim FIDE endorsement or blanket FIDE conformance.
+> Pairing-Core does not claim FIDE endorsement, certification, approval,
+> blanket conformance, or formal FIDE evaluation.
 
-This project is an independent implementation with disclosed
-interpretations and limitations. Cross-checks include 41 frozen goldens,
-the official-example corpus, BBP/JaVaFo differentials, and a hostile
-adversarial suite.
+The official FIDE Endorsed Programs PDF retrieved for this audit does not
+list Pairing-Core. No later decision naming this product was found in the
+sources searched; this is not an exhaustive proof that no later decision
+exists. A successful local test suite is not a FIDE checker certificate.
 
-## Known limitations (v0.4.1)
+Known, material limits include:
 
-- **L1** — exact-search factorial ceilings (Dutch/Burstein big brackets):
-  typed timeouts, no heuristic pruning.
-- **L3** — Double/Team full-C3 lookahead beyond the next bracket is a
-  documented policy approximation.
-- **L4** — Lim 4.2 #2-row interleaving exactness is a documented
-  approximation.
-- **L5** — Olympiad source PDF per se unobtained; retrieved chapter text
-  (§§1–11) is complete and sufficient.
-- **I-L-412** — Lim upward-search shape is a genuine ambiguity; exact
-  mirror adopted as the deterministic default.
-- Frozen compat deviations (E.5 round-1 parity colours, absolute 3rd-float
-  bar): confirmed, intentionally frozen per O08.
-
-Each links to its authoritative explanation in the closure report (§L)
-and the matrix register. Nothing here is hidden; nothing is
-"fully compliant" where an interpretation is registered.
+- **Burstein integration:** after Dutch seeding rounds, `pair_2026` requires
+  a complete per-player `BursteinIndexSet` with source provenance. Pairing-Core
+  does not calculate Buchholz or Sonneborn–Berger. The separate
+  `tiebreak-core` library exposes C.07 values, which are not treated as C.04
+  values without separately verified semantic equivalence.
+- **Exact-search ceilings:** dense Dutch/Burstein brackets may terminate with
+  a typed timeout rather than a pairing; no heuristic result is substituted.
+- **Double/Team:** next-bracket lookahead is a documented implementation
+  strategy/limitation and not proof of full criterion conformance.
+- **Lim:** documented scrutiny/order approximations and unresolved readings
+  remain; see the gap register.
+- **Olympiad:** distinct 2022 source/evidence posture and caller-owned event
+  facts remain; see the gap register.
+- **Frozen compatibility ruleset:** it preserves historic behavior and
+  documented deviations; it is not the current 2026 FIDE formulation.
 
 ## Architecture
 
@@ -370,16 +388,18 @@ flowchart TD
 
 ## Testing and quality
 
-Snapshot at v0.4.1: **524 passed, 0 failed, 16 skipped** (skips are
-environment-gated live oracles/heavy benchmarks — run the suite for
-current numbers). Coverage by behavior, not percentage:
+Published v0.4.1 audit baseline: **527 passed, 16 skipped** on Python 3.11.
+That is not the test result for this unreleased `0.4.2.dev0` source checkout;
+current verification results are reported separately. Coverage is described
+by behavior, not percentage:
 
 - Frozen v0.1.0 goldens (41) + contract tests — behavior can never
   silently drift.
 - Official-example corpus + rule-traceability tests.
 - Hostile/adversarial suites (conformance attacks, output flooding,
   malicious engine output, malformed TRF).
-- Seeded property tests across all seven 2026 rulesets.
+- Seeded property tests across the seven `fide2026` entry-point systems:
+  six 2026 C.04 systems and the separately dated `olympiad-2022` ruleset.
 - Hash-seed determinism sweeps.
 - Env-gated BBP/JaVaFo live differentials.
 - Performance gates (ordinary + pathological sizes, bounded-failure
@@ -387,14 +407,16 @@ current numbers). Coverage by behavior, not percentage:
 - Release gates (product files, metadata/catalog consistency, examples,
   zero-dependency contract, clean-tree).
 
-CI runs all of this on Python 3.10, 3.11, and 3.12, then builds,
-inspects, and smoke-tests install artifacts.
+CI is configured to run this suite on CPython 3.10–3.15, then builds,
+inspects, and smoke-tests install artifacts. The exact revision's CI result,
+not the matrix declaration, is the evidence of a passing interpreter.
 
 ## Security
 
 - External binaries: argv-only, no shell, explicit paths, required
-  timeouts, kill-after-grace + reaping, 10 MiB/stream caps enforced
-  during collection, strict UTF-8, temp-dir cleanup.
+  timeouts, POSIX process-group cleanup with TERM grace then KILL,
+  10 MiB/stream caps enforced during collection, strict UTF-8, temp-dir
+  cleanup. Windows currently guarantees direct-child cleanup only.
 - External results: syntax-checked *and* roster-validated (unknown,
   duplicate, self-paired, multi-bye, incomplete → `InternalError`).
 - Exact search: step budgets + wall-clock limits; ceilings raise typed
@@ -411,7 +433,9 @@ Full policy and reporting:
 
 - Start: this README, [`docs/INDEX.md`](docs/INDEX.md),
   [`examples/`](examples/) (`basic_swiss.py`, `custom_provider.py`).
-- Product: [`docs/CAPABILITY.md`](docs/CAPABILITY.md) (authority),
+- Product: [`docs/CAPABILITY.md`](docs/CAPABILITY.md),
+  [`docs/audit/GAP_REGISTER.md`](docs/audit/GAP_REGISTER.md) (current audit
+  authority), [`docs/audit/COMPLETION_STANDARD.md`](docs/audit/COMPLETION_STANDARD.md),
   [`CHANGELOG.md`](CHANGELOG.md),
   [`docs/spec/TOURNAMENT_BOUNDARIES.md`](docs/spec/TOURNAMENT_BOUNDARIES.md).
 - Contracts: [`docs/spec/API_TIERS.md`](docs/spec/API_TIERS.md),

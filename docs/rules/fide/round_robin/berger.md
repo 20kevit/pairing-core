@@ -23,11 +23,16 @@
 - Pairing-number assignment (caller-owned, frozen — same policy as Swiss).
 - Bye-as-round bookkeeping distinct from Swiss PAB (rotates; no score logic).
 
-## pairing-core status
-- `round_robin` Berger schedules IMPLEMENTED, validated against C.05 Annex 1 tables.
-- Remaining (NOTE): double-cycle swap, rounds-schedule result type
-  (current `RoundResult` is single-round).
-- Status: FULLY SPECIFIED.
+## Pairing-Core evidence status
+- The implementation and direct table comparisons are in
+  `src/pairing_core/roundrobin.py` and `tests/test_roundrobin.py`.
+- Exact official-table comparisons cover every published field size N=3–16,
+  including odd-field bye placement. These tests verify the transcribed table
+  outputs; they are not a formal evaluation of every C.05 obligation.
+- Double-cycle colour swapping is implemented. Reversing the final two rounds
+  of the first cycle is a recommendation in the official annex, not a
+  mandatory rule. The schedule API/output shape remains an implementation
+  choice, not a FIDE requirement.
 
 ## Ambiguities
 - None load-bearing. A-R1 (minor): Varma Annex 2 restricted-draw detail
