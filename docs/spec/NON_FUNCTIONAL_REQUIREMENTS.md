@@ -1,4 +1,9 @@
-# Non-Functional Requirements (STAGE 3 SPEC — PROPOSED)
+# Non-Functional Requirements (HISTORICAL STAGE-3 PROPOSAL)
+
+> This is an earlier design draft, not the current acceptance standard. See
+> [`../audit/COMPLETION_STANDARD.md`](../audit/COMPLETION_STANDARD.md) for
+> measurable current gates and [`../audit/GAP_REGISTER.md`](../audit/GAP_REGISTER.md)
+> for evidence/status.
 
 Supplements PRODUCT_REQUIREMENTS.md (functional IDs live there).
 
@@ -21,8 +26,11 @@ Supplements PRODUCT_REQUIREMENTS.md (functional IDs live there).
   dependency (return diagnostics, don't log).
 - **Compatibility**: semver + contract tiers + deprecation windows (≥1 minor
   for behavioural changes; immediate only for safety violations with advisory).
-- **Portability**: core pure-Python, stdlib-only, 3.10+ floor re-validated by CI
-  matrix; adapters declare extras (`bbp`, `javafo`) with platform notes.
+- **Portability**: core is pure-Python and stdlib-only. The declared Python
+  floor and revision-specific CI matrix are recorded in
+  [`../audit/DEPENDENCIES.md`](../audit/DEPENDENCIES.md); Python 3.10 is kept
+  for compatibility despite upstream end-of-life. External-engine adapters
+  are explicit bring-your-own-binary integrations, not install extras.
 - **Licensing**: L-MIT-01; SBOM-friendly (zero runtime deps to attest).
 - **Documentation**: spec suite versioned with code; FIDE-rule citations carry
   system + effective date; uncertainty labels retained in user docs.

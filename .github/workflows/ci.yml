@@ -11,21 +11,27 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Validate FIDE sources, clause references and generated views (offline)
+        run: python3 tools/fide_evidence.py check
       - name: Install test tooling (runtime stays dependency-free)
         run: python3 -m pip install --upgrade pip && python3 -m pip install -e ".[test]"
+      - name: Compile and targeted undefined-name gate
+        run: |
+          python3 -m compileall -q src tests
+          ruff check --isolated --select F821 src tests
       - name: Full test suite (oracle tests skip without BYO binaries)
         run: python3 -m pytest tests/ -q
       - name: Determinism under a second hash seed
         run: PYTHONHASHSEED=12345 python3 -m pytest tests/test_determinism.py tests/test_canonical.py tests/test_v010_behavioral.py -q
       - name: Suite leaves the tree clean (no baseline/cache churn)
         run: test -z "$(git status --porcelain)" || (git status --porcelain && exit 1)
-      - name: Build wheel + sdist (warning-free)
+      - name: Build wheel + sdist (reject deprecated-license warnings)
         run: |
           python3 -m pip install --upgrade pip build
           rm -rf dist/ build/

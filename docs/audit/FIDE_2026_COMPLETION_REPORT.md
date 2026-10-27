@@ -1,4 +1,11 @@
-# FIDE 2026 Completion Report (completion wave, 2026-10-03)
+# Historical FIDE-2026 completion report (2026-10-03)
+
+> Prior project closure-wave record, not current authoritative status or
+> independent FIDE evaluation. Its Burstein `round_results`/virtual-point
+> description is superseded: current Pairing-Core requires an external
+> `BursteinIndexSet` and does not calculate C.04 Index values. See current
+> [`GAP_REGISTER.md`](GAP_REGISTER.md) and
+> [`COMPLETION_STANDARD.md`](COMPLETION_STANDARD.md).
 
 Baseline `2fdba62` → head at report time (see git log). v0.1.0/v0.2.0 behavior
 preserved (frozen kernel, goldens, full legacy suite green). No FIDE

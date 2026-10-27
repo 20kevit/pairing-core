@@ -1,21 +1,26 @@
-# FIDE Endorsement Readiness (STAGE 4, §4.8 — classification only, no claim)
+# FIDE evaluation and endorsement status
 
-Requirement → status (satisfied / partially / not / unknown):
+**Current status (2026-10-27):** Pairing-Core has not been formally evaluated
+by FIDE and no endorsement evidence was found in the official list retrieved
+for this audit. No candidacy, certification, approval, or endorsement claim
+is made. This document supersedes the older staged roadmap checklist below;
+its proposed FPC/VCL/RTG items are not a checklist for Pairing-Core to satisfy
+as a library.
 
-| Requirement (from §2.12 research) | Status | Evidence / gap |
-|---|---|---|
-| Named program + pinned version | NOT SATISFIED | no release process yet (E-REL-01 PROPOSED) |
-| Named pairing system + ruleset date | PARTIALLY | native ≈ pre-2026 kernel, undated; RulesetId PROPOSED |
-| Named engine identity + version | PARTIALLY | `NativeDutchEngine` exists, unversioned; EngineId PROPOSED |
-| FPC-equivalent (standalone checker) | PARTIALLY | validator exists, no TRF, no CLI; checker-mode PROPOSED |
-| RTG-equivalent / seeded corpus | NOT SATISFIED | no generator; corpus tooling PROPOSED (roadmap 2) |
-| VCL-style checklist self-run | NOT SATISFIED | no checklist; self-VCL PROPOSED (roadmap 10) |
-| Tie-break correctness (VCL.19) | UNKNOWN | tie-breaks OUT of scope; Burstein needs inputs-as-data (decision needed if Burstein pursued) |
-| Error classification + fix SLA process | NOT SATISFIED | ValueError-only; taxonomy PROPOSED |
-| Version-pinned re-endorsement discipline | NOT SATISFIED | VERSIONING.md PROPOSED, not implemented |
-| Reproducibility dossier | NOT SATISFIED | envelope PROPOSED |
+FIDE C.02.03, effective 2026-03-01, defines a Tournament Handler Program as a
+product that manages player data, pairings and results and lists application-
+level requirements. Pairing-Core deliberately supplies only pairing-library
+functionality, so formal THP evaluation is not an acceptance criterion it can
+meet alone. An integrating product may pursue evaluation for its own declared
+scope and version; that would not transfer an endorsement to the library.
 
-Overall: endorsement is a late-roadmap phase with ALL prerequisites open.
-No candidacy, no claim, no timeline promise. The concrete enablers are
-checker-mode, seeded corpora, versioning, and the VCL-style self-checklist —
-each acceptance-gated in ACCEPTANCE_CRITERIA.md.
+The official FIDE Endorsed Programs list retrieved for this audit is
+`C04Annex3_FEP22.pdf` (2022 vintage) and does not list Pairing-Core. No later
+FIDE decision naming Pairing-Core was found in sources searched; this bounded
+finding is not an exhaustive proof that no later decision exists. Recheck a
+current authoritative record before making any future statement.
+
+See [`../audit/GAP_REGISTER.md`](../audit/GAP_REGISTER.md) for the exact
+source and limitations, and
+[`../audit/COMPLETION_STANDARD.md`](../audit/COMPLETION_STANDARD.md) for the
+required separate evaluation/endorsement verdicts.

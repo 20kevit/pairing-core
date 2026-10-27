@@ -1,8 +1,11 @@
-# Caller contracts: tournament-result data vs pairing inputs (closure wave)
+# Caller contracts: event facts vs pairing inputs
 
-Pairing needs standings, not games. Everything below is typed, validated,
-and never silently defaulted: missing data raises `InvalidPlayerError`
-(ratings/results) or `InvalidRequestError`, never a guessed pairing.
+**Status (2026-10-27):** this is a boundary guide, not an exhaustive proof
+that every rule-sensitive caller fact is present or correct. The current
+audit register supersedes older closure-wave claims. Pairing-Core accepts
+pairing-relevant event state; it does not manage results or compute
+standings/tie-breaks. Missing required fields fail with typed errors rather
+than guessed values.
 
 ## Match ↔ game mapping (Double Swiss, Preface + 1.4 + 1.6)
 
@@ -29,8 +32,14 @@ and never silently defaulted: missing data raises `InvalidPlayerError`
 
 - Dubov ratings (1.1.1–1.1.2, provisional by arbiter): missing → typed error.
 - Dubov `prior_upfloats` cumulative counts (C8–C10 maximum-upfloat guards).
-- Burstein `round_results` W/D/L per played opponent (1.7); virtual points
-  stripped caller-side (1.7.2.2); self-game points live in current scores.
+- Burstein post-seeding requests require a complete `BursteinIndexSet` and
+  declared provenance for every player. Pairing-Core consumes but does not
+  calculate or verify C.04 Buchholz/SB values. Acceleration virtual points,
+  unplayed rounds, and consecutive zero-point byes remain part of the
+  external calculator's semantic responsibility; legacy `round_results` is
+  retained for serialization compatibility but rejected by `pair_2026` for
+  Burstein requests when non-empty. Other systems do not use it to calculate
+  pairing order or tie-break values.
 - Unplayed counts (`unplayed`, `'u'` rounds) feed Dutch C9 / PAB preferences.
 - Team TPN = competition-assigned number (C.04.6 1.1); Olympiad TPN =
   initial pairing number (F-0601 3.1 — helper `seed_initial_numbers`

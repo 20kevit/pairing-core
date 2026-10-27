@@ -22,7 +22,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from pairing_core.controls import ExecutionBudgets
-from pairing_core.errors import ImpossiblePairingError
+from pairing_core.errors import ImpossiblePairingError, InvalidRequestError
 from pairing_core.fide2026 import common as C
 from pairing_core.fide2026.common import Stepper
 from pairing_core.fide2026.models import P26Pair, P26Pairing, P26Player, P26Request
@@ -44,27 +44,66 @@ def select_olympiad_bye(teams: Sequence[P26Player]) -> P26Player:
     return min(cands, key=lambda p: (p.score, -p.tpn))
 
 
-def seed_initial_numbers(entries: Sequence[Tuple[int, Sequence[int], str]]
-                         ) -> Dict[int, int]:
-    """Art.3.1 initial pairing numbers: avg of four highest ratings desc,
-    then fifth-player rating desc, then alphabetical, then id asc
-    (deterministic final tiebreak). Unrated/missing board ratings count 0.0;
-    a missing fifth rating sorts after any present one. Caller duty to feed
-    board ratings; pairing uses the resulting numbers as TPNs."""
+def seed_initial_numbers(
+    entries: Sequence[Tuple[int, Sequence[int], str]],
+) -> Dict[int, int]:
+    """Art.3.1 helper: average of the four highest ratings, fifth rating,
+    then alphabetical name. Requires exactly five known integer ratings per
+    team so neither ranking criterion is fabricated. Identical names use
+    entrant id as a deterministic project fallback; Pairing-Core does not
+    assign or verify tournament roster/rating data.
+    """
+    if not isinstance(entries, Sequence) or isinstance(entries, (str, bytes)):
+        raise InvalidRequestError("Olympiad seed entries must be a sequence.")
+    if not entries:
+        raise InvalidRequestError("Olympiad seed entries must not be empty.")
+
     keyed = []
-    for pid, ratings, name in entries:
-        r = sorted((x if x is not None else 0 for x in ratings),
-                   reverse=True)
-        avg4 = sum(r[:4]) / 4.0 if r[:4] else 0.0
-        fifth = r[4] if len(r) >= 5 else None
+    seen_ids = set()
+    for entry in entries:
+        if not isinstance(entry, (tuple, list)) or len(entry) != 3:
+            raise InvalidRequestError(
+                "each Olympiad seed entry must be (team_id, ratings, name).")
+        pid, ratings, name = entry
+        if not isinstance(pid, int) or isinstance(pid, bool) or pid < 1:
+            raise InvalidRequestError("Olympiad seed team_id must be positive.")
+        if pid in seen_ids:
+            raise InvalidRequestError("Olympiad seed team_id values must be unique.")
+        seen_ids.add(pid)
+        if not isinstance(ratings, Sequence) or isinstance(ratings, (str, bytes)):
+            raise InvalidRequestError(
+                f"team {pid} ratings must be a sequence of five integers.")
+        if len(ratings) != 5:
+            raise InvalidRequestError(
+                f"team {pid} must provide exactly five ratings for Art.3.1.")
+        if any(not isinstance(rating, int) or isinstance(rating, bool)
+               or rating < 0 for rating in ratings):
+            raise InvalidRequestError(
+                f"team {pid} ratings must be known non-negative integers.")
+        if not isinstance(name, str) or not name.strip():
+            raise InvalidRequestError(f"team {pid} name must be non-empty text.")
+        ordered_ratings = sorted(ratings, reverse=True)
+        avg4 = sum(ordered_ratings[:4]) / 4.0
+        fifth = ordered_ratings[4]
         keyed.append((pid, avg4, fifth, name))
-    keyed.sort(key=lambda e: (-e[1], -(e[2] if e[2] is not None else -1),
-                              e[3], e[0]))
+    keyed.sort(key=lambda e: (-e[1], -e[2], e[3], e[0]))
     return {pid: i + 1 for i, (pid, _, _, _) in enumerate(keyed)}
 
 
 def median_score_group(ranked: Sequence[P26Player]) -> float:
-    """Art.6.4: score of the median team (even count -> lower of two middles)."""
+    """Art.6.4: score of the median team (even count -> lower of two middles).
+
+    `ranked` must already follow Article 3.2: matchpoints descending, then
+    initial pairing number ascending.
+    """
+    if not ranked:
+        raise InvalidRequestError("Olympiad median requires at least one team.")
+    if any(not isinstance(team, P26Player) for team in ranked):
+        raise InvalidRequestError(
+            "Olympiad median input must contain P26Player values.")
+    if list(ranked) != _rank(ranked):
+        raise InvalidRequestError(
+            "Olympiad median input must be ranked by score and initial number.")
     n = len(ranked)
     median = ranked[n // 2]  # lower middle for even n; middle for odd
     return median.score
@@ -336,7 +375,7 @@ def _process_group(gi, order, scores, members_of, med, by_id, stepper,
         if di is None:
             raise ImpossiblePairingError(
                 f"8.4-floater {extra.id} has nowhere to go.")
-        send(extra.id, di, "U" if is_below or is_median else "D")
+        send(extra.id, di, "U" if is_below else "D")
         res = pair_9x(rest, by_id, stepper, reverse_scrutiny=is_below)
         if res is None:
             res = pair_9x(rest, by_id, stepper, ignore_colour_bans=True,
@@ -386,14 +425,6 @@ def _refloater(rest, is_below, by_id, stepper):
                    reverse_scrutiny=is_below) is not None:
             return cand
     return None
-    groups = []
-    cur = None
-    for p in ranked:
-        if cur is None or cur[0] != p.score:
-            cur = (p.score, [])
-            groups.append(cur)
-        cur[1].append(p.id)
-    return groups
 
 
 def _assign_board_colour(a: P26Player, b: P26Player, *, req: P26Request,
@@ -482,7 +513,8 @@ def _select_floater(work, is_below, is_median, by_id, stepper, order,
                              is_below, is_median)
         if dest_gi is None:
             continue  # 8.x.3: no playable adjacent group for this candidate
-        return cand, dest_gi, ("U" if dest_gi < gi else "D")
+        tag = "D" if order[dest_gi][0] < order[gi][0] else "U"
+        return cand, dest_gi, tag
     # 8.x.4 fallback: no candidate can play adjacent — take the rank-default
     # candidate and skip groups until a playable one (loops inside _find).
     cand = cands[0]
@@ -491,7 +523,8 @@ def _select_floater(work, is_below, is_median, by_id, stepper, order,
     if dest_gi is None:
         raise ImpossiblePairingError(
             "odd Olympiad group has no reachable destination (Art.8).")
-    return cand, dest_gi, ("U" if dest_gi < gi else "D")
+    tag = "D" if order[dest_gi][0] < order[gi][0] else "U"
+    return cand, dest_gi, tag
 
 
 def _group_teams(dest_gi, order, members_of, queue, by_id, paired):

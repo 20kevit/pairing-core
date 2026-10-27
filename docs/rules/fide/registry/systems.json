@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-27",
+  "records": [
+    {
+      "id": "dutch-2026",
+      "name": "FIDE (Dutch) System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0105"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/dutch.py::pair_dutch"
+      ],
+      "status": "implemented_with_open_limitations",
+      "scope_note": "Pairing algorithm only. Tournament setup, standings, score valuation, result correction and publication remain caller/arbiter responsibilities.",
+      "limitations": [
+        "Exact search has declared deterministic ceilings; exhaustion is a typed failure, not a conformance result.",
+        "C8 look-ahead is limited to the next bracket and is a documented implementation strategy.",
+        "Some rule readings and complete per-system independent verification remain open (G-11)."
+      ]
+    },
+    {
+      "id": "dubov-2026",
+      "name": "Dubov System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0108"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/dubov.py::pair_dubov"
+      ],
+      "status": "implemented_with_open_limitations",
+      "scope_note": "Pairing algorithm only. Ratings, TPN assignment/recalculation, score histories and event facts are supplied by the caller.",
+      "limitations": [
+        "Per-system behavior has not been independently established for every clause or input family.",
+        "Bounded-search exhaustion returns a typed error; no partial pairing is published."
+      ]
+    },
+    {
+      "id": "burstein-2026",
+      "name": "Burstein System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0110"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/burstein.py::pair_burstein"
+      ],
+      "status": "partial_external_index_required",
+      "scope_note": "Pairing procedure only. Pairing-Core does not calculate the C.04.4.2 Index. After seeding, the caller must supply a complete, finite, provenance-labelled C.04 Index set; missing values are rejected.",
+      "limitations": [
+        "No local C.04 Burstein Index calculation is implemented.",
+        "C.07 Buchholz/Sonneborn-Berger implementations are not assumed equivalent to C.04.4.2 values or unplayed-round rules.",
+        "The external value producer's semantics and tournament-state correctness remain caller obligations."
+      ]
+    },
+    {
+      "id": "lim-2026",
+      "name": "Lim System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0112"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/lim.py::pair_lim"
+      ],
+      "status": "implemented_with_open_limitations",
+      "scope_note": "Pairing algorithm only. Maxi-tournament rating premises and tournament-management facts are caller-owned.",
+      "limitations": [
+        "Some upward-scrutiny and ordering readings remain under audit.",
+        "No independent full-system conformance evidence has been established."
+      ]
+    },
+    {
+      "id": "double-2026",
+      "name": "Double-Swiss System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0114"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/double_team.py::pair_double_or_team"
+      ],
+      "status": "implemented_with_open_limitations",
+      "scope_note": "Pairing procedure only. Match results, forfeits, points and their standings valuation are caller-owned inputs.",
+      "limitations": [
+        "Next-bracket look-ahead and search ordering are implementation strategies, not independent proof of full rule equivalence.",
+        "No independent full-system conformance evidence has been established."
+      ]
+    },
+    {
+      "id": "team-2026",
+      "name": "Swiss Team Pairing System, 2026 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0101",
+        "F-0103",
+        "F-0115"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/double_team.py::pair_double_or_team"
+      ],
+      "status": "implemented_with_open_limitations",
+      "scope_note": "Teams are pairing units. Team composition, lineups, match/game point valuation, primary/secondary score policy, team TPNs and roster management remain caller-owned.",
+      "limitations": [
+        "Type A/B/none colour preferences are represented, but complete per-clause independent verification remains open.",
+        "Next-bracket look-ahead and search ordering are implementation strategies, not independent proof of full rule equivalence."
+      ]
+    },
+    {
+      "id": "olympiad-2022",
+      "name": "Olympiad Pairing Rules, 2022 edition",
+      "kind": "pairing_system",
+      "source_ids": [
+        "F-0601"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/olympiad.py::pair_olympiad"
+      ],
+      "status": "dated_2022_rules_currentness_unverified",
+      "scope_note": "Dated event-specific team pairing procedure. Event administration, team presence/eligibility and board lineup management are not provided.",
+      "limitations": [
+        "Independent per-system evidence is incomplete; see G-11 and the remaining partial, disputed, and out-of-scope clauses.",
+        "The source/effective date is retained as 2022-01-01; this is not silently promoted to a 2026 C.04 system.",
+        "Source currentness is unknown: the 2022 chapter and effective date were retrieved, but the search is bounded and does not prove no later Olympiad rules exist."
+      ]
+    },
+    {
+      "id": "baku",
+      "name": "Baku Acceleration helper, 2026 edition",
+      "kind": "helper",
+      "source_ids": [
+        "F-0103",
+        "F-0117"
+      ],
+      "entry_points": [
+        "src/pairing_core/fide2026/baku.py::split_groups",
+        "src/pairing_core/fide2026/baku.py::virtual_points",
+        "src/pairing_core/fide2026/baku.py::pairing_scores"
+      ],
+      "status": "partial_helper_only",
+      "scope_note": "Pure helper functions for GA/GB and virtual-point inputs. Pairing-Core does not select an acceleration policy, manage late entries, verify scoring premises, or manage tournament standings.",
+      "limitations": [
+        "Caller is responsible for correct event eligibility, late-entry history and applying the helper to the intended Swiss system.",
+        "Only the source's worked examples and selected helper behavior have regression fixtures."
+      ]
+    },
+    {
+      "id": "berger",
+      "name": "Berger round-robin tables, C.05 Annex 1",
+      "kind": "fixed_pairing_schedule",
+      "source_ids": [
+        "F-0501",
+        "F-0502",
+        "F-0503"
+      ],
+      "entry_points": [
+        "src/pairing_core/roundrobin.py::round_robin"
+      ],
+      "status": "implemented_for_documented_schedule_scope",
+      "scope_note": "Generates the published Berger schedule for field sizes 3–16 and supports double-cycle colour swapping. It is a fixed schedule, not a searched Swiss pairing.",
+      "limitations": [
+        "Official Annex tables cover the recorded range; structural behavior outside that range is not an official-example comparison.",
+        "Reversing the last two rounds in a double round robin is a recommendation exposed as an option, not a mandatory rule.",
+        "C.05 parent §5.1/§5.3 pointers are retained as unresolved prior-wave claims because the parent page fetch exposed no article text; Annex 2 Varma restricted draws are caller-owned and not implemented."
+      ]
+    },
+    {
+      "id": "dutch-till2026-compat",
+      "name": "Dutch pre-2026 compatibility ruleset",
+      "kind": "historical_compatibility",
+      "source_ids": [
+        "F-0102",
+        "F-0107"
+      ],
+      "entry_points": [
+        "src/pairing_core/api.py::pair"
+      ],
+      "status": "frozen_compatibility_not_current_rules",
+      "scope_note": "Frozen compatibility entry point for the older pre-2026 F-0107 Dutch formulation as realized by the v0.1.0 kernel; it is not the interim 2025 F-0106 source and is not current Dutch-2026 behavior. The F-0106 source is indexed separately as source-only because no distinct implementation is claimed. The v0.1.0 golden corpus pins historical repository outputs, not FIDE conformity.",
+      "limitations": [
+        "Historical source mapping is not clause-complete; F-0106 interim-2025 is a separate recovered source-only record, not a claimed compatibility target.",
+        "Known legacy deviations remain; the v0.1.0 golden corpus is a repository compatibility oracle, not an independent FIDE oracle."
+      ]
+    },
+    {
+      "id": "thp-product-boundary",
+      "name": "Tournament Handler Program (THP) product boundary",
+      "kind": "product_boundary",
+      "source_ids": [
+        "F-0405",
+        "F-0406",
+        "F-0407"
+      ],
+      "entry_points": [],
+      "status": "outside_pairing_core_product_scope",
+      "scope_note": "FIDE C.02.03 defines a THP as an application managing player data, pairings and results and requires product features beyond this pairing-only library. FIDE list evidence is bounded to the retrieved C.02.04 page.",
+      "limitations": [
+        "Pairing-Core has no THP evaluation, TAPC, FIDE approval or endorsement claim.",
+        "Absence from a retrieved list does not rule out an unobserved later written decision."
+      ]
+    },
+    {
+      "id": "c07-tiebreak-boundary",
+      "name": "C.07 tie-break calculation boundary",
+      "kind": "product_boundary",
+      "source_ids": [
+        "F-0704",
+        "F-0110"
+      ],
+      "entry_points": [],
+      "status": "outside_pairing_core_product_scope",
+      "scope_note": "Tie-break calculations belong to a separate library/application. C.07 results are not silently substituted for the C.04.4.2 Burstein Index.",
+      "limitations": [
+        "No C.07 calculator is implemented in Pairing-Core.",
+        "No semantic equivalence between C.07 and C.04 Burstein calculations has been verified."
+      ]
+    },
+    {
+      "id": "knockout-boundary",
+      "name": "Knockout/play-off pairing boundary",
+      "kind": "product_boundary",
+      "source_ids": [
+        "F-0704"
+      ],
+      "entry_points": [],
+      "status": "outside_pairing_core_product_scope",
+      "scope_note": "Play-off format and event orchestration are tournament-regulation responsibilities and are not a Pairing-Core engine.",
+      "limitations": [
+        "No knockout or play-off engine is implemented."
+      ]
+    },
+    {
+      "id": "dutch-interim-2025-source",
+      "name": "Dutch interim 2025 edition — source-only historical record",
+      "kind": "historical_source_only",
+      "source_ids": [
+        "F-0106"
+      ],
+      "entry_points": [],
+      "status": "source_recovered_not_implemented",
+      "scope_note": "Historical C.04.3 source edition only; no runnable ruleset or implementation is claimed. The official Council PDF states application from 2025-07-01, but its approval-date field is the placeholder dd/mm/yyyy. The F-0107 frozen compatibility system and current F-0105 Dutch-2026 system remain separate.",
+      "limitations": [
+        "The Table of Changes describes C9 as intended to prevent missed-game players from receiving a PAB; the operative C5/C9 text is a minimization criterion, not a categorical fewer-games exclusion.",
+        "No Pairing-Core implementation or named repository test maps specifically to this interim edition; any owner request for it requires a distinct versioned ruleset and tests."
+      ]
+    }
+  ]
+}

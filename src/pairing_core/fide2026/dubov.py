@@ -189,15 +189,27 @@ def pair_dubov(req: P26Request) -> P26Pairing:
 def _select_pab(remaining: Sequence[P26Player], by_id: Dict[int, P26Player],
                 blocked: Sequence[Tuple[int, int]],
                 stepper: Stepper) -> int:
-    """Art.3.1: eligible -> completion -> lowest score -> most games ->
+    """Art.3.1: eligible -> C1-C3 completion -> lowest score -> most games ->
     largest TPN."""
     cands = sorted([p for p in remaining if C.pab_eligible(p)],
                    key=lambda p: (p.score, -p.played, -p.tpn))
+    # C4 completion includes C3: two players with the same absolute colour
+    # preference may not meet. Encode those conflicts alongside C1 rematches
+    # for the shared existence probe.
+    completion_blocked = list(blocked)
+    for i, a in enumerate(remaining):
+        pref_a = C.preference(a, dubov_zero_game=True)
+        if pref_a[1] != 3:
+            continue
+        for b in remaining[i + 1:]:
+            pref_b = C.preference(b, dubov_zero_game=True)
+            if pref_b[1] == 3 and pref_a[0] == pref_b[0]:
+                completion_blocked.append((a.id, b.id))
     for cand in cands:
         rest = [p for p in remaining if p.id != cand.id]
         if len(rest) % 2:
             continue
-        if exists_complete_pairing(rest, blocked, stepper):
+        if exists_complete_pairing(rest, completion_blocked, stepper):
             return cand.id
     raise ImpossiblePairingError("no Dubov PAB assignee (Art.3.1).")
 
@@ -262,15 +274,19 @@ def _bracket_vector(bracket, ups, pairs, by_id, *, req, mt, up_count):
     """(C6 score-multiset desc [higher wins -> negate], C7 colour misses of
     the REAL ensuing pairing, C8 max-upfloaters used, C9 repeat-max usage,
     C10 previous-round reuse)."""
-    up_scores = tuple(sorted((u.score for u in ups), reverse=True))
+    # C6 compares the upfloater scores in ascending order and maximises that
+    # sequence. Negation turns that maximisation into the vector's min order.
+    up_scores_ascending = tuple(sorted(u.score for u in ups))
     misses = _colour_misses(pairs, by_id,
                             initial_colour=req.initial_colour)
     maxed = [u.id for u in ups if up_count.get(u.id, 0) >= mt]
-    rep_max = sum(up_count.get(u.id, 0) for u in ups
+    # C9 counts each time a maximum upfloater is upfloated, including this
+    # candidate's current upfloat in addition to its recorded prior uses.
+    rep_max = sum(up_count.get(u.id, 0) + 1 for u in ups
                   if up_count.get(u.id, 0) >= mt)
     prev_reuse = sum(1 for u in ups if u.last_float == "U")
     guard_on = 0 if req.is_last_round else 1
-    return (tuple(-s for s in up_scores), misses,
+    return (tuple(-s for s in up_scores_ascending), misses,
             guard_on * len(maxed), guard_on * rep_max,
             guard_on * prev_reuse)
 

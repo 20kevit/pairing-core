@@ -27,6 +27,7 @@ is tested against fixture stub executables.
 
 from __future__ import annotations
 
+import math
 import os
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
@@ -59,10 +60,15 @@ class JaVaFoConfig:
     timeout_seconds: float = 60.0
 
     def __post_init__(self) -> None:
-        if not isinstance(self.timeout_seconds, (int, float)) or \
-                isinstance(self.timeout_seconds, bool) or \
-                not self.timeout_seconds > 0:
-            raise InvalidRequestError("timeout_seconds must be a number > 0.")
+        try:
+            timeout_is_finite = math.isfinite(float(self.timeout_seconds))
+        except (TypeError, ValueError, OverflowError):
+            timeout_is_finite = False
+        if (not isinstance(self.timeout_seconds, (int, float))
+                or isinstance(self.timeout_seconds, bool)
+                or not timeout_is_finite or self.timeout_seconds <= 0):
+            raise InvalidRequestError(
+                "timeout_seconds must be a finite number > 0.")
 
 
 @dataclass(frozen=True)

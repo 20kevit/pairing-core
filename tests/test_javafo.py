@@ -130,5 +130,7 @@ def test_bad_version_output(monkeypatch):
 
 
 def test_config_validation():
-    with pytest.raises(InvalidRequestError):
-        JaVaFoConfig(java_executable="x", jar_path="y", timeout_seconds=0)
+    for value in (0, float("inf"), float("-inf"), float("nan"), 10 ** 1000):
+        with pytest.raises(InvalidRequestError, match="timeout_seconds"):
+            JaVaFoConfig(java_executable="x", jar_path="y",
+                         timeout_seconds=value)

@@ -1,11 +1,18 @@
-# CURRENT STATUS — Per-System Latest-Source Answers (completion wave)
+# Historical per-system source-status research notes
 
+> SUPERSEDED (2026-10-27): despite the legacy filename and internal labels,
+> this is a preserved research/completion-wave record, not the current status
+> authority. Use `docs/audit/GAP_REGISTER.md`, `docs/audit/COMPLETION_STANDARD.md`,
+> and `docs/CAPABILITY.md`. Its implementation and `FULLY_IMPLEMENTED_AND_EVIDENCED`
+> labels were not independent FIDE evaluation; the Burstein calculator claim
+> and Berger evidence scope are now superseded.
+>
 > HOSTILE-AUDIT AMENDMENT (2026-10-03): the per-system sections below predate
 > the audit wave and contain superseded implementation claims (notably "NOT
 > implemented" rejections and the Lim-3.9/Dutch-PAB/Double-min-vector readings).
-> Authoritative implementation status is now docs/audit/FIDE_CONFORMANCE_MATRIX.md
-> (+ docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md); research history is preserved
-> below unmodified.
+> At that date, the project referred to `FIDE_CONFORMANCE_MATRIX.md` and its
+> final report; both are now historical audit-wave records. Current status is
+> governed by `docs/audit/GAP_REGISTER.md` and `COMPLETION_STANDARD.md`.
 >
 > PRODUCT-HARDENING NOTE (v0.4.0): the per-system detail sections (§Dutch …
 > §Accelerated) are RESEARCH-PHASE history — they describe what was known

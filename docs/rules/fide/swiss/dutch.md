@@ -1,11 +1,24 @@
-# Dutch System — Structured Research Note
+# Dutch System — Historical structured research note
+
+> This research-phase note contains superseded retrieval and implementation
+> statuses (including statements that the 2026 engine was not implemented).
+> Current source identity/effective date is in `../CURRENT_SYSTEM_CATALOG.md`;
+> current limitations and readiness are in `../../../audit/GAP_REGISTER.md`.
+> Read the official Handbook source before relying on any rule interpretation.
 
 ## Identity
 - System name: FIDE (Dutch) System. FIDE terminology: "FIDE (Dutch) System", C.04.3.
-- Rulesets: till-2026 [F-0107] (effective till 31/01/2026) → interim 2025 [F-0106]
-  (effective 01/07/2025) → 2026 [F-0105] (effective 01/02/2026, Council 28/10/2025).
-- pairing-core纪律: frozen kernel = `dutch-till2026-compat` (pre-2026 formulation
-  as realized; behavior FROZEN, O08 compat contract). `dutch-2026` explicitly rejected.
+- Editions: till-2026 [F-0107] (official chapter titled effective through 31/01/2026);
+  interim 2025 [F-0106] (official Council PDF says applied from 01/07/2025; approval
+  field is `dd/mm/yyyy`, and the 31/01/2026 end is an adjacent-date inference);
+  current 2026 [F-0105] (approved 28/10/2025, applied from 01/02/2026).
+- `F-0106` is now a recovered, source-only historical edition, not a separate
+  implemented ruleset. Its C5/C9 provisions minimize PAB score and unplayed games;
+  they do not categorically exclude everyone with fewer games. See the current
+  [`F-0106 clause record`](../source-pages/F-0106.md#f-0106-interim-pab).
+- Pairing-Core’s frozen `dutch-till2026-compat` is pinned to the pre-2026 kernel
+  and F-0107-era behavior; it is not relabeled as F-0106. `dutch-2026` is a
+  distinct implementation of F-0105.
 
 ## Authoritative sources
 - [F-0105] C0403202602 — exact sections: criteria [C1]–[C21]; PAB provisions; topscorer split.
@@ -19,7 +32,9 @@
 
 ## Inputs (MANDATORY RULE where marked)
 - Pairing numbers (TPN), frozen before round 1 [F-0103] — DEFINITION.
-- Scores incl. virtual PAB points (2026 PAB types: half/virtual/zero/full [F-0106]).
+- Scores and PAB valuations are supplied by the caller/announced regulations;
+  F-0106’s Article 1.5 cross-refers to C.04.1 and does not itself establish a
+  half/virtual/zero/full-point taxonomy.
 - Colour histories — only games actually played on the board enter colour history
   (2026; MANDATORY RULE, secondary-consistent, article TBD).
 - Opponent histories (rematch ban C1 — MANDATORY RULE, both formulations).

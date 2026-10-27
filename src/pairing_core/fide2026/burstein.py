@@ -1,29 +1,24 @@
-"""Burstein System 2026 engine (C.04.4.2, F-0110, FULL_TEXT).
+"""Burstein pairing ordering for the 2026 rules (C.04.4.2).
 
-Implements: seeding rounds via Dutch-2026 (1.6: first min(floor(R/2),4)
-rounds), opposition evaluation 1.7 (Buchholz; SB; self-game for unplayed;
-zero-bye streaks as draws for opponents; virtual points excluded — virtual
-points enter via score adjustments the CALLER applies before invoking, and
-are excluded here by using played-result reconstruction inputs),
-ranking 1.8 (Index then TPN; scores unused), PAB 3.1, bracket 3.2 (max pairs
-under C1–C5; first-best in Art.4 order), Art.4 BSN + zero-padding +
-opponent-BSN-descending enumeration (worked 6-player table), colours Art.5.
+Pairing-Core uses the caller-supplied C.04 Burstein Index values for ranking,
+PAB selection, and pairing-number order. It does not calculate Buchholz or
+Sonneborn-Berger. The caller is responsible for supplying values with the
+intended C.04 semantics and explicit provenance; C.07 values are not assumed
+equivalent. The 2026 seeding rounds delegate to the Dutch pairing engine.
 
-Per-round results enter through the explicit typed input
-P26Request.round_results (id -> W/D/L code per played opponent, aligned with
-opponents order); without it the engine raises InvalidPlayerError (never
-inferred). Art.1.7.2.1 self-game provisions hold structurally (registered
-points live in current scores); virtual points (1.7.2.2) must be stripped by
-the caller.
+The remaining code applies pairing-specific C.04.4.2 procedures. Passing its
+pairing order to a standings/ranking API would conflate two distinct purposes.
 """
 
 from __future__ import annotations
 
-from itertools import permutations
-from typing import Dict, List, Optional, Sequence, Set, Tuple
+from typing import Dict, List, Sequence, Set, Tuple
 
 from pairing_core.controls import ExecutionBudgets
-from pairing_core.errors import ImpossiblePairingError, InvalidPlayerError
+from pairing_core.errors import (
+    ImpossiblePairingError,
+    InvalidRequestError,
+)
 from pairing_core.fide2026 import common as C
 from pairing_core.fide2026.common import Stepper, exists_complete_pairing
 from pairing_core.fide2026.models import P26Pair, P26Pairing, P26Player, P26Request
@@ -34,59 +29,13 @@ def seeding_rounds(total_rounds: int) -> int:
     return min(total_rounds // 2, 4)
 
 
-def buchholz_sb(p: P26Player, by_id: Dict[int, P26Player],
-                results: Dict[int, Tuple[str, ...]]) -> Tuple[float, float]:
-    """Art.1.7: Buchholz = current scores of faced opponents; SB = Σ
-    points-earned × opponent current score (standard scoring note).
+def _pairing_rank_key(index_value, player: P26Player) -> Tuple[float, float, int]:
+    """C.04.4.2 Art.1.8 pairing order from caller-provided Index values.
 
-    results: player id -> one code per listed opponent, each 'W' (win),
-    'D' (draw) or 'L' (loss) from the player's perspective. opponents[]
-    contains PLAYED opponents only (C.04.2 Art.3.5: unplayed pairings may
-    repeat, hence are excluded) — so every code is over-the-board.
-
-    Art.1.7.2.1 (unplayed rounds as self-games; zero-bye streaks as draws for
-    opponents) is satisfied structurally, not by extra terms: registered
-    points already live in current scores (which feed opponents' BH/SB
-    automatically), and self-games contribute no opponent term to anyone's
-    BH/SB. Virtual points (1.7.2.2) must be stripped by the caller before
-    invoking (the engine sees real standings only).
+    This orders entrants for Burstein pairing-number construction only; it is
+    not a tournament-standings API and does not compute any tie-break values.
     """
-    codes = results.get(p.id)
-    opps = list(p.opponents)
-    if codes is None or len(codes) != len(opps):
-        raise InvalidPlayerError(
-            f"burstein-2026 needs one W/D/L result code per played opponent "
-            f"of player {p.id} (Art.1.7); got {codes!r} for {len(opps)} "
-            f"opponents.")
-    bh = 0.0
-    sb = 0.0
-    for opp_id, code in zip(opps, codes):
-        if opp_id not in by_id:
-            raise InvalidPlayerError(
-                f"opponent {opp_id} of player {p.id} unknown.")
-        if code not in ("W", "D", "L"):
-            raise InvalidPlayerError(
-                f"player {p.id}: result code {code!r} unknown (use W/D/L).")
-        opp = by_id[opp_id]
-        bh += opp.score
-        if code == "W":
-            sb += opp.score
-        elif code == "D":
-            sb += 0.5 * opp.score
-    return (bh, sb)
-
-
-def index_key(p: P26Player, by_id: Dict[int, P26Player],
-              results: Dict[int, Tuple[str, ...]]) -> Tuple[float, float]:
-    """Art.1.8.1: (Buchholz, Sonneborn-Berger)."""
-    return buchholz_sb(p, by_id, results)
-
-
-def rank_key(p: P26Player, by_id: Dict[int, P26Player],
-             results: Dict[int, Tuple[str, ...]]) -> Tuple[float, float, int]:
-    """Art.1.8: Index, then ascending TPN (scores NOT used)."""
-    bh, sb = index_key(p, by_id, results)
-    return (-bh, -sb, p.tpn)
+    return (-index_value.buchholz, -index_value.sonneborn_berger, player.tpn)
 
 
 def burstein_colour(a: P26Player, b: P26Player, ra: tuple, rb: tuple, *,
@@ -220,8 +169,14 @@ def _colour_misses(pairs: Sequence[Tuple[int, int]],
 
 
 def pair_burstein(req: P26Request) -> P26Pairing:
-    """Burstein round pairing. Seeding rounds delegate to Dutch-2026 (1.6.1)."""
+    """Pair one Burstein round using a complete external C.04 Index set."""
     if req.round_number <= seeding_rounds(req.total_rounds):
+        if req.burstein_indices is not None:
+            raise InvalidRequestError(
+                "Burstein Index values are not used during Dutch seeding rounds")
+        if req.round_results:
+            raise InvalidRequestError(
+                "round_results do not calculate Burstein Index values")
         from dataclasses import replace as _replace
 
         from pairing_core.fide2026 import dutch as _dutch
@@ -229,12 +184,30 @@ def pair_burstein(req: P26Request) -> P26Pairing:
         out = _dutch.pair_dutch(req)
         return _replace(out, ruleset="burstein-2026",
                         notes=out.notes + ("seeding-round(dutch-rules)",))
+    if req.round_results:
+        raise InvalidRequestError(
+            "round_results do not calculate Burstein Index values; provide a "
+            "complete BursteinIndexSet from a C.04-capable source")
+    if req.burstein_indices is None:
+        raise InvalidRequestError(
+            "Burstein pairing requires externally calculated Buchholz and "
+            "Sonneborn-Berger values for every entrant")
+
     players = list(req.players)
-    results = req.round_results_dict()
     by_id = {p.id: p for p in players}
-    rank_of = {}
-    for p in players:
-        rank_of[p.id] = rank_key(p, by_id, results)
+    index_by_id = req.burstein_indices.by_player_id()
+    player_ids = set(by_id)
+    index_ids = set(index_by_id)
+    if index_ids != player_ids:
+        missing = sorted(player_ids - index_ids)
+        unknown = sorted(index_ids - player_ids)
+        raise InvalidRequestError(
+            f"Burstein Index set must match the roster exactly; "
+            f"missing={missing}, unknown={unknown}")
+    rank_of = {
+        player_id: _pairing_rank_key(index_by_id[player_id], player)
+        for player_id, player in by_id.items()
+    }
     stepper = Stepper(ExecutionBudgets(max_steps=req.max_steps,
                                       wall_clock_seconds=req.wall_clock_seconds),
                       req.cancel_token)
@@ -460,6 +433,8 @@ def _select_pab(remaining, by_id, rank_of, blocked, stepper) -> int:
         rest = [p for p in remaining if p.id != cand.id]
         if len(rest) % 2:
             continue
-        if exists_complete_pairing(rest, blocked, stepper):
+        # Article 3.1.2's completion test means every absolute criterion,
+        # including C3 (same absolute colour preferences may not meet).
+        if _subset_c3_ok(rest, blocked, stepper):
             return cand.id
     raise ImpossiblePairingError("no Burstein PAB assignee (Art.3.1).")

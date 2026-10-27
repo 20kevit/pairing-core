@@ -18,12 +18,14 @@ the Handbook tables exactly):
   (bye, represented as (player, None)). Highest number = bye holder
   consistent with "highest number counts as a bye".
 - Double round robin: second cycle swaps colours; optional
-  reverse_last_two (FIDE-recommended for >4 players to avoid 3× colour;
-  default False — recommendation, not rule).
+  reverse_last_two reverses only the final two rounds of the first cycle
+  (recommended in C.05 Annex 1; default False because it is a recommendation,
+  not a mandatory pairing rule). The second cycle keeps its original order.
 
-Maturity: VALIDATED for even N = 4..12 (outputs pinned against retrieved
-Handbook rows); GENERATED (same construction) beyond, marked as such.
-Odd fields covered structurally (bye rotation, completeness, balance).
+Evidence: every published FIDE Handbook C.05 Annex 1 table for field sizes
+3–16 is compared exactly in tests using a provenance-labelled fixture. Odd
+fields use the Annex rule that the highest slot counts as a bye. Double-cycle
+last-two-round reversal remains a recommendation, not a mandatory rule.
 """
 
 from __future__ import annotations
@@ -57,9 +59,10 @@ def round_robin(n_players: int, *, double: bool = False,
         tuple((b, w) if w is not None and b is not None else (w, b)
               for (w, b) in rnd)
         for rnd in first)
-    if reverse_last_two and len(first) > 2 and n_slots != 4:
+    if reverse_last_two and len(first) > 2:
+        # C.05 Annex 1 recommends reversing only the final two rounds of the
+        # first cycle. Keep the colour-swapped second cycle in its base order.
         first = first[:-2] + first[-2:][::-1]
-        second = second[:-2] + second[-2:][::-1]
     return first + second
 
 
