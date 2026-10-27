@@ -189,15 +189,27 @@ def pair_dubov(req: P26Request) -> P26Pairing:
 def _select_pab(remaining: Sequence[P26Player], by_id: Dict[int, P26Player],
                 blocked: Sequence[Tuple[int, int]],
                 stepper: Stepper) -> int:
-    """Art.3.1: eligible -> completion -> lowest score -> most games ->
+    """Art.3.1: eligible -> C1-C3 completion -> lowest score -> most games ->
     largest TPN."""
     cands = sorted([p for p in remaining if C.pab_eligible(p)],
                    key=lambda p: (p.score, -p.played, -p.tpn))
+    # C4 completion includes C3: two players with the same absolute colour
+    # preference may not meet. Encode those conflicts alongside C1 rematches
+    # for the shared existence probe.
+    completion_blocked = list(blocked)
+    for i, a in enumerate(remaining):
+        pref_a = C.preference(a, dubov_zero_game=True)
+        if pref_a[1] != 3:
+            continue
+        for b in remaining[i + 1:]:
+            pref_b = C.preference(b, dubov_zero_game=True)
+            if pref_b[1] == 3 and pref_a[0] == pref_b[0]:
+                completion_blocked.append((a.id, b.id))
     for cand in cands:
         rest = [p for p in remaining if p.id != cand.id]
         if len(rest) % 2:
             continue
-        if exists_complete_pairing(rest, blocked, stepper):
+        if exists_complete_pairing(rest, completion_blocked, stepper):
             return cand.id
     raise ImpossiblePairingError("no Dubov PAB assignee (Art.3.1).")
 

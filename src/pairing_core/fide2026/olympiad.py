@@ -386,14 +386,6 @@ def _refloater(rest, is_below, by_id, stepper):
                    reverse_scrutiny=is_below) is not None:
             return cand
     return None
-    groups = []
-    cur = None
-    for p in ranked:
-        if cur is None or cur[0] != p.score:
-            cur = (p.score, [])
-            groups.append(cur)
-        cur[1].append(p.id)
-    return groups
 
 
 def _assign_board_colour(a: P26Player, b: P26Player, *, req: P26Request,

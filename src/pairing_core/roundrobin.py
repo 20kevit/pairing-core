@@ -21,9 +21,10 @@ the Handbook tables exactly):
   reverse_last_two (FIDE-recommended for >4 players to avoid 3× colour;
   default False — recommendation, not rule).
 
-Maturity: VALIDATED for even N = 4..12 (outputs pinned against retrieved
-Handbook rows); GENERATED (same construction) beyond, marked as such.
-Odd fields covered structurally (bye rotation, completeness, balance).
+Evidence: every published FIDE Handbook C.05 Annex 1 table for field sizes
+3–16 is compared exactly in tests using a provenance-labelled fixture. Odd
+fields use the Annex rule that the highest slot counts as a bye. Double-cycle
+last-two-round reversal remains a recommendation, not a mandatory rule.
 """
 
 from __future__ import annotations

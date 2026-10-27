@@ -20,7 +20,14 @@ from pairing_core.errors import (
 )
 from pairing_core.fide2026 import common as C
 from pairing_core.fide2026.api import pair_2026
-from pairing_core.fide2026.models import P26Player, P26Request, P26RulesetId
+from pairing_core.fide2026.models import (
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
+    P26Player,
+    P26Request,
+    P26RulesetId,
+)
 
 TYPED = (ImpossiblePairingError, InvalidPlayerError, UnsupportedRulesetError)
 
@@ -37,17 +44,25 @@ RULESETS = [
 
 def _gen_state(rng):
     n = rng.randint(2, 10)
-    total_rounds = rng.randint(1, 9)
+    # Keep the generated historical schedule within a no-repeat round-robin
+    # horizon so the request itself is valid before a pairing engine runs.
+    total_rounds = rng.randint(1, min(9, n))
     round_number = rng.randint(1, total_rounds)
     played_rounds = round_number - 1
-    # symmetric played history via random matchings per past round
     opps = {i: [] for i in range(1, n + 1)}
     colors = {i: [] for i in range(1, n + 1)}
     for _ in range(played_rounds):
-        order = list(range(1, n + 1))
-        rng.shuffle(order)
-        for k in range(0, len(order) - 1, 2):
-            a, b = order[k], order[k + 1]
+        for _attempt in range(500):
+            order = list(range(1, n + 1))
+            rng.shuffle(order)
+            round_pairs = [(order[k], order[k + 1])
+                           for k in range(0, len(order) - 1, 2)]
+            if all(b not in opps[a] and a not in opps[b]
+                   for a, b in round_pairs):
+                break
+        else:
+            raise AssertionError("could not generate a no-repeat history")
+        for a, b in round_pairs:
             if rng.random() < 0.12:
                 colors[a].append("u")
                 colors[b].append(rng.choice("WB"))
@@ -81,11 +96,13 @@ def _gen_state(rng):
     return players, round_number, total_rounds
 
 
-def _results_for(players, rng):
-    out = []
-    for p in players:
-        out.append((p.id, tuple(rng.choice("WDL") for _ in p.opponents)))
-    return tuple(out)
+def _indices_for_pairing(players):
+    """Deterministic caller values; this property suite excludes Index math."""
+    return BursteinIndexSet(
+        values=tuple(BursteinIndexValue(p.id, float(p.tpn), 0.0)
+                     for p in players),
+        provenance=BursteinIndexProvenance(
+            source="caller-supplied", scope="synthetic property-test values"))
 
 
 def _check_invariants(out, players, ruleset):
@@ -118,8 +135,8 @@ def test_property_2026(ruleset, seed):
     kw = dict(round_number=rnd, total_rounds=total,
               is_last_round=(rnd == total),
               initial_colour=rng.choice("WB"))
-    if ruleset == "burstein-2026":
-        kw["round_results"] = _results_for(players, rng)
+    if ruleset == "burstein-2026" and rnd > min(total // 2, 4):
+        kw["burstein_indices"] = _indices_for_pairing(players)
     if ruleset == "lim-2026":
         kw["maxi_tournament"] = bool(rng.getrandbits(1))
     req = P26Request(players=tuple(players), ruleset=ruleset, **kw)

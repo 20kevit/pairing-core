@@ -6,11 +6,15 @@ accumulation. The distinguishing cases are infinite-output children: a
 post-hoc `len() > cap` check after communicate() could never raise the cap
 error there (it would time out or exhaust memory instead).
 """
+import os
+import signal
 import sys
 import time
+from pathlib import Path
 
 import pytest
 
+from pairing_core.adapters import _process
 from pairing_core.adapters._process import OUTPUT_CAP, run_command
 from pairing_core.errors import EngineTimeoutError, InternalError
 
@@ -128,3 +132,48 @@ def test_nonzero_exit_preserved():
     run = run_command([PY, "-c", "import sys;sys.exit(3)"],
                       timeout_seconds=30)
     assert run.returncode == 3
+
+
+@pytest.mark.skipif(os.name != "posix", reason="requires POSIX process groups and fork")
+def test_timeout_terminates_forked_descendant(monkeypatch, tmp_path):
+    """A timed-out adapter must not leave a grandchild running or holding pipes."""
+    monkeypatch.setattr(_process, "KILL_GRACE_SECONDS", 0.1)
+    pid_file = tmp_path / "grandchild.pid"
+    program = (
+        "import os,signal,sys,time\n"
+        "pid=os.fork()\n"
+        "if pid == 0:\n"
+        " signal.signal(signal.SIGTERM, signal.SIG_IGN)\n"
+        " with open(sys.argv[1], 'w') as f: f.write(str(os.getpid()))\n"
+        " while True: time.sleep(0.05)\n"
+        "else:\n"
+        " signal.signal(signal.SIGTERM, signal.SIG_IGN)\n"
+        " print('child-ready', flush=True)\n"
+        " while True: time.sleep(0.05)\n"
+    )
+    grandchild_pid = None
+    try:
+        with pytest.raises(EngineTimeoutError, match="wall-clock budget"):
+            run_command([PY, "-c", program, str(pid_file)], timeout_seconds=0.2)
+        assert pid_file.exists(), "grandchild should have started before timeout"
+        grandchild_pid = int(pid_file.read_text())
+        # On Linux, treat an orphaned zombie as stopped; it cannot execute or
+        # retain the adapter's pipe descriptors.
+        deadline = time.monotonic() + 2
+        while time.monotonic() < deadline:
+            try:
+                os.kill(grandchild_pid, 0)
+            except ProcessLookupError:
+                break
+            proc_stat = Path(f"/proc/{grandchild_pid}/stat")
+            if proc_stat.exists() and proc_stat.read_text().split(") ", 1)[-1][:1] == "Z":
+                break
+            time.sleep(0.02)
+        else:
+            pytest.fail(f"forked descendant {grandchild_pid} survived timeout")
+    finally:
+        if grandchild_pid is not None:
+            try:
+                os.kill(grandchild_pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass

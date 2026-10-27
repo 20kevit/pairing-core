@@ -1,14 +1,17 @@
-"""Round-robin tests: Handbook goldens + structural properties.
+"""Round-robin tests: official Handbook tables + structural properties."""
 
-Golden tables verified line-by-line against FIDE Handbook C.05 Annex 1 rows
-as retrieved from the Handbook, FEDA, and ECF publications (even N 4..12).
-Provenance: docs/research/ROUND_ROBIN.md + wave differential notes.
-"""
+import json
+from pathlib import Path
 
 import pytest
 
 from pairing_core.errors import InvalidRequestError
 from pairing_core.roundrobin import round_robin
+
+
+BERGER_FIXTURE = Path(__file__).parent / "corpus" / "fide_official" / \
+    "berger_tables_c05.json"
+BERGER_DATA = json.loads(BERGER_FIXTURE.read_text(encoding="utf-8"))
 
 
 def _flat(schedule):
@@ -59,6 +62,24 @@ def test_12_players_exact():
     assert sched[5] == [(12, 9), (10, 8), (11, 7), (1, 6), (2, 5), (3, 4)]
     assert sched[10] == [(6, 12), (7, 5), (8, 4), (9, 3), (10, 2), (11, 1)]
     assert len(sched) == 11
+
+
+@pytest.mark.parametrize("n", range(3, 17))
+def test_all_published_berger_tables_exact(n):
+    """Compare every FIDE Annex 1 table from 3 through 16 players."""
+    assert BERGER_DATA["provenance"] == "official-example"
+    slots = n + (n % 2)
+    official = BERGER_DATA["tables"][str(slots)]
+    expected = []
+    for round_pairs in official:
+        expected_round = []
+        for white, black in round_pairs:
+            if n % 2 and slots in (white, black):
+                expected_round.append((black if white == slots else white, None))
+            else:
+                expected_round.append((white, black))
+        expected.append(expected_round)
+    assert _flat(round_robin(n)) == expected
 
 
 def _pairs(n, double=False, **kw):

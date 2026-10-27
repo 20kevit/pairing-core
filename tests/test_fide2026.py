@@ -14,6 +14,7 @@ from pairing_core.errors import (
     InvalidPlayerError,
     InvalidRequestError,
     UnsupportedRulesetError,
+    VersionMismatchError,
 )
 from pairing_core.fide2026 import baku
 from pairing_core.fide2026 import common as C
@@ -26,21 +27,20 @@ from pairing_core.fide2026.double_team import (
 )
 from pairing_core.fide2026.dubov import aro, dubov_colour, max_t, _shifter_order
 from pairing_core.fide2026.burstein import (
-    buchholz_sb,
     enumerate_burstein_pairings,
-    rank_key,
     seeding_rounds,
 )
 from pairing_core.fide2026.dutch import allocate_colour
 from pairing_core.fide2026.lim import compatible, due_colour
 from pairing_core.fide2026.models import (
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
     BURSTEIN_2026,
-    DOUBLE_2026,
     DUBOV_2026,
     DUTCH_2026,
     LIM_2026,
     OLYMPIAD_2022,
-    TEAM_2026,
     P26Pair,
     P26Pairing,
     P26Player,
@@ -261,12 +261,15 @@ def test_seeding_rounds():
     assert seeding_rounds(11) == 4
 
 
-def test_buchholz_sb():
-    by_id = {1: P(1, tpn=1, score=1.0, opponents=(2,)),
-             2: P(2, tpn=2, score=0.5, opponents=(1,))}
-    bh, sb = buchholz_sb(by_id[1], by_id, {1: ("W",), 2: ("L",)})
-    assert (bh, sb) == (0.5, 0.5)
-    assert rank_key(by_id[1], by_id, {1: ("W",), 2: ("L",)})[2] == 1
+def test_burstein_index_values_are_external_and_provenanced():
+    values = BursteinIndexSet(
+        values=(BursteinIndexValue(2, 0.5, 0.25),
+                BursteinIndexValue(1, 1.5, 0.75)),
+        provenance=BursteinIndexProvenance(source="caller-supplied",
+                                           scope="C.04.4.2 Index values"))
+    assert [value.player_id for value in values.values] == [1, 2]
+    assert values.by_player_id()[1].buchholz == 1.5
+    assert values.provenance.source == "caller-supplied"
 
 
 def test_burstein_enumeration_first():
@@ -286,15 +289,39 @@ def test_burstein_seeding_delegates():
     assert any("seeding-round" in n for n in out.notes)
 
 
-def test_burstein_needs_results():
+def test_burstein_requires_external_index_values():
     from pairing_core.fide2026 import burstein as B
     ps = [P(i, tpn=i, score=1.0 if i <= 3 else 0.0, rating=1900,
             colors="W" if i <= 3 else "B", opponents=(),
             played=1) for i in range(1, 7)]
-    with pytest.raises(InvalidPlayerError):
+    with pytest.raises(InvalidRequestError, match="externally calculated"):
         B.pair_burstein(P26Request(
             players=tuple(ps), ruleset=BURSTEIN_2026, round_number=5,
             total_rounds=9))
+
+
+def test_burstein_facade_seals_input_and_result_digests():
+    players = fresh(6)
+    provenance = BursteinIndexProvenance(
+        source="library-calculated", producer="independent-fixture",
+        producer_version="1.0", producer_ruleset="C.04.4.2",
+        scope="synthetic test values; not a tie-break calculation")
+    indices = BursteinIndexSet(
+        values=tuple(BursteinIndexValue(p.id, 10.0 - p.id, float(p.id) / 2)
+                     for p in players),
+        provenance=provenance)
+    request = P26Request(players=tuple(players), ruleset=BURSTEIN_2026,
+                         round_number=5, total_rounds=9,
+                         burstein_indices=indices)
+    assert P26Request.from_dict(request.to_dict()) == request
+    result = pair_2026(request)
+    payload = result.to_dict()
+    assert payload["schema"] == "pairing-core/p26-pairing/v1"
+    assert payload["provenance"]["burstein_index_provenance"] == provenance.to_dict()
+    assert P26Pairing.from_dict(payload) == result
+    payload["bye_id"] = 1
+    with pytest.raises(VersionMismatchError, match="digest mismatch"):
+        P26Pairing.from_dict(payload)
 
 
 # -------------------------------------------------------------------- lim
@@ -396,7 +423,6 @@ def test_olympiad_bye_lowest_rank():
 
 
 def test_olympiad_9x_first_combination():
-    from pairing_core.fide2026 import olympiad as O
     ps = [P(i, tpn=i) for i in range(1, 7)]
     by_id = {p.id: p for p in ps}
     out = pair_9x(ps, by_id, C.Stepper())

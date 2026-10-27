@@ -17,7 +17,13 @@ import pytest
 
 from pairing_core.errors import EngineTimeoutError, PairingError
 from pairing_core.fide2026.api import pair_2026
-from pairing_core.fide2026.models import P26Player, P26Request
+from pairing_core.fide2026.models import (
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
+    P26Player,
+    P26Request,
+)
 
 BENCH_DIR = os.path.join(os.path.dirname(__file__), "data", "benchmarks")
 RECORD = {}
@@ -33,6 +39,15 @@ def _fresh(n, seed=1):
                       secondary=float(rng.choice([0, 0.5, 1.0])),
                       colors="", opponents=(), unplayed=0, played=0)
             for i in range(1, n + 1)]
+
+
+def _burstein_indices(players):
+    """External synthetic Index values; benchmark pairing, not Index math."""
+    return BursteinIndexSet(
+        values=tuple(BursteinIndexValue(p.id, float(p.tpn), float(p.tpn % 3))
+                     for p in players),
+        provenance=BursteinIndexProvenance(
+            source="caller-supplied", scope="synthetic benchmark values"))
 
 
 def _mid(n, ruleset, seed=2):
@@ -64,9 +79,6 @@ def _fragmented(n, ruleset, seed=5):
     from one real R1 pairing (consistent and fast); scores are spread
     artificially (the engine takes scores as inputs and never cross-checks
     results)."""
-    import random
-    import dataclasses
-    rng = random.Random(seed)
     players = _fresh(n, seed=seed)
     total = 9 if ruleset != "olympiad-2022" else 11
     out = pair_2026(P26Request(players=tuple(players), ruleset=ruleset,
@@ -75,29 +87,16 @@ def _fragmented(n, ruleset, seed=5):
     fl = dict(out.floats)
     hist = []
     for pr in out.pairs:
-        w, b = pr.white_id, pr.black_id
-        res = rng.choice(["W", "D", "L"])
-        hist.append((w, b, res))
+        hist.append((pr.white_id, pr.black_id))
     spread = sorted([round(0.5 * ((i * 37) % 9), 1) for i in range(n)],
                     reverse=True)
-    by_tpn = {p.tpn: p for p in players}
     opp_of = {i: [] for i in range(1, n + 1)}
     col_of = {i: "" for i in range(1, n + 1)}
-    res_of = {i: [] for i in range(1, n + 1)}
-    for w, b, res in hist:
+    for w, b in hist:
         opp_of[w].append(b)
         opp_of[b].append(w)
         col_of[w] += "W"
         col_of[b] += "B"
-        if res == "W":
-            res_of[w].append("W")
-            res_of[b].append("L")
-        elif res == "L":
-            res_of[w].append("L")
-            res_of[b].append("W")
-        else:
-            res_of[w].append("D")
-            res_of[b].append("D")
     if out.bye_id is not None:
         col_of[out.bye_id] += "u"
     out_players = []
@@ -109,8 +108,7 @@ def _fragmented(n, ruleset, seed=5):
             last_float=fl.get(i, ""), prev_float="", played=1 if i != out.bye_id else 0))
     extra = {}
     if ruleset == "burstein-2026":
-        extra["round_results"] = tuple(
-            (i, tuple(res_of[i])) for i in range(1, n + 1))
+        extra["burstein_indices"] = _burstein_indices(out_players)
     if ruleset == "dubov-2026":
         extra["prior_upfloats"] = tuple(
             (i, 1) for i, f in fl.items() if f == "U")
@@ -126,7 +124,6 @@ def _play_two_rounds(n, seed, ruleset):
     score = {i: 0.0 for i in range(1, n + 1)}
     colors = {i: "" for i in range(1, n + 1)}
     opps = {i: [] for i in range(1, n + 1)}
-    results = {i: [] for i in range(1, n + 1)}
     last_fl = {i: "" for i in range(1, n + 1)}
     prev_fl = {i: "" for i in range(1, n + 1)}
     upfloats = {i: 0 for i in range(1, n + 1)}
@@ -141,9 +138,6 @@ def _play_two_rounds(n, seed, ruleset):
                 last_float=last_fl[i], prev_float=prev_fl[i],
                 played=len(col) - col.count("u")))
         kw = {}
-        if ruleset == "burstein-2026":
-            kw["round_results"] = tuple(
-                (i, tuple(results[i])) for i in range(1, n + 1))
         if ruleset == "dubov-2026":
             kw["prior_upfloats"] = tuple(
                 (i, upfloats[i]) for i in range(1, n + 1) if upfloats[i])
@@ -167,16 +161,10 @@ def _play_two_rounds(n, seed, ruleset):
             if roll < 0.15:
                 score[w] += 0.5
                 score[b] += 0.5
-                results[w].append("D")
-                results[b].append("D")
             elif roll < exp:
                 score[w] += 1.0
-                results[w].append("W")
-                results[b].append("L")
             else:
                 score[b] += 1.0
-                results[w].append("L")
-                results[b].append("W")
         if out.bye_id is not None:
             score[out.bye_id] += 1.0
             colors[out.bye_id] += "u"
@@ -196,16 +184,11 @@ def _play_two_rounds(n, seed, ruleset):
             prev_float=prev_fl[i], played=len(col) - col.count("u")))
     extra = {}
     if ruleset == "burstein-2026":
-        extra["round_results"] = tuple(
-            (i, tuple(results[i])) for i in range(1, n + 1))
+        extra["burstein_indices"] = _burstein_indices(players)
     if ruleset == "dubov-2026":
         extra["prior_upfloats"] = tuple(
             (i, upfloats[i]) for i in range(1, n + 1) if upfloats[i])
     return players, extra
-
-
-def _round_results(players):
-    return tuple((p.id, tuple("D" for _ in p.opponents)) for p in players)
 
 
 RULESETS = ["dutch-2026", "dubov-2026", "burstein-2026", "lim-2026",
@@ -213,8 +196,9 @@ RULESETS = ["dutch-2026", "dubov-2026", "burstein-2026", "lim-2026",
 
 
 def _time(players, ruleset, rnd, total, label, wall=WALL, **kw):
-    if ruleset == "burstein-2026":
-        kw["round_results"] = _round_results(players)
+    if (ruleset == "burstein-2026" and rnd > min(total // 2, 4)
+            and "burstein_indices" not in kw):
+        kw["burstein_indices"] = _burstein_indices(players)
     req = P26Request(players=tuple(players), ruleset=ruleset,
                      round_number=rnd, total_rounds=total,
                      is_last_round=(rnd == total),
@@ -290,8 +274,7 @@ def test_big_bracket_n50_bounded():
             played=1) for i in range(1, 51)]
         extra = {}
         if ruleset == "burstein-2026":
-            extra["round_results"] = tuple(
-                (i, ("D",)) for i in range(1, 51))
+            extra["burstein_indices"] = _burstein_indices(state)
         rnd = 6 if ruleset == "burstein-2026" else 2
         t0 = time.perf_counter()
         try:
