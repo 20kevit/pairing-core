@@ -1,0 +1,1396 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-27",
+  "records": [
+    {
+      "id": "F-0100",
+      "title": "C.04 chapter family (index)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable systems: all Swiss.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0101",
+      "title": "C.04.1 Basic rules for Swiss Systems (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0401202507",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: all Swiss systems.",
+      "supersedes": [
+        "F-0102"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0102",
+      "title": "C.04.1 Basic rules (effective till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0401Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0101, effective 01/02/2026).",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0101"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0103",
+      "title": "C.04.2 General Handling Rules for Swiss Tournaments (from 1 Feb 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/GeneralHandlingRulesForSwissTournaments202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: all Swiss (authorised systems/QC authorisation,",
+      "supersedes": [
+        "F-0104"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0104",
+      "title": "C.04.2 General Handling Rules (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/GeneralHandlingRulesForSwissTournamentsTill2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0103). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0103"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0105",
+      "title": "C.04.3 FIDE (Dutch) System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0403202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Dutch.",
+      "supersedes": [
+        "F-0106",
+        "F-0107"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0106",
+      "title": "C.04.3 interim (effective from 1 July 2025)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0403202507",
+      "approval_date": null,
+      "effective_from": "2025-07-01",
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0105, effective 01/02/2026). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0105"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0107",
+      "title": "C.04.3 FIDE (Dutch) System (effective till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0403Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0105). Applicable: Dutch pre-2026 — the text closest",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0105"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0108",
+      "title": "C.04.4.1 Dubov System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040401202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Dubov. Retrieved: 2026-10-03. Evidence: FULL_TEXT (Council bundle CM3-202517, read in full 2026-10-03).",
+      "supersedes": [
+        "F-0109"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0109",
+      "title": "C.04.4.1 Dubov (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040401Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0108). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0108"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0110",
+      "title": "C.04.4.2 Burstein System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040402202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Burstein. Till-2026 text: F-0111.",
+      "supersedes": [
+        "F-0111"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content or the cited numerical example data. The repository retains only project-authored structured transcriptions/derived data for the named worked example, not official source prose or an original document; permission to redistribute the source-derived example data is not established."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0111",
+      "title": "C.04.4.2 Burstein (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040402Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0110). Notes: fairness-by-opposition-strength design.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0110"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0112",
+      "title": "C.04.4.3 Lim System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040403202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Lim. Till-2026 text: F-0113.",
+      "supersedes": [
+        "F-0113"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content or the cited numerical example data. The repository retains only project-authored structured transcriptions/derived data for the named worked example, not official source prose or an original document; permission to redistribute the source-derived example data is not established."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0113",
+      "title": "C.04.4.3 Lim (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C040403Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0112). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0112"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0114",
+      "title": "C.04.5 Double Swiss System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/DoubleSwissSystem202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Double Swiss.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content or the cited numerical example data. The repository retains only project-authored structured transcriptions/derived data for the named worked example, not official source prose or an original document; permission to redistribute the source-derived example data is not established."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0115",
+      "title": "C.04.6 Swiss Team Pairing System (effective from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/SwissTeamPairingSystem202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Team Swiss. Till text: F-0116.",
+      "supersedes": [
+        "F-0116"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0116",
+      "title": "C.04.6 Team (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/SwissTeamPairingSystem082024",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0115). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0115"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0117",
+      "title": "C.04.7 Accelerated Systems / Baku (from 1 February 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0407202602",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: accelerated Swiss. Till text: F-0118.",
+      "supersedes": [
+        "F-0118"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content or the cited numerical example data. The repository retains only project-authored structured transcriptions/derived data for the named worked example, not official source prose or an original document; permission to redistribute the source-derived example data is not established."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0118",
+      "title": "C.04.7 Accelerated (till 31 January 2026)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C0407Till2026",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": "2026-01-31",
+      "status": "superseded",
+      "status_basis": "SUPERSEDED (by F-0117). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0117"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0119",
+      "title": "C.04 Appendix A — Endorsement of software programs",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C04A",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical_snapshot",
+      "status_basis": "C.04 Appendix A page is a FIDE source, but the linked FEP22 list is a 2022 vintage; use the later C.02.04 official list as the latest retrieved program list.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0406"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0201",
+      "title": "Council bundle CM3-202517 (3rd FIDE Council 2025)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://doc.fide.com/docs/DOC/2025_3FC/CM3-202517.pdf",
+      "approval_date": "2025-10-28",
+      "effective_from": "2026-02-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT (enacting instrument for F-0101/0103/0105/0108/0110/0112/0114/0115/0117).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03",
+          "method": "prior-wave record: curl + pdftotext, read in full",
+          "raw_bytes_retained": false,
+          "sha256": "6b12df0e692d517624709ff79b1c55048e68f344d13e24f4c96748e7c846b93b",
+          "sha256_scope": "temporary PDF recorded in prior SOURCE_MANIFEST; file not retained in repository and digest not reverified in this wave",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0301",
+      "title": "Reminder: updated Swiss Rules effective 1 February 2026",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://www.fide.com/fide-reminds-organizers-and-arbiters-of-updated-swiss-rules-effective-from-february-1-2026/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT (applicability evidence). Local artifact: none (link + metadata only).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0302",
+      "title": "Updated FIDE (Dutch) System effective from July 1, 2025",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://www.fide.com/updated-fide-dutch-system-effective-from-july-1-2025/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL (announcement of superseded interim text).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0303",
+      "title": "Update to C.04.1 Basic Rules (11 June 2024; effective 1 July 2025)",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://www.fide.com/important-update-to-c-04-1-basic-rules-for-swiss-systems/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL (folded into F-0101). Retrieved: 2026-10-03 (search-verified).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0401",
+      "title": "TEC endorsement page (current)",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://tec.fide.com/endorsement/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: endorsement/FPC/RTG regime.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0402",
+      "title": "Legacy SPP endorsed-managers page",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://spp.fide.com/endorsed-tournament-managers",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL (legacy SPP site; superseded by TEC pages, content overlap).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0403",
+      "title": "TRF-2026 specification (current data-exchange format)",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://tec.fide.com/trf-2026/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT (TRF26; TRF16 HISTORICAL). Applicable: rating submission,",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0404",
+      "title": "FIDE Technical Manual / Official documents hub",
+      "authority": "FIDE",
+      "source_class": "official_context",
+      "url": "https://tec.fide.com/fide-technical-manual/",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT (hub). Retrieved: 2026-10-03.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0501",
+      "title": "C.05 Annex 1: Berger Table details",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C05Annex1",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT. Applicable: Berger single/double round robin.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content. The repository retains a project-authored structured transcription of all published Berger schedule tables for N=3–16 in a test fixture; this is not a source document or source-prose copy, but permission to redistribute this source-derived data is not established. Review before re-use or distribution."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0601",
+      "title": "Olympiad Pairing Rules (effective from 1 January 2022)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/OlympiadPairingRules2022",
+      "approval_date": "2021-10-27",
+      "effective_from": "2022-01-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "CURRENT (no newer Olympiad pairing text found 2026-10-03).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03",
+          "method": "prior-wave record: archived official chapter HTML + extracted text",
+          "raw_bytes_retained": false,
+          "sha256": "f2b50d0346a679376fe7493ad56f40570a7d259337532227cc3edf604d97b0a3",
+          "sha256_scope": "temporary HTML hash recorded in prior SOURCE_MANIFEST; file not retained in repository and digest not reverified in this wave",
+          "artifact_path": null
+        },
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified",
+        "local_original": null,
+        "note": "No open licence or written permission is recorded for FIDE content or the cited numerical example data. The repository retains only project-authored structured transcriptions/derived data for the named worked example, not official source prose or an original document; permission to redistribute the source-derived example data is not established."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0701",
+      "title": "1987 GA Swiss regulations (historical system list)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": null,
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL. Retrieved: 2026-09-30 (prior wave).",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0702",
+      "title": "NewDutch2022.pdf (SPP; Chennai 2022 vintage till-2026 Dutch)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": null,
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL (till-2026 formulation snapshot). Retrieved: 2026-09-30.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0703",
+      "title": "C0403Till2026 / related excerpts (prior-wave PRIMARY-excerpt set)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": null,
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical",
+      "status_basis": "HISTORICAL (pointer set; dates/status per individual F-entries above). Retrieved: 2026-09-30.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-03_or_earlier_as_recorded",
+          "method": "prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no repository-retained raw source file or independently verified current digest",
+          "artifact_path": null,
+          "retrieval_date_precision": "on_or_before"
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "See the existing SOURCE_INDEX entry archived at history/SOURCE_INDEX_20261027_pre_clause_registry.md for the prior research-wave record."
+    },
+    {
+      "id": "F-0405",
+      "title": "C.02.03 Chess Equipment with Electronic Components — Article 7 Tournament Handler Programs",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/ChessEquipmentWithElectronicComponenets032026",
+      "approval_date": "2025-12-11",
+      "effective_from": "2026-03-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "Current Handbook page retrieved 2026-10-27; page states Council approval 11/12/2025 and application from 01/03/2026.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch parsed Markdown, all three chunks read for Article 7",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "raw response bytes not exposed; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "Article 7 defines THP product/evaluation requirements; indexed here as a product-boundary source. Hardware requirements outside Article 7 are not Pairing-Core requirements.",
+      "authority": "FIDE"
+    },
+    {
+      "id": "F-0406",
+      "title": "C.02.04 FIDE Certified and Endorsed Equipment — Tournament Handler Programs list",
+      "source_class": "official_list",
+      "url": "https://handbook.fide.com/chapter/FIDECertifiedAndEndorsedEquipment032026",
+      "approval_date": "2025-12-11",
+      "effective_from": "2026-03-01",
+      "effective_to": null,
+      "status": "current_list_as_retrieved",
+      "status_basis": "Current C.02.04 page retrieved 2026-10-27. The THP table lists named products/versions, marks TAPC and endorsement, and gives expiry dates 2026-02-01 for its listed THPs; Pairing-Core does not appear in the retrieved table. This is not an exhaustive search for separate FIDE decisions.",
+      "supersedes": [
+        "F-0119",
+        "F-0407"
+      ],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch parsed Markdown; current THP table read",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "raw response bytes not exposed; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "Use only as bounded listing evidence. Non-listing is not proof that no later written decision exists; recorded expiry dates make the listed approvals non-current as of retrieval.",
+      "authority": "FIDE"
+    },
+    {
+      "id": "F-0704",
+      "title": "FIDE Handbook 07 Play-Off and Tie-Break Regulations (effective from 1 March 2026)",
+      "source_class": "normative_boundary",
+      "url": "https://handbook.fide.com/chapter/TieBreakRegulations032026",
+      "approval_date": "2026-02-02",
+      "effective_from": "2026-03-01",
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "Current Handbook page retrieved 2026-10-27; page states Council approval 02/02/2026 and application from 01/03/2026. Only C.04 Burstein / tie-break boundary provisions are indexed here.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch parsed Markdown, all three chunks read for relevant C.07 sections",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "raw response bytes not exposed; no hash claimed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository uses its official link and original paraphrase only."
+      },
+      "scope_note": "C.07 is a separate tie-break regime. It is cited only to document the product boundary and the non-equivalence question; no C.07 calculator is implemented here.",
+      "authority": "FIDE"
+    },
+    {
+      "id": "F-0801",
+      "title": "FIDE Handbook legal/reuse-terms lookup (404)",
+      "authority": "FIDE",
+      "source_class": "rights_search_attempt",
+      "url": "https://handbook.fide.com/legal",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "unknown",
+      "status_basis": "Arena page-fetch on 2026-10-27 returned 404; the failed lookup establishes no permission, licence, or prohibition.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch request to the FIDE Handbook legal URL; response was 404 (page does not exist)",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no legal terms page content was returned; the 404 response was not retained as raw bytes",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "unresolved; the linked legal-terms lookup returned 404",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "The failed legal-terms lookup is not a rights determination. No open licence or written permission was identified in this audit; do not infer authorization from the 404 or public availability."
+      },
+      "scope_note": "Administrative rights-search attempt only; not a normative source and not evidence that FIDE lacks reuse terms elsewhere."
+    },
+    {
+      "id": "F-0502",
+      "title": "C.05 General Regulations for Competitions (parent page; content not returned)",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C05",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "unknown",
+      "status_basis": "Prior-wave notes cite C.05 §§5.1 and 5.3; the 2026-10-27 official page fetch returned only generic Handbook navigation, so exact text, current edition, and applicability were not reverified.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch returned Handbook header/navigation only; no parent article content was exposed",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "no parent article text or original response bytes were returned",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository links to the official page and retains only project-authored metadata/paraphrase; no source original is committed."
+      },
+      "scope_note": "Historical pointer to §§5.1/5.3 remains an unresolved source claim. Retrieve the exact official text before treating it as a current rule."
+    },
+    {
+      "id": "F-0503",
+      "title": "C.05 Annex 2: Details of Varma Tables",
+      "authority": "FIDE",
+      "source_class": "normative",
+      "url": "https://handbook.fide.com/chapter/C05Annex2",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "current",
+      "status_basis": "Official Handbook Annex 2 page retrieved 2026-10-27; no approval/effective date or supersession statement was shown in the returned page.",
+      "supersedes": [],
+      "superseded_by": [],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena page-fetch; parsed Annex 2 page content read, including the five numbered directions and table scope",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "retrieval interface exposed parsed content, not original response bytes or a downloadable source artifact",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded for this source. This repository links to the official page and retains only project-authored metadata/paraphrase; no source original is committed."
+      },
+      "scope_note": "Varma restricted drawing assigns tournament numbers using federation/contingent draw procedures and tables; it is not the Berger opponent schedule in Annex 1. Pairing-Core does not administer restricted draws."
+    },
+    {
+      "id": "F-0407",
+      "title": "C.04 Annex 3: FIDE Endorsed Programs list (2022 vintage PDF)",
+      "authority": "FIDE",
+      "source_class": "official_list",
+      "url": "https://handbook.fide.com/files/handbook/C04Annex3_FEP22.pdf",
+      "approval_date": null,
+      "effective_from": null,
+      "effective_to": null,
+      "status": "historical_snapshot",
+      "status_basis": "Official Annex 3 PDF retrieved 2026-10-27; the list is a 2022 vintage and is superseded for current list checking by the later C.02.04 table retrieved in this audit. Absence is bounded to this PDF.",
+      "supersedes": [],
+      "superseded_by": [
+        "F-0406"
+      ],
+      "retrievals": [
+        {
+          "retrieved_on": "2026-10-27",
+          "method": "Arena PDF page-fetch; parsed official Endorsed Programs list checked for Pairing-Core",
+          "raw_bytes_retained": false,
+          "sha256": null,
+          "sha256_scope": "parsed PDF content was exposed; original PDF response bytes were not retained or hashed",
+          "artifact_path": null
+        }
+      ],
+      "rights": {
+        "rights_holder": "FIDE",
+        "license_status": "no_reuse_license_or_permission_identified_in_repository_review",
+        "permission_obtained": false,
+        "redistribution": "link_only_no_full_source_text_or_original_file_committed",
+        "local_original": null,
+        "note": "Official availability is not redistribution permission. No written permission or open reuse licence is recorded; the repository links to the official list and does not commit its PDF or full contents."
+      },
+      "scope_note": "Historic official list only. Pairing-Core is absent from this retrieved 2022 vintage; the newer C.02.04 list is indexed separately, and no exhaustive search of separate FIDE decisions is claimed."
+    }
+  ]
+}

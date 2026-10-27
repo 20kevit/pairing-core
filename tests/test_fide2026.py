@@ -445,6 +445,8 @@ def test_corpus_provenance_schema():
                                       "official-example-with-derived-truncation",
                                       "derived", "differential"), path
         assert "source" in data and "article" in data, path
+        assert data.get("content_type", "").startswith("project_authored_"), path
+        assert "not established" in data.get("redistribution_rights", "").lower(), path
 
 
 def test_corpus_burstein_enumeration():

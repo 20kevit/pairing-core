@@ -1,79 +1,61 @@
-# SOURCE MANIFEST — Retrieval Records + Legal Posture
+# FIDE source manifest (generated)
 
-## Copyright / licence discipline (§27; legally clean by construction)
+**As of:** 2026-10-27 · **Source records:** 40
 
-- FIDE Handbook / Council / announcement texts are FIDE ©. This repository
-  vendors **no bulk FIDE text**: facts are extracted in our own words with short
-  necessary quotations only. Full documents live at official URLs in SOURCE_INDEX.md.
-- No PDF binaries are committed in this wave (all local-artifact fields: "none —
-  link + metadata only"). If a future wave manually retrieves article bodies,
-  record here: filename, source URL, retrieval date, SHA-256, document version/date.
-- Secondary licences respected: BBP Apache-2.0 (subprocess/oracle only, never
-  vendored); JaVaFo custom free+attribution (no bundling); py4swiss MIT;
-  echecs MIT; vendor tools proprietary (no inclusion).
+## Redistribution and provenance policy
 
-## Retrieval records (completion wave — full evidence set)
+No open reuse licence or written permission to redistribute FIDE material was established in this audit. The FIDE Handbook legal-terms lookup returned 404 (source F-0801); that failed lookup establishes neither permission nor a prohibition. Public download is not redistribution permission. No full FIDE source text, OCR, translation, or original PDF/HTML is committed by this documentation system; generated requirements are project-authored paraphrases with exact source references. Some test fixtures retain project-authored structured transcriptions or derived data from cited numerical examples, including the published Berger schedules for N=3–16. Those fixtures are explicitly labeled; permission for redistribution of source-derived example data is not established and must not be inferred. If written permission is later obtained, retain the permission record, original artifact and verified checksum before changing this policy.
 
-| Source ID | URL | Retrieved | Method | Artifact | SHA-256 |
+The parsed-page retrieval interface used for the 2026-10-27 review did not expose original response bytes. Therefore the current source pages have no source-text SHA-256; this is stated per retrieval rather than replaced with a fabricated digest. Historical temporary-file digests are preserved as historical records and are not presented as verified local artifacts. Prior-wave dates recorded as `2026-10-03_or_earlier_as_recorded` retain `retrieval_date_precision: on_or_before`; they are not normalized to an invented exact date.
+
+| Source ID | Retrieved | Method | Raw bytes / SHA-256 | Local original | Rights |
 |---|---|---|---|---|---|
-| F-0201 (+F-0101/03/05/08/10/12/14/15/17) | doc.fide.com …/2025_3FC/CM3-202517.pdf | 2026-10-03 | curl+pdftotext, read in full (1,872 lines) | none vendored (/tmp) | `6b12df0e692d517624709ff79b1c55048e68f344d13e24f4c96748e7c846b93b` |
-| F-0106 (interim Dutch) | doc.fide.com …/2024%201FC/2024_FC1_TEC_Dutch.pdf | 2026-10-03 | curl+pdftotext, read (312 lines) | none vendored | `e006e2d9f342198b5ad8d2367fb01423bebcf69b5d283a5310bd6606c3031770` |
-| F-0106 TOCh | …/2024_FC1_TEC_Dutch_TOCh.pdf | 2026-10-03 | curl+pdftotext, read (92 lines) | none vendored | `384cdb61449d7567656ea00ff6934f924306c9633109245da21f6dc2f28ba474` |
-| F-0101int/F-0103int (2025) | …/2024_FC1_TEC_Swiss.pdf + …_References.pdf | 2026-10-03 | curl+pdftotext, read (25+655 lines) | none vendored | `f61597e18c4480a8b1cde2ba4f03696476925d139ddacf5c80a78fb4cab21831` / `e1117bcb40a58daab2bc7f37aa99adef41097202853b7296058f21a3480b5259` |
-| F-0601 Olympiad | doc.fide.com …/3FC2021/Annex 3.2.3…pdf | 2026-10-03 | curl+pdftotext, read in full (210 lines) | none vendored | `e7c995b923f40b024306394d60a54c996154b572b25997610139039fd832f017` |
-| S-0106 Annotated Dutch V2026 | tec.fide.com …/2026/08/AnnotatedDutch-V2026-1.pdf | 2026-10-03 | curl+pdftotext (2,184 lines) | none vendored | `c0515191ff457cac80842d5d7e1ef8e7314b8d6b858cec4dd3024d8f7666e1de` |
-| S-0106 Terms 2026 | tec.fide.com …/2026-fide-dutch-terms-and-definitions-1.pdf | 2026-10-03 | curl+pdftotext (165 lines) | none vendored | `e32c753a8854607bcbc2e6a4f6d21d537a42cf60d280b1dfe06c087b1e9a658c` |
-| S-0106 Mastering Dutch | tec.fide.com …/2026/07/Mastering_the_Dutch_2026.pdf | 2026-10-03 | curl+pdftotext (3,346 lines) | none vendored | `00445682142f88899ecb7320ec49f027a9b38300a800ce1c76585e38dad745ca` |
-| F-0301/F-0302/F-0401 | fide.com / tec.fide.com pages | 2026-10-03 | webfetch full page | metadata only | n/a (HTML) |
+| `F-0100` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0101` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0102` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0103` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0104` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0105` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0106` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0107` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0108` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0109` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0110` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0111` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0112` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0113` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0114` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0115` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0116` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0117` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0118` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0119` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0201` | 2026-10-03 | prior-wave record: curl + pdftotext, read in full | 6b12df0e692d517624709ff79b1c55048e68f344d13e24f4c96748e7c846b93b — not reverified against a retained artifact: temporary PDF recorded in prior SOURCE_MANIFEST; file not retained in repository and digest not reverified in this wave | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0301` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0302` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0303` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0401` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0402` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0403` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0404` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0405` | 2026-10-27 | Arena page-fetch parsed Markdown, all three chunks read for Article 7 | raw response bytes not exposed; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0406` | 2026-10-27 | Arena page-fetch parsed Markdown; current THP table read | raw response bytes not exposed; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0407` | 2026-10-27 | Arena PDF page-fetch; parsed official Endorsed Programs list checked for Pairing-Core | parsed PDF content was exposed; original PDF response bytes were not retained or hashed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0501` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0502` | 2026-10-27 | Arena page-fetch returned Handbook header/navigation only; no parent article content was exposed | no parent article text or original response bytes were returned | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0503` | 2026-10-27 | Arena page-fetch; parsed Annex 2 page content read, including the five numbered directions and table scope | retrieval interface exposed parsed content, not original response bytes or a downloadable source artifact | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0601` | 2026-10-03 | prior-wave record: archived official chapter HTML + extracted text | f2b50d0346a679376fe7493ad56f40570a7d259337532227cc3edf604d97b0a3 — not reverified against a retained artifact: temporary HTML hash recorded in prior SOURCE_MANIFEST; file not retained in repository and digest not reverified in this wave | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0601` | 2026-10-27 | Arena page-fetch; parsed Markdown returned in one or more chunks; content read for source/edition identification and applicable clauses | not available: retrieval interface did not expose original response bytes or downloadable source artifact; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed; example_data_transcription_rights_unverified` |
+| `F-0701` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0702` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0703` | 2026-10-03_or_earlier_as_recorded | prior SOURCE_INDEX / SOURCE_MANIFEST research record; not re-verified in this documentation-system wave | no repository-retained raw source file or independently verified current digest | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0704` | 2026-10-27 | Arena page-fetch parsed Markdown, all three chunks read for relevant C.07 sections | raw response bytes not exposed; no hash claimed | None | `link_only_no_full_source_text_or_original_file_committed` |
+| `F-0801` | 2026-10-27 | Arena page-fetch request to the FIDE Handbook legal URL; response was 404 (page does not exist) | no legal terms page content was returned; the 404 response was not retained as raw bytes | None | `link_only_no_full_source_text_or_original_file_committed` |
 
-## Direct Handbook re-verification (2026-10-27 audit)
+## Evidence limitations
 
-The current audit accessed official FIDE Handbook chapter pages directly via
-Arena's page-fetch interface. Complete parsed page content was returned in one
-or more chunks and read for the current texts listed below:
+- A source URL, parsed page, metadata date, paraphrase, code reference or regression test does not establish legal redistribution permission or conformity.
+- A checksum is validated only when an artifact is present. A prior-wave hash with no retained file is labeled historical and cannot be rechecked offline.
+- Current and superseded status is bounded to the official pages/records retrieved and cited; absence from a list is not proof that no separate FIDE decision exists.
 
-- C.04.1 Basic Rules; C.04.2 General Handling Rules; C.04.3 Dutch;
-  C.04.4.1 Dubov; C.04.4.2 Burstein; C.04.4.3 Lim; C.04.5 Double Swiss;
-  C.04.6 Swiss Team; and C.04.7 Accelerated Systems (all effective
-  2026-02-01).
-- C.05 Annex 1 Berger tables; Olympiad Pairing Rules (effective 2022-01-01);
-  C.07 Tie-Break Regulations (effective 2026-03-01); and C.02.03 (effective
-  2026-03-01).
-- Official C.04 Annex 3 FIDE Endorsed Programs PDF, vintage 2022, checked for
-  Pairing-Core's listing.
-
-The page-fetch interface exposes parsed Markdown chunks, not the original
-response bytes or downloadable HTML. No full source bodies are committed or
-hashed; the audit therefore records official URLs, source identity/effective
-dates, and retrieval date rather than claiming a source-text digest. The
-complete source list and verified dates are in
-[`../../audit/GAP_REGISTER.md`](../../audit/GAP_REGISTER.md). This is evidence
-of which texts were read, not evidence that Pairing-Core implements them
-conformantly.
-
-## Prior-wave retrieval queue (status updated 2026-10-27)
-
-- Q-01: raw CM3-202517.pdf binary/hash is not retained. Current effective
-  rules were read directly from the official Handbook pages; a raw Council
-  bundle hash is not required for the present audit.
-- Q-02: CLOSED for the current C.04 chapters listed above by direct official
-  Handbook page retrieval. Raw article hashes remain unavailable for the
-  reason stated above.
-- Q-03: direct re-verification of the superseded 2025 interim F-0106 chapter
-  remains historical research debt and is not a current-rule source gap.
-
-## Closure-wave retrieval (2026-10-03, F-0601 Olympiad chapter text)
-
-- F-0601 chapter text: `http://web.archive.org/web/2023id_/https://handbook.fide.com/chapter/OlympiadPairingRules2022`
-  (official Handbook content via archive; live handbook fetch blocked by
-  bot-wall, doc.fide.com Annex URL 404). Retrieved 2026-10-03 via curl.
-  HTML SHA-256: `f2b50d0346a679376fe7493ad56f40570a7d259337532227cc3edf604d97b0a3`
-  (82,436 bytes); stripped article text (21,210 chars) SHA-256:
-  `d92b378efbce05a3e16e45a2d422f318c08b89e3d954e1272c975be86c32ffbd`.
-  Artifact: /tmp only, nothing vendored. Full §§1–11 read (8.x/9.x quoted
-  into implementation docstrings). Closes U-O-823 and U-O-88.
-- Direct PDF attempts (all failed, recorded): handbook
-  `.../files/handbook/Olympiad2026MainCompetition.pdf` (inaccessible);
-  doc.fide.com `.../3FC2021/Annex%203.2.3...pdf` (404 nginx);
-  `web.archive.org/web/2024/...` (empty). Chapter HTML is the complete
-  normative text (all articles + 15-table + 88-team example present).
+[prior retrieval ledger and historical hashes](history/SOURCE_MANIFEST_20261027_pre_clause_registry.md)
