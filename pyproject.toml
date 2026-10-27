@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pairing-core"
-version = "0.4.1"
+version = "0.4.2.dev0"
 description = "Deterministic FIDE-family Swiss pairing library (Dutch till-2026 kernel + 2026 systems, Berger round-robin, BYO external-engine adapters)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,6 +18,9 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Games/Entertainment :: Board Games",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -28,7 +31,7 @@ Repository = "https://github.com/20kevit/pairing-core"
 [project.optional-dependencies]
 # Test/dev tooling only. Runtime stays dependency-free: plain
 # `pip install pairing-core` pulls nothing. CI installs this extra.
-test = ["pytest>=8"]
+test = ["pytest>=8", "ruff==0.17.3"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

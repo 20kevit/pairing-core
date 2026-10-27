@@ -1,1 +1,36 @@
-{"article": "C.04.5 Art.3.6.2 example", "expected_identifier": [4, 6, 9, 11, 8, 16, 10, 24], "pairs": [[11, 24], [16, 6], [10, 9], [8, 4]], "provenance": "official-example", "source": "F-0114", "system": "double-2026"}
+{
+  "article": "C.04.5 Art.3.6.2 example",
+  "expected_identifier": [
+    4,
+    6,
+    9,
+    11,
+    8,
+    16,
+    10,
+    24
+  ],
+  "pairs": [
+    [
+      11,
+      24
+    ],
+    [
+      16,
+      6
+    ],
+    [
+      10,
+      9
+    ],
+    [
+      8,
+      4
+    ]
+  ],
+  "provenance": "official-example",
+  "source": "F-0114",
+  "system": "double-2026",
+  "content_type": "project_authored_structured_transcription_of_limited_official_numerical_example_no_source_prose",
+  "redistribution_rights": "Separate permission or open licence for redistributing this source-derived example data is not established; this is not an official source copy."
+}

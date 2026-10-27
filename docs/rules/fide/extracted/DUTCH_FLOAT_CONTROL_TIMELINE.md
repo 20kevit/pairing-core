@@ -1,3 +1,5 @@
+> **Historical research snapshot (2026-10-27):** This document preserves an earlier source-retrieval or analysis wave; it is not the current source/coverage authority. Use the current [FIDE registry](../README.md), [source index](../SOURCE_INDEX.md), [clause index](../CLAUSE_INDEX.md), [coverage dashboard](../COVERAGE_DASHBOARD.md), and [audit gap register](../../../audit/GAP_REGISTER.md). Statements about direct/full-text retrieval, extracted content, hashes, or implementation status below are historical research records, not a redistribution licence or current conformity evidence. Current source rights and retrieval limits are in [the generated source manifest](../SOURCE_MANIFEST.md).
+
 # Dutch Float-Control Timeline (E.5 question resolved)
 
 ## What E.5 is
@@ -19,9 +21,18 @@
   Dutch C6–C9 (counts/scores) + C14–C17 (repeat counts, residents vs MDP-opponents) +
   C18–C21 (score gaps, descending). BBP source implements weighted minimisation only
   (no absolute gate besides rematch/absolute-colour/completeness) — consistent.
-- Interim 2025 text (F-0106, TOCh verified): forfeit/zero-bye downfloat marking REMOVED
-  explicitly because C9 now handles PAB-after-absence ("Now, the new C.9 criterion
-  prevents this from happening").
+- Interim 2025 text (F-0106, official PDF and Table of Changes parsed 2026-10-27):
+  Article 1.4.3 still defines a downfloat when a player scores without playing more
+  than the points rewarded for a loss. The Table of Changes says the prior treatment
+  of forfeits/zero-point byes as downfloaters was intended to prevent a later PAB,
+  and that C9 now addresses this purpose. Do not summarize this as all non-play
+  downfloat marking being removed or as categorical fewer-games PAB ineligibility.
+  C5 minimizes the PAB assignee’s score; C9 minimizes the assignee’s unplayed games;
+  C2 separately states the specific prior-PAB/unplayed-win-value bar.
+- F-0106’s PDF approval field is the unfilled `dd/mm/yyyy` placeholder; it says
+  applied from 2025-07-01. The later F-0105 edition applies from 2026-02-01. The
+  source and transition evidence are recorded in the registry; no clause equivalence
+  or distinct F-0106 implementation is claimed.
 - Native kernel's absolute bar (consecutive_downs ≥ 2 ⇒ never downfloat) has ZERO FIDE
   citation in any era; stays frozen per O08; the 2026 engine does not contain it.
 

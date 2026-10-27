@@ -1,11 +1,11 @@
-# pairing-core — Master Specification (product entry map; v0.4.1)
+# Historical master specification map (v0.4.1 snapshot)
 
-> Authority note: this document maps the product and points to authorities;
-> it is not itself the conformance record. Current capability authority is
-> `docs/CAPABILITY.md`; conformance authority is
-> `docs/audit/FIDE_CONFORMANCE_MATRIX.md` (+ closure report); ruleset
-> catalog is `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md`. Stage-1/2/3
-> historical detail lives in `docs/audit/`, `docs/research/`, `docs/spec/`.
+> This product map records the published `v0.4.1` state and contains
+> superseded implementation/evidence claims. It is not current capability or
+> conformance authority. See [`CAPABILITY.md`](CAPABILITY.md),
+> [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md), and
+> [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md). The current
+> ruleset source catalog is `rules/fide/CURRENT_SYSTEM_CATALOG.md`.
 
 ## 1. Vision
 
@@ -26,7 +26,7 @@ Tournament management (registration, money, accounts, notifications, UI,
 publishing, admin), REST APIs, databases, ratings, tie-break engines,
 scheduling, arbiter judgment. See `docs/spec/TOURNAMENT_BOUNDARIES.md`.
 
-## 4. Current state (v0.4.1; unchanged behaviorally since v0.4.0)
+## 4. Historical state snapshot (v0.4.1)
 
 Deterministic, zero-runtime-dependency pairing library: frozen
 `dutch-till2026-compat` Dutch kernel (41 goldens pin behavior) + seven
@@ -132,10 +132,11 @@ grammar + fuzz; bounded execution; no secrets/surface by design.
 
 ## 18b. Tie-break architecture (O05/O09)
 
-General tie-break calculation is OUT (future independent tiebreak-core:
-`docs/spec/TIEBREAK_ARCHITECTURE.md`); pairing consumes only narrow
-ranking/index inputs where formal rules require (Burstein); one-way
-dependency; no tournament-core.
+General tie-break calculation remains outside Pairing-Core. The separate
+`tiebreak-core` library exists independently, but has no C.04.4.2 Burstein
+Index calculator; Pairing-Core consumes only the caller-supplied narrow Index
+values needed for pairing order. No cross-library runtime dependency or shared
+tournament-core exists; see `docs/spec/TIEBREAK_ARCHITECTURE.md`.
 
 ## 19. Licensing
 

@@ -1,4 +1,11 @@
-# Dubov System — Structured Research Note
+# Dubov System — Historical structured research note
+
+> This research-phase note contains superseded retrieval and implementation
+> statuses (including statements that article text was pending or no engine
+> existed). Current source identity/effective date is in
+> `../CURRENT_SYSTEM_CATALOG.md`; current limitations and readiness are in
+> `../../../audit/GAP_REGISTER.md`. Read the official Handbook source before
+> relying on any rule interpretation.
 
 ## Identity
 - System: Dubov System, C.04.4.1. Devised by GM Daniil Dubov (NOTE, secondary-consistent).

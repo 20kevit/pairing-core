@@ -1,4 +1,10 @@
-# FINAL RESEARCH REPORT — FIDE Authoritative Documentation Master Wave
+# Historical FIDE source-research report (2026-10-03, v0.2.0)
+
+> This report records an earlier source-retrieval wave and contains
+> superseded implementation/status statements. Current source dates and
+> evidence are summarized in `CURRENT_SYSTEM_CATALOG.md` and
+> `../../audit/GAP_REGISTER.md`; this report is not current readiness or
+> conformance authority.
 
 Baseline `bf77d7f` / release `v0.2.0`. Retrieval wave 2026-10-03. No pairing
 behavior changed (frozen `dutch-till2026-compat`; `dutch-2026` still rejected).

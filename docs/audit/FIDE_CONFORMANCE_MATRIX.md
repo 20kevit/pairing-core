@@ -1,6 +1,16 @@
-# FIDE Conformance Matrix (hostile audit wave, 2026-10-03)
+# Historical FIDE conformance matrix (hostile audit wave, 2026-10-03)
 
-Source of truth: Council bundle CM3-202517 (FULL_TEXT, 1871 lines) + Annotated
+> **SUPERSEDED as current status on 2026-10-27.** The `VERIFIED` and
+> `IMPLEMENTED_WITH_EXPLICIT_EVIDENCE_GAPS` labels below are the prior
+> project's self-assessed audit-wave conclusions, not external FIDE
+> evaluation and not independent proof of full conformance. Current findings,
+> implementation changes, and closure state are governed by
+> [`GAP_REGISTER.md`](GAP_REGISTER.md) and
+> [`COMPLETION_STANDARD.md`](COMPLETION_STANDARD.md). In particular, the
+> local Burstein Index calculator described below has been removed; Berger
+> official-table checks have since been extended to 3–16 players.
+
+Historical source record: Council bundle CM3-202517 (FULL_TEXT, 1871 lines) + Annotated
 Dutch V2026 + Mastering Dutch 2026 + Terms 2026 (all read in full; nothing
 vendored). Olympiad F-0601 primary PDF unavailable to this wave (handbook
 bot-wall); Olympiad rows rest on OLYMPIAD_EVIDENCE.md (FULL_TEXT retrieval

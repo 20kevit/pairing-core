@@ -14,6 +14,7 @@ from pairing_core.errors import (
     InvalidPlayerError,
     InvalidRequestError,
     UnsupportedRulesetError,
+    VersionMismatchError,
 )
 from pairing_core.fide2026 import baku
 from pairing_core.fide2026 import common as C
@@ -26,21 +27,20 @@ from pairing_core.fide2026.double_team import (
 )
 from pairing_core.fide2026.dubov import aro, dubov_colour, max_t, _shifter_order
 from pairing_core.fide2026.burstein import (
-    buchholz_sb,
     enumerate_burstein_pairings,
-    rank_key,
     seeding_rounds,
 )
 from pairing_core.fide2026.dutch import allocate_colour
 from pairing_core.fide2026.lim import compatible, due_colour
 from pairing_core.fide2026.models import (
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
     BURSTEIN_2026,
-    DOUBLE_2026,
     DUBOV_2026,
     DUTCH_2026,
     LIM_2026,
     OLYMPIAD_2022,
-    TEAM_2026,
     P26Pair,
     P26Pairing,
     P26Player,
@@ -261,12 +261,15 @@ def test_seeding_rounds():
     assert seeding_rounds(11) == 4
 
 
-def test_buchholz_sb():
-    by_id = {1: P(1, tpn=1, score=1.0, opponents=(2,)),
-             2: P(2, tpn=2, score=0.5, opponents=(1,))}
-    bh, sb = buchholz_sb(by_id[1], by_id, {1: ("W",), 2: ("L",)})
-    assert (bh, sb) == (0.5, 0.5)
-    assert rank_key(by_id[1], by_id, {1: ("W",), 2: ("L",)})[2] == 1
+def test_burstein_index_values_are_external_and_provenanced():
+    values = BursteinIndexSet(
+        values=(BursteinIndexValue(2, 0.5, 0.25),
+                BursteinIndexValue(1, 1.5, 0.75)),
+        provenance=BursteinIndexProvenance(source="caller-supplied",
+                                           scope="C.04.4.2 Index values"))
+    assert [value.player_id for value in values.values] == [1, 2]
+    assert values.by_player_id()[1].buchholz == 1.5
+    assert values.provenance.source == "caller-supplied"
 
 
 def test_burstein_enumeration_first():
@@ -286,15 +289,39 @@ def test_burstein_seeding_delegates():
     assert any("seeding-round" in n for n in out.notes)
 
 
-def test_burstein_needs_results():
+def test_burstein_requires_external_index_values():
     from pairing_core.fide2026 import burstein as B
     ps = [P(i, tpn=i, score=1.0 if i <= 3 else 0.0, rating=1900,
             colors="W" if i <= 3 else "B", opponents=(),
             played=1) for i in range(1, 7)]
-    with pytest.raises(InvalidPlayerError):
+    with pytest.raises(InvalidRequestError, match="externally calculated"):
         B.pair_burstein(P26Request(
             players=tuple(ps), ruleset=BURSTEIN_2026, round_number=5,
             total_rounds=9))
+
+
+def test_burstein_facade_seals_input_and_result_digests():
+    players = fresh(6)
+    provenance = BursteinIndexProvenance(
+        source="library-calculated", producer="independent-fixture",
+        producer_version="1.0", producer_ruleset="C.04.4.2",
+        scope="synthetic test values; not a tie-break calculation")
+    indices = BursteinIndexSet(
+        values=tuple(BursteinIndexValue(p.id, 10.0 - p.id, float(p.id) / 2)
+                     for p in players),
+        provenance=provenance)
+    request = P26Request(players=tuple(players), ruleset=BURSTEIN_2026,
+                         round_number=5, total_rounds=9,
+                         burstein_indices=indices)
+    assert P26Request.from_dict(request.to_dict()) == request
+    result = pair_2026(request)
+    payload = result.to_dict()
+    assert payload["schema"] == "pairing-core/p26-pairing/v1"
+    assert payload["provenance"]["burstein_index_provenance"] == provenance.to_dict()
+    assert P26Pairing.from_dict(payload) == result
+    payload["bye_id"] = 1
+    with pytest.raises(VersionMismatchError, match="digest mismatch"):
+        P26Pairing.from_dict(payload)
 
 
 # -------------------------------------------------------------------- lim
@@ -327,20 +354,84 @@ def test_lim_r1_lot_black_mirror():
     assert whites == {5, 2, 7, 4}  # mirrored colours
 
 
+def test_lim_r1_odd_bye_requires_actual_ratings():
+    from pairing_core.fide2026 import lim as L
+    players = (P(1, rating=2000), P(2, rating=None), P(3, rating=1800))
+    req = P26Request(players=players, ruleset=LIM_2026, round_number=1,
+                     total_rounds=5)
+    with pytest.raises(InvalidPlayerError, match="known rating"):
+        L.pair_lim(req)
+
+
+def test_lim_r1_odd_bye_uses_lowest_rating_then_tpn():
+    from pairing_core.fide2026 import lim as L
+    players = (P(1, tpn=2, rating=1800), P(2, tpn=3, rating=1600),
+               P(3, tpn=1, rating=1600))
+    req = P26Request(players=players, ruleset=LIM_2026, round_number=1,
+                     total_rounds=5)
+    assert L.pair_lim(req).bye_id == 3
+
+
+def test_lim_maxi_even_maker_rating_guard_falls_back_without_imputation():
+    from pairing_core.fide2026.lim import _select_floater
+
+    def _check(reference_rating, candidate_rating, expected):
+        work = [P(1, tpn=1, rating=reference_rating, colors="W"),
+                P(2, tpn=2, rating=candidate_rating, colors="B"),
+                P(3, tpn=3, rating=2200, colors="B")]
+        chosen = _select_floater(work, [], set(), downward=True, maxi=True)
+        assert chosen.id == expected
+
+    _check(1800, 1900, 2)
+    _check(1800, 1901, 1)
+    _check(None, 1500, 1)
+
+
+def test_lim_maxi_even_maker_upward_falls_back_to_highest_tpn():
+    from pairing_core.fide2026.lim import _select_floater
+    work = [P(1, tpn=1, rating=2100, colors="B"),
+            P(2, tpn=2, rating=2000, colors="B"),
+            P(3, tpn=3, rating=1800, colors="W")]
+    chosen = _select_floater(work, [], set(), downward=False, maxi=True)
+    assert chosen.id == 3
+
+
+def test_lim_maxi_exchange_requires_known_within_100_ratings():
+    from pairing_core.fide2026.lim import _exchange_pair
+
+    def pair_with_candidate(candidate_rating):
+        work = [P(1, tpn=1, rating=1900, colors="W"),
+                P(2, tpn=2, rating=1800),
+                P(3, tpn=3, rating=1500, colors="W"),
+                P(4, tpn=4, rating=candidate_rating, colors="B")]
+        by_id = {p.id: p for p in work}
+        return _exchange_pair(
+            work, by_id, downward=True, upper=True,
+            floater_of={1: (2.0, "D")}, group_score=1.0,
+            stepper=None, maxi=True)
+
+    assert {frozenset(pair) for pair in pair_with_candidate(1800)} == {
+        frozenset((1, 3)), frozenset((2, 4))}
+    assert {frozenset(pair) for pair in pair_with_candidate(1600)} == {
+        frozenset((1, 4)), frozenset((2, 3))}
+    assert {frozenset(pair) for pair in pair_with_candidate(None)} == {
+        frozenset((1, 3)), frozenset((2, 4))}
+
+
 # ------------------------------------------------------------ double/team
 
 def test_double_identifier_official():
-    ps = [P(t, tpn=t) for t in (4, 6, 8, 9, 10, 11, 16, 24)]
-    found = None
-    for pairing in enumerate_pairings(ps):
-        tops = sorted(t for t, _ in pairing)
-        if tops == [4, 6, 9, 11]:
-            ident = tuple(tops) + tuple(
-                b for t in tops
-                for (tt, b) in pairing if tt == t)
-            if ident == (4, 6, 9, 11, 8, 16, 10, 24):
-                found = pairing
-    assert found is not None
+    data = json.loads((CORPUS / "double_pairing_identifier.json").read_text())
+    expected = tuple(data["expected_identifier"])
+    top = expected[:len(expected) // 2]
+    bottom = expected[len(expected) // 2:]
+    expected_pairs = {frozenset(pair) for pair in zip(top, bottom)}
+    players = sorted({pid for pair in data["pairs"] for pid in pair})
+    ps = [P(t, tpn=t) for t in players]
+    found = any(
+        {frozenset(pair) for pair in pairing} == expected_pairs
+        for pairing in enumerate_pairings(ps))
+    assert found
 
 
 def test_double_upfloater_example_order():
@@ -396,7 +487,6 @@ def test_olympiad_bye_lowest_rank():
 
 
 def test_olympiad_9x_first_combination():
-    from pairing_core.fide2026 import olympiad as O
     ps = [P(i, tpn=i) for i in range(1, 7)]
     by_id = {p.id: p for p in ps}
     out = pair_9x(ps, by_id, C.Stepper())
@@ -410,6 +500,64 @@ def test_median_group_even_field():
     assert median_score_group(ranked) == 1.0  # 45th team has 1.0 (lower middle)
 
 
+def test_olympiad_empty_or_unranked_median_is_typed():
+    with pytest.raises(InvalidRequestError, match="at least one team"):
+        median_score_group([])
+    ranked = [P(1, tpn=2, score=1.0), P(2, tpn=1, score=1.0)]
+    with pytest.raises(InvalidRequestError, match="must be ranked"):
+        median_score_group(ranked)
+
+
+def test_olympiad_seed_validation_rejects_missing_and_malformed_inputs():
+    from pairing_core.fide2026.olympiad import seed_initial_numbers
+
+    invalid = (
+        [],
+        [(1, [2400, 2300, 2200, 2100], "A")],
+        [(1, [2400, 2300, 2200, 2100, None], "A")],
+        [(1, [2400, 2300, 2200, 2100, 2000], "A"),
+         (1, [2400, 2300, 2200, 2100, 2000], "B")],
+        [(True, [2400, 2300, 2200, 2100, 2000], "A")],
+    )
+    for entries in invalid:
+        with pytest.raises(InvalidRequestError):
+            seed_initial_numbers(entries)
+
+
+def test_olympiad_seed_ranking_uses_average_fifth_and_alphabetical():
+    from pairing_core.fide2026.olympiad import seed_initial_numbers
+    ranked = seed_initial_numbers([
+        (1, [2400, 2350, 2300, 2250, 2200], "Zeta"),
+        (2, [2400, 2350, 2300, 2250, 2100], "Alpha"),
+        (3, [2400, 2350, 2300, 2250, 2200], "Alpha"),
+        (4, [2300, 2300, 2300, 2300, 2000], "Mango"),
+    ])
+    assert ranked == {3: 1, 1: 2, 2: 3, 4: 4}
+
+
+def test_olympiad_floater_tags_follow_score_direction_not_queue_index():
+    from pairing_core.fide2026 import olympiad as O
+
+    def select(order, gi, *, below=False, median=False):
+        by_id = {pid: P(pid, tpn=pid, score=score)
+                 for score, ids in order for pid in ids}
+        work = [by_id[pid] for pid in order[gi][1]]
+        floater, dest, tag = O._select_floater(
+            work, below, median, by_id, C.Stepper(), order,
+            [score for score, _ in order], gi,
+            {score: [] for score, _ in order})
+        return dest, tag
+
+    # Below-median groups are processed from low to high score, so their
+    # upfloater has a larger queue index. Above and median downfloaters move
+    # to a lower score, even when their destination index is smaller/larger.
+    assert select([(1.0, [1, 2, 3]), (2.0, [4, 5])], 0,
+                  below=True) == (1, "U")
+    assert select([(3.0, [1, 2, 3]), (2.0, [4, 5])], 0) == (1, "D")
+    assert select([(1.0, [4, 5]), (2.0, [1, 2, 3])], 1,
+                  median=True) == (0, "D")
+
+
 # ----------------------------------------------------------- corpus files
 
 def test_corpus_provenance_schema():
@@ -419,6 +567,8 @@ def test_corpus_provenance_schema():
                                       "official-example-with-derived-truncation",
                                       "derived", "differential"), path
         assert "source" in data and "article" in data, path
+        assert data.get("content_type", "").startswith("project_authored_"), path
+        assert "not established" in data.get("redistribution_rights", "").lower(), path
 
 
 def test_corpus_burstein_enumeration():
@@ -458,9 +608,7 @@ def test_corpus_baku():
     assert [baku.virtual_points(True, r, 9) for r in v9["rounds"]] == v9["expected"]
 
 
-def test_corpus_lim_tables():
-    exch = json.loads((CORPUS / "lim_exchange_table.json").read_text())
-    assert exch["expected_columns_for_1"] == ["4", "5", "6", "3", "2"]
+def test_corpus_lim_round_one_table():
     r1 = json.loads((CORPUS / "lim_round_one.json").read_text())
     assert r1["official_40player_lotW_head"] == [[1, 21], [22, 2], [3, 23],
                                                 [24, 4]]

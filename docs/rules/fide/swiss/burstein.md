@@ -1,4 +1,12 @@
-# Burstein System — Structured Research Note
+# Burstein System — Historical structured research note
+
+> This research-phase note contains superseded “full text pending” and
+> “research continues” statuses. The current C.04.4.2 source was read directly
+> from the official Handbook on 2026-10-27. Pairing-Core implements pairing
+> procedures but requires a complete, external `BursteinIndexSet` after
+> seeding; it does not calculate C.04 Buchholz/SB. Current source/status is in
+> `../CURRENT_SYSTEM_CATALOG.md` and `../../../audit/GAP_REGISTER.md`; the
+> integration contract is in `../../../spec/TIEBREAK_ARCHITECTURE.md`.
 
 ## Identity
 - System: Burstein System, C.04.4.2. Design goal: fairness-by-opposition-strength —

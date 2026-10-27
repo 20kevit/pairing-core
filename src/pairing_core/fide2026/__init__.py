@@ -21,8 +21,12 @@ from pairing_core.fide2026.models import (
     DOUBLE_2026,
     TEAM_2026,
     OLYMPIAD_2022,
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
     P26Pairing,
     P26Player,
+    P26Provenance,
     P26Request,
     P26RulesetId,
     SYSTEM_RULESETS,
@@ -33,6 +37,7 @@ from pairing_core.fide2026.api import pair_2026
 __all__ = [
     "DUBOV_2026", "DUTCH_2026", "BURSTEIN_2026", "LIM_2026",
     "DOUBLE_2026", "TEAM_2026", "OLYMPIAD_2022",
-    "P26Pairing", "P26Player", "P26Request", "P26RulesetId",
+    "P26Pairing", "P26Player", "P26Provenance", "P26Request", "P26RulesetId",
+    "BursteinIndexProvenance", "BursteinIndexValue", "BursteinIndexSet",
     "SYSTEM_RULESETS", "resolve_2026_ruleset", "pair_2026",
 ]

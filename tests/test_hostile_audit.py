@@ -13,19 +13,23 @@ import pytest
 
 from pairing_core.errors import ImpossiblePairingError
 from pairing_core.fide2026 import common as C
-from pairing_core.fide2026 import dubov as DUB
 from pairing_core.fide2026 import lim as LIM
 from pairing_core.fide2026.api import pair_2026
 from pairing_core.fide2026.burstein import (
     _max_pairs,
     _next_bracket_ok,
     enumerate_burstein_pairings,
-    rank_key,
 )
 from pairing_core.fide2026.common import Stepper, last_differing_round
 from pairing_core.fide2026.double_team import team_colour
 from pairing_core.fide2026.dutch import _bsn, _mdp_sets
-from pairing_core.fide2026.models import P26Player, P26Request
+from pairing_core.fide2026.models import (
+    BursteinIndexProvenance,
+    BursteinIndexSet,
+    BursteinIndexValue,
+    P26Player,
+    P26Request,
+)
 from pairing_core.controls import ExecutionBudgets as Budgets
 
 
@@ -39,6 +43,15 @@ def P(pid, tpn=None, score=0.0, **kw):
 
 def step():
     return Stepper(Budgets())
+
+
+def synthetic_burstein_indices(players):
+    """Deterministic external values; these tests do not test tie-break math."""
+    return BursteinIndexSet(
+        values=tuple(BursteinIndexValue(p.id, float(10 - p.tpn), 0.0)
+                     for p in players),
+        provenance=BursteinIndexProvenance(
+            source="caller-supplied", scope="synthetic pairing-test values"))
 
 
 # ------------------------------------------------------------------ Dutch BSN
@@ -152,13 +165,13 @@ def test_burstein_c6_floats_weakest_outgoing():
     d = P(4, 4, 1.0, opponents=(1,))
     players = [a, b, c, d]
     by_id = {p.id: p for p in players}
-    results = {1: ("L", "L", "L"), 2: ("L",), 3: ("L",), 4: ("L",)}
-    rank_of = {p.id: rank_key(p, by_id, results) for p in players}
+    # The Index values are explicit synthetic inputs; this test isolates C6.
+    rank_of = {p.id: (-float(10 - p.tpn), 0.0, p.tpn) for p in players}
     blocked = [(1, 2), (1, 3), (1, 4)]
     assert _max_pairs(players, by_id, blocked, step()) == 1
     req = P26Request(players=tuple(players), ruleset="burstein-2026",
                      round_number=6, total_rounds=9,
-                     round_results=tuple((k, v) for k, v in results.items()))
+                     burstein_indices=synthetic_burstein_indices(players))
     chosen = _choose_pairing(players, by_id, rank_of, 1, blocked, step(),
                              req=req, rest_after=[])
     floated = {x for x, y in chosen if y == 0} | \
@@ -174,8 +187,7 @@ def test_burstein_incoming_floaters_join_next_bracket():
                P(3, 3, 1.0, opponents=(4,)), P(4, 4, 1.0, opponents=(3,))]
     req = P26Request(
         players=tuple(players), ruleset="burstein-2026", round_number=6,
-        total_rounds=9,
-        round_results=((1, ("W",)), (2, ("L",)), (3, ("W",)), (4, ("L",))))
+        total_rounds=9, burstein_indices=synthetic_burstein_indices(players))
     out = pair_2026(req)
     paired = {i for p in out.pairs for i in (p.white_id, p.black_id)}
     assert paired == {1, 2, 3, 4}
@@ -596,7 +608,7 @@ def test_olympiad_seeding_helper_331():
         (1, [2400, 2350, 2300, 2250, 2200], "Zeta"),
         (2, [2400, 2350, 2300, 2250, 2100], "Alpha"),
         (3, [2400, 2350, 2300, 2250, 2200], "Alpha"),
-        (4, [2500, 2500, 2500], "Mango"),
+        (4, [2300, 2300, 2300, 2300, 2000], "Mango"),
     ])
     assert got == {3: 1, 1: 2, 2: 3, 4: 4}
 
@@ -670,7 +682,8 @@ def test_caller_duty_omissions_typed():
     with pytest.raises(InvalidPlayerError):
         pair_2026(P26Request(players=tuple(norating), ruleset="dubov-2026",
                              round_number=1, total_rounds=5))
-    with pytest.raises(InvalidPlayerError):
+    from pairing_core.errors import InvalidRequestError
+    with pytest.raises(InvalidRequestError, match="externally calculated"):
         pair_2026(P26Request(players=tuple(base), ruleset="burstein-2026",
                              round_number=6, total_rounds=9))
     with pytest.raises(UnsupportedRulesetError):

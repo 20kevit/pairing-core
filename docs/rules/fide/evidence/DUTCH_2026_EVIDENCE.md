@@ -1,3 +1,5 @@
+> **Historical research snapshot (2026-10-27):** This document preserves an earlier source-retrieval or analysis wave; it is not the current source/coverage authority. Use the current [FIDE registry](../README.md), [source index](../SOURCE_INDEX.md), [clause index](../CLAUSE_INDEX.md), [coverage dashboard](../COVERAGE_DASHBOARD.md), and [audit gap register](../../../audit/GAP_REGISTER.md). Statements about direct/full-text retrieval, extracted content, hashes, or implementation status below are historical research records, not a redistribution licence or current conformity evidence. Current source rights and retrieval limits are in [the generated source manifest](../SOURCE_MANIFEST.md).
+
 # Evidence — Dutch 2026 (C.04.3)
 
 1. Source ID: F-0105. Official document: FIDE Handbook C.04.3 FIDE (Dutch) System.

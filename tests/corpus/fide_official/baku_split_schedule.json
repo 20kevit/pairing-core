@@ -1,1 +1,54 @@
-{"article": "C.04.7 Art.1.2 Note + Art.1.4.4 examples", "cases": [{"expected_ga": 82, "n": 161}, {"expected_ga": 4, "n": 8}], "provenance": "official-example", "source": "F-0117", "system": "baku", "virtual": {"11R-team-MP-win2": {"expected": [2.0, 2.0, 2.0, 1.0, 1.0, 1.0], "rounds": [1, 2, 3, 4, 5, 6]}, "9R-individual": {"expected": [1.0, 1.0, 1.0, 0.5, 0.5], "rounds": [1, 2, 3, 4, 5]}}}
+{
+  "article": "C.04.7 Art.1.2 Note + Art.1.4.4 examples",
+  "cases": [
+    {
+      "expected_ga": 82,
+      "n": 161
+    },
+    {
+      "expected_ga": 4,
+      "n": 8
+    }
+  ],
+  "provenance": "official-example",
+  "source": "F-0117",
+  "system": "baku",
+  "virtual": {
+    "11R-team-MP-win2": {
+      "expected": [
+        2.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "9R-individual": {
+      "expected": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.5
+      ],
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  "content_type": "project_authored_structured_transcription_of_limited_official_numerical_example_no_source_prose",
+  "redistribution_rights": "Separate permission or open licence for redistributing this source-derived example data is not established; this is not an official source copy."
+}

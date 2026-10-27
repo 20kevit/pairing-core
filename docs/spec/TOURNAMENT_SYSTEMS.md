@@ -1,4 +1,10 @@
-# Tournament Systems Taxonomy (STAGE 3 SPEC — PROPOSED)
+# Tournament Systems Taxonomy (HISTORICAL STAGE-3 PROPOSAL)
+
+> This design-stage proposal predates the 2026 system implementations and
+> direct C.04.6 retrieval. Its proposed/deferred statuses are not current.
+> Current scope and limitations are in [`../audit/GAP_REGISTER.md`](../audit/GAP_REGISTER.md)
+> and [`../CAPABILITY.md`](../CAPABILITY.md); the current source catalog is
+> [`../rules/fide/CURRENT_SYSTEM_CATALOG.md`](../rules/fide/CURRENT_SYSTEM_CATALOG.md).
 
 Separate abstractions per family; no forced unification (§3.9).
 

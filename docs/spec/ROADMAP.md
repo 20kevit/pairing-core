@@ -1,9 +1,14 @@
-# Roadmap (OWNER DECISION O07 — FINAL, authorisation of phases still required)
+# Historical roadmap (owner decision O07; status snapshot at v0.4.0)
 
-Ordered by chess-manager value → FIDE importance → dependencies → risk →
-ecosystem value. Phase exit = acceptance criteria (ACCEPTANCE_CRITERIA.md).
-STATUS markers record actual completion as of v0.4.0 (2026-10-03);
-the capability-wave notes below are preserved as history.
+> This phase plan is an archived 2026-10-03 snapshot, not current capability,
+> acceptance, or release status. Current scope and evidence are maintained in
+> [`../audit/GAP_REGISTER.md`](../audit/GAP_REGISTER.md),
+> [`../audit/COMPLETION_STANDARD.md`](../audit/COMPLETION_STANDARD.md), and
+> [`../CAPABILITY.md`](../CAPABILITY.md).
+
+Ordered by the historical plan's chess-manager value → FIDE importance →
+dependencies → risk → ecosystem value. Status markers below refer to the
+v0.4.0 snapshot only; the capability-wave notes are preserved as history.
 
 1. **Foundation** — DONE: typed errors, validation boundary, API tiers,
    versioning policy, licence file, determinism suite, v0.1.0 harness,

@@ -133,8 +133,12 @@ def test_version_probe(monkeypatch):
 def test_config_validation():
     with pytest.raises(InvalidRequestError):
         BBPConfig(executable="x", system="--burstein")
-    with pytest.raises(InvalidRequestError):
-        BBPConfig(executable="x", timeout_seconds=0)
+    for value in (0, float("inf"), float("-inf"), float("nan"), 10 ** 1000):
+        with pytest.raises(InvalidRequestError, match="timeout_seconds"):
+            BBPConfig(executable="x", timeout_seconds=value)
+    for value in (float("inf"), float("nan")):
+        with pytest.raises(InvalidRequestError, match="timeout_seconds"):
+            probe_version("/nonexistent/bbp", timeout_seconds=value)
 
 
 def test_nonstandard_system_never_wrapped():

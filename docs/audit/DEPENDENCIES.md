@@ -1,66 +1,64 @@
-# Dependencies & Packaging Audit — pairing-core v0.1.0 (STAGE 1)
+# Packaging and dependency audit
 
-Source: `pyproject.toml` (21 lines), `src/pairing_core.egg-info/*`, import scan
-of all 10 modules. All VERIFIED.
+**Source snapshot:** unreleased `0.4.2.dev0`, audited 2026-10-27.
+**Immutable release:** `v0.4.1` and its published artifacts are unchanged.
+This report supersedes the Stage-1 `v0.1.0` inventory formerly in this file;
+that inventory's claims about missing license text, absent classifiers, and
+undeclared test tooling described a historical checkout.
 
-## 1. Packaging metadata (complete transcription)
+## Current metadata
 
-| Field | Value | Location |
-|---|---|---|
-| `build-system.requires` | `setuptools>=68` | `pyproject.toml:2` |
-| `build-system.build-backend` | `setuptools.build_meta` | `:3` |
-| `project.name` | `pairing-core` | `:6` |
-| `project.version` | `0.1.0` | `:7` (static, duplicated in `__init__.py:30` — manual sync, no dynamic versioning) |
-| `project.description` | `Standalone FIDE Dutch Swiss pairing engine (extracted from chess-manager)` | `:8` |
-| `project.readme` | `README.md` | `:9` |
-| `project.requires-python` | `>=3.10` | `:10` |
-| `project.license` | `{ text = "MIT" }` (string only, no SPDX `license-expression`, no LICENSE file) | `:11` |
-| `project.authors` | `[{ name = "20kevit" }]` (no email) | `:12` |
-| `project.urls` | `Repository = https://github.com/20kevit/pairing-core` only | `:14-15` |
-| `tool.setuptools.packages.find` | `where = ["src"]` (src-layout, auto-discovery) | `:17-18` |
-| `tool.pytest.ini_options` | `testpaths = ["tests"]` | `:20-21` |
-| Classifiers | **none** | VERIFIED absent |
-| `dependencies` | **none** (no `dependencies` key at all) | VERIFIED absent |
-| `optional-dependencies` | none | VERIFIED absent |
-| Entry points / console scripts | none (`[project.scripts]` absent) | VERIFIED absent |
-| Package exports | `pairing_core` (`top_level.txt` VERIFIED) | egg-info |
+| Field | Verified value |
+|---|---|
+| Build backend | `setuptools.build_meta`, build requirement `setuptools>=77` |
+| Package version | `0.4.2.dev0` in `pyproject.toml` and `pairing_core.__version__`; unreleased development snapshot |
+| Python metadata floor | `>=3.10` |
+| CI interpreter matrix | Configured for CPython 3.10–3.15; this audit revision still requires a green CI run across the matrix |
+| License | MIT declared in project metadata and present in root `LICENSE` |
+| Runtime dependencies | None declared; runtime stays stdlib + intra-package |
+| Optional test dependencies | `pytest>=8` and pinned `ruff==0.17.3` in the `test` extra |
+| Package layout | `src/`; no console scripts or runtime entry points |
+| Published release | `v0.4.1` is immutable; audit work is not released under that version |
 
-Supported Python versions "if stated": only the floor `>=3.10` is stated; no
-upper bound, no `Programming Language :: Python :: 3.x` classifiers, no CI
-matrix to evidence any version (observed interpreter 3.12.3 is environmental,
-not contractual). `str.removeprefix`-style 3.9+ syntax avoided anyway; `X | Y`
-annotations not used in runtime paths (`from __future__ import annotations`
-only in `api.py`). 3.10-floor plausibility: UNVERIFIED by test matrix (no CI).
+The build backend requirement is a build-time dependency, not an installed
+runtime dependency. Test and static-check tooling is optional and installed
+only with the `test` extra.
 
-## 2. Dependency inventory
+## Python compatibility policy
 
-- Runtime: **zero**. Every module imports only stdlib (`dataclasses`, `enum`,
-  `typing`, `abc`, `itertools`) + intra-package modules. VERIFIED by import scan.
-- Build: `setuptools>=68` only.
-- Test: `pytest` assumed (no declaration — `pyproject.toml` has no test
-  dependency group; pytest availability is environmental). VERIFIED gap.
-- Lint/type/build-extra: none declared.
+The `>=3.10` floor is retained to avoid dropping the published compatibility
+floor during this audit. The CI workflow exercises 3.10–3.15; matrix
+configuration is not a substitute for a passing run on the exact source
+revision. CPython 3.10 reached upstream end-of-life on 2026-10-01. It remains
+in CI as a compatibility check, but this package cannot provide upstream
+interpreter security fixes for it. CPython 3.11–3.15 are the maintained
+release branches listed by the Python Developer's Guide as of the audit date.
+The `Requires-Python` lower bound alone does not promise tested compatibility
+with every future Python minor.
 
-## 3. Risk assessment
+Source: <https://devguide.python.org/versions/> (retrieved 2026-10-27).
+See G-09 in [`GAP_REGISTER.md`](GAP_REGISTER.md) for the outstanding
+revision-specific CI evidence.
 
-- Unnecessary dependencies: **none** (there are no dependencies to trim).
-- Suspicious dependencies: **none**.
-- Missing dependencies: `pytest` (and any lint/type tool) undeclared — a fresh
-  checkout's test path relies on ambient tooling. Minor.
-- Overly broad constraints: `setuptools>=68` unbounded above (low risk);
-  `requires-python >=3.10` unbounded above (standard; forward-compat risk
-  unmeasured but low for this code shape).
-- Incompatible constraints: **none possible** (empty set).
-- Dependency/license risks: **minimal** — pure-stdlib runtime means no
-  transitive license exposure. The one license risk is self-inflicted: MIT is
-  *declared* as a bare string with **no LICENSE file and no SPDX expression**,
-  so downstream license scanners see a claim without text (see COMPATIBILITY.md).
-- `egg-info` committed: `SOURCES.txt` enumerates 19 files including egg-info
-  itself; regenerates on build. Staleness risk only.
+## Verification and remaining limits
 
-## 4. Verdict
+- This audit built the `0.4.2.dev0` wheel and sdist, checked version,
+  `Requires-Python`, MIT license, optional-only dependencies, and source
+  inclusion, then installed the wheel in an isolated environment and ran the
+  public API and example smoke checks. The exact current results are in
+  [`GAP_REGISTER.md`](GAP_REGISTER.md); the hosted interpreter matrix remains
+  pending.
+- The targeted Ruff CI gate checks undefined names (`F821`) only. It does not
+  claim broad lint cleanliness; unused-import/style debt outside the touched
+  scope remains separately triaged.
+- No new third-party runtime dependency is introduced by the Burstein input
+  seam or process-group supervision.
+- The release/tag verification for `v0.4.1` is recorded in
+  [`GAP_REGISTER.md`](GAP_REGISTER.md); do not rebuild or move it.
 
-Packaging is minimal and correct for a zero-dependency src-layout library;
-`pip install -e .` (README) matches the backend. Gaps are all in assurance,
-not function: no classifiers, no test-deps declaration, no version matrix,
-no license text. Nothing to change in Stage 1 (read-only).
+## Dependency boundary
+
+Pairing-Core remains pairing-only. `tiebreak-core` is a separate library and
+is not a runtime dependency. The inspected tiebreak-core v1.2.0 source has
+C.07 calculators but no C.04.4.2 Burstein Index calculator; no C.07 value is
+silently substituted. See [`../spec/TIEBREAK_ARCHITECTURE.md`](../spec/TIEBREAK_ARCHITECTURE.md).

@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from pairing_core.controls import ExecutionBudgets
-from pairing_core.errors import ImpossiblePairingError
+from pairing_core.errors import ImpossiblePairingError, InvalidPlayerError
 from pairing_core.fide2026 import common as C
 from pairing_core.fide2026.common import Stepper
 from pairing_core.fide2026.models import P26Pair, P26Pairing, P26Player, P26Request
@@ -54,6 +54,16 @@ def due_colour(p: P26Player) -> str:
     if not seq:
         return "W"
     return "B" if seq[-1] == "W" else "W"
+
+
+def _within_maxi_rating_limit(a: P26Player, b: P26Player) -> bool:
+    """Whether two known ratings satisfy a Maxi 100-point condition.
+
+    Missing ratings are not imputed. An unknown comparison cannot authorize
+    a rating-limited selection/exchange.
+    """
+    return (a.rating is not None and b.rating is not None
+            and abs(a.rating - b.rating) <= 100)
 
 
 def pair_lim(req: P26Request) -> P26Pairing:
@@ -217,13 +227,6 @@ def _select_floater(work: List[P26Player], dest_pool: List[P26Player],
         cands = [p for p in work if due_colour(p) == majority]
     if not cands:
         cands = list(work)
-    if maxi and cands:
-        ref = min(work, key=lambda p: p.tpn) if downward else max(
-            work, key=lambda p: p.tpn)
-        guarded = [p for p in cands
-                   if abs((p.rating or 0) - (ref.rating or 0)) <= 100]
-        if guarded:
-            cands = guarded
     lr = {"last_round": last_round}
 
     def penalty(p):
@@ -233,13 +236,25 @@ def _select_floater(work: List[P26Player], dest_pool: List[P26Player],
         return 0 if free else 1
 
     if downward:
-        return min(cands,
-                   key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
-                                  penalty(p), p.tpn))
-    # upward 3.2.4: highest numbered -> max TPN; 3.9 type still minimised.
-    return min(cands,
-               key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
-                              penalty(p), -p.tpn))
+        selected = min(
+            cands,
+            key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
+                           penalty(p), p.tpn))
+    else:
+        # Upward 3.2.4: highest numbered -> max TPN; 3.9 type still minimised.
+        selected = min(
+            cands,
+            key=lambda p: (_floater_type(p, arrived, dest_pool, **lr),
+                           penalty(p), -p.tpn))
+    if maxi:
+        ref = min(work, key=lambda p: p.tpn) if downward else max(
+            work, key=lambda p: p.tpn)
+        # Article 3.2.3 says to fall back to the boundary-numbered player if
+        # the selected player's known rating is more than 100 points away.
+        # Unknown ratings cannot satisfy the comparison; no zero is invented.
+        if not _within_maxi_rating_limit(selected, ref):
+            return ref
+    return selected
 
 
 def _pair_group(work: List[P26Player], dest: Optional[float], downward: bool,
@@ -552,12 +567,10 @@ def _exchange_pair(work: List[P26Player], by_id: Dict[int, P26Player], *,
             cands = [q for q in base
                      if due_colour(q) == want and compatible(
                          m, q, last_round=last_round)]
-            if maxi and cands:
-                ref_rating = by_id[first].rating or 0
-                guarded = [q for q in cands
-                           if abs((q.rating or 0) - ref_rating) <= 100]
-                if guarded:
-                    cands = guarded
+            if maxi:
+                proposed_opponent = by_id[first]
+                cands = [q for q in cands
+                         if _within_maxi_rating_limit(q, proposed_opponent)]
             if cands:
                 pick = max(cands, key=lambda q: q.tpn) if downward else \
                     min(cands, key=lambda q: q.tpn)
@@ -781,7 +794,13 @@ def _round_one(players: List[P26Player], by_id: Dict[int, P26Player],
     remaining = list(players)
     bye_id = None
     if len(remaining) % 2:
-        pab = min(remaining, key=lambda p: ((p.rating or 0), p.tpn))
+        if any(p.rating is None for p in remaining):
+            raise InvalidPlayerError(
+                "Lim round-one PAB requires a known rating for every player "
+                "(Art.7.1).")
+        # Art.7.1 specifies the lowest rating. TPN is only a deterministic
+        # project fallback when multiple players share that rating.
+        pab = min(remaining, key=lambda p: (p.rating, p.tpn))
         bye_id = pab.id
         remaining = [p for p in remaining if p.id != bye_id]
     ordered = sorted(remaining, key=lambda p: p.tpn)

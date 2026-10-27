@@ -28,6 +28,7 @@ execution path is tested against fixture stub executables.
 
 from __future__ import annotations
 
+import math
 import os
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
@@ -74,10 +75,15 @@ class BBPConfig:
             raise InvalidRequestError(
                 "only --dutch is wrapped (Burstein upstream is "
                 "self-declared flawed; refusing to wrap it).")
-        if not isinstance(self.timeout_seconds, (int, float)) or \
-                isinstance(self.timeout_seconds, bool) or \
-                not self.timeout_seconds > 0:
-            raise InvalidRequestError("timeout_seconds must be a number > 0.")
+        try:
+            timeout_is_finite = math.isfinite(float(self.timeout_seconds))
+        except (TypeError, ValueError, OverflowError):
+            timeout_is_finite = False
+        if (not isinstance(self.timeout_seconds, (int, float))
+                or isinstance(self.timeout_seconds, bool)
+                or not timeout_is_finite or self.timeout_seconds <= 0):
+            raise InvalidRequestError(
+                "timeout_seconds must be a finite number > 0.")
 
 
 @dataclass(frozen=True)
@@ -98,6 +104,15 @@ def probe_version(executable: str,
     Failure (any) -> EngineUnavailableError: version identity is required
     for reproducibility metadata, never guessed.
     """
+    try:
+        timeout_is_finite = math.isfinite(float(timeout_seconds))
+    except (TypeError, ValueError, OverflowError):
+        timeout_is_finite = False
+    if (not isinstance(timeout_seconds, (int, float))
+            or isinstance(timeout_seconds, bool) or not timeout_is_finite
+            or timeout_seconds <= 0):
+        raise InvalidRequestError(
+            "timeout_seconds must be a finite number > 0.")
     exe = check_executable(executable, "BBP executable")
     try:
         run = run_command([exe, "-r"], timeout_seconds=timeout_seconds)

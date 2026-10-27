@@ -1,4 +1,10 @@
-# Final Capability & Professionalization Report (master wave)
+# Historical capability and professionalization report (master wave)
+
+> This prior-wave report records an earlier implementation snapshot and is
+> not current capability, readiness, or independent FIDE evidence. See
+> [`CAPABILITY.md`](CAPABILITY.md),
+> [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md), and
+> [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md).
 
 ## 1–3. Commits & tree
 

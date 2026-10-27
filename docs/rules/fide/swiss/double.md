@@ -1,4 +1,10 @@
-# Double Swiss + Accelerated Systems — Research Note
+# Double Swiss + Accelerated Systems — Historical research note
+
+> This research-phase note predates final source retrieval and implementation;
+> its pending/RESEARCH-CONTINUES statuses are superseded. Current source and
+> system status are in `../CURRENT_SYSTEM_CATALOG.md` and
+> `../../../audit/GAP_REGISTER.md`. Read the official Handbook sources before
+> relying on any rule interpretation.
 
 ## Double Swiss — C.04.5 [F-0114] (CURRENT, effective 01/02/2026)
 

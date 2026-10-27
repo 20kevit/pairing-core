@@ -1,3 +1,5 @@
+> **Historical research snapshot (2026-10-27):** This document preserves an earlier source-retrieval or analysis wave; it is not the current source/coverage authority. Use the current [FIDE registry](README.md), [source index](SOURCE_INDEX.md), [clause index](CLAUSE_INDEX.md), [coverage dashboard](COVERAGE_DASHBOARD.md), and [audit gap register](../../audit/GAP_REGISTER.md). Statements about direct/full-text retrieval, extracted content, hashes, or implementation status below are historical research records, not a redistribution licence or current conformity evidence. Current source rights and retrieval limits are in [the generated source manifest](SOURCE_MANIFEST.md).
+
 # VERSION TIMELINE — FIDE Pairing-Rule Revisions
 
 Chronology with applicability. "Effective" = tournaments conducted under FIDE
@@ -36,14 +38,25 @@ its source. Retrieval wave: 2026-10-03.
 - Affected: Dutch (till-2026 formulation, full A–E structure).
 - Current status: HISTORICAL snapshot; structure corroborates [F-0107].
 
-## 2024-05-13 (announced) → effective 2025-07-01 — interim Dutch update (SUPERSEDED)
+## 2024-05-13 (announcement record) → applied from 2025-07-01 — interim Dutch update (SUPERSEDED)
 
-- Document: C.04.3 interim text [F-0106], announced [F-0302]
-- Affected: Dutch end-of-round pairing; PAB regime (half/virtual/zero-point PABs,
-  full-point-bye considerations; fewer-games players excluded from PAB candidacy).
-- Note: draws on Dutch + Dubov insights; some rules simplified for clarity.
-- Current status: SUPERSEDED 01/02/2026 by [F-0105].
-- Date discipline: announcement page stamp 2024-05-13 ≠ effective date 2025-07-01.
+- Document: official C.04.3 interim Council PDF [F-0106], associated with the
+  announcement record [F-0302]. The PDF title is “FIDE (DUTCH) SYSTEM”; it states
+  “Applied from 1st July, 2025”. Its approval line is the unfilled placeholder
+  `dd/mm/yyyy`, so no approval date is asserted. The Handbook chapter URL returned
+  generic navigation; the corrected official Council-PDF URL was parsed in full.
+- PAB clauses: C5 minimises the assignee’s score; C9 minimises the assignee’s
+  unplayed games. The Table of Changes says C9 was intended to prevent participants
+  who missed a game from receiving a PAB. This is not a categorical “fewer-games
+  players are ineligible” rule; C2 separately bars the stated prior-PAB and
+  unplayed win-value cases. The prior R-D24 categorical-exclusion claim is withdrawn.
+- The interim PDF itself does not establish half/virtual/zero/full-point categories;
+  those facts require separate C.04.1/tournament-rule evidence and are not mapped here.
+- Current status: superseded by the later edition applied from 2026-02-01 [F-0105].
+  The registry’s 2026-01-31 end date is an adjacent transition date, not one printed
+  in the interim PDF; no clause-by-clause equivalence is implied.
+- Date discipline: the announcement record’s date is distinct from the PDF’s
+  application date and placeholder approval date.
 
 ## 2024-06-11 (announced) → effective 2025-07-01 — C.04.1 Art.4 update (SUPERSEDED)
 

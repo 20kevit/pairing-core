@@ -1,10 +1,15 @@
-# Open Questions (v0.4.1 — only genuinely unresolved items)
+# Historical open-questions snapshot (v0.4.1)
 
-O01–O10 are DECIDED (see `docs/DECISIONS.md`). The 2026 retrieval questions
-from earlier revisions are RESOLVED (FULL_TEXT Council bundle retrieved,
-extracted, implemented, audited — see `docs/rules/fide/SOURCE_MANIFEST.md`
-and `docs/audit/FIDE_CONFORMANCE_MATRIX.md`). Remaining items need
-measurement or later-phase decisions — none blocks the current product.
+> This file records questions as framed for the published `v0.4.1` snapshot.
+> Its claim that no item blocks the current product is superseded. Current
+> findings, evidence, and open/closed status are maintained only in
+> [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md); current acceptance gates
+> are in [`audit/COMPLETION_STANDARD.md`](audit/COMPLETION_STANDARD.md).
+
+The historical O01–O10 decisions are preserved in `docs/DECISIONS.md`. The
+source-retrieval record has since been refreshed by the current audit; see
+`docs/rules/fide/SOURCE_MANIFEST.md` and the gap register for the current
+retrieval scope and limitations.
 
 - **Frozen compat deviations**: E.5 round-1 parity colours vs pinned S1-white,
   and the absolute 3rd-float bar (live BBP + source evidence against the bar;

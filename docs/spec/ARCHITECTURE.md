@@ -1,4 +1,11 @@
-# Architecture Specification (OWNER DECISION O01/O07 — as built upon in blueprint)
+# Historical architecture specification (O01/O07 blueprint)
+
+> This document contains adopted design proposals and aspirational
+> components; it is not a line-by-line inventory of current code. Current
+> product boundaries and audit status are in `TOURNAMENT_BOUNDARIES.md`,
+> `README.md`, and `docs/audit/GAP_REGISTER.md`. The tiebreak-core relation
+> described below has been superseded by the non-dependency integration
+> boundary in `TIEBREAK_ARCHITECTURE.md`.
 
 ## 1. Adopted structure (FINAL per O01, refined from mission §3.5 hypothesis)
 
@@ -46,10 +53,10 @@ adapter, never in core.
   notices (JaVaFo).
 - Validation sidecar: legality verdict + per-criterion cost + bye/float/colour
   accounting; callable standalone (FPC-analogue over TRF + native objects).
-- Timeout/cancellation (O10): every execution bounded by wall-clock timeout +
-  deterministic step budget; native interruption at bracket-boundary
-  checkpoints (step budget primary for reproducibility); external supervision
-  with grace-then-terminate; typed timeout errors with diagnostics.
+- Timeout/cancellation (O10): native execution uses wall-clock and step
+  budgets where supported. Current external process supervision is documented
+  in `SECURITY.md`: POSIX process groups are terminated with a grace period;
+  the Windows fallback guarantees direct-child cleanup only.
 - Explicit engine configuration (O03): default vs explicitly-selected vs
   explicitly-allowed-fallback are distinct request modes; metadata always
   records requested/actual engine + reason + versions; silent substitution is
@@ -59,9 +66,10 @@ adapter, never in core.
   with 7-class outcome taxonomy (exact-equivalent / rule-equivalent-reordered
   / valid-alternative / rule-violation / implementation-specific /
   unsupported-feature / oracle-disagreement-needs-investigation).
-- tiebreak-core relation (O05/O09): independent future library; pairing-core
-  consumes only narrow ranking/index inputs (Burstein); one-way dependency;
-  no tournament-core.
+- Tie-break boundary: `tiebreak-core` is a separate existing library, but
+  Pairing-Core has no runtime dependency. Burstein consumes only externally
+  supplied C.04 Index values with provenance; C.07 calculations are not
+  assumed equivalent. See `TIEBREAK_ARCHITECTURE.md`.
 
 ## 3. Non-goals enforced by construction
 

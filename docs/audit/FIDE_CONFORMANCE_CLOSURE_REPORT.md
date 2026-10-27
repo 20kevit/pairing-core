@@ -1,4 +1,11 @@
-# FIDE Conformance Closure Report (closure wave, 2026-10-03)
+# Historical FIDE conformance closure report (2026-10-03)
+
+> This records conclusions from an earlier project wave and is not current
+> authoritative conformance or readiness status. Its `VERIFIED` closures are
+> not FIDE approval/evaluation and have not been independently re-proved in
+> full. Current audit findings and closures live in
+> [`GAP_REGISTER.md`](GAP_REGISTER.md) and are measured by
+> [`COMPLETION_STANDARD.md`](COMPLETION_STANDARD.md).
 
 ## A. Starting state
 

@@ -1,15 +1,21 @@
-# Decision Register — FINAL ARCHITECTURAL DECISIONS (owner direction recorded)
+# Decision Register — original owner decisions with current audit addendum
+
+> This register preserves the pre-audit decisions. Some process and delivery
+> statuses have since been superseded; the 2026-10-27 addendum at the end
+> records the current task authorization and library boundary. Current audit
+> authority is [`audit/GAP_REGISTER.md`](audit/GAP_REGISTER.md).
 
 Status scale: DECIDED / OWNER DECISION (final, owner-directed) / PROPOSED /
-DEFERRED / REJECTED. Verification note: O01–O08 were checked against all
-existing docs (audit/research/spec); NO contradictions found — only refinements
-adopted (O03 envelope fields, O07 seam-in-Foundation + non-conformant guard,
-O08 exact two-minor window superseding the earlier "≥1 minor" draft).
+DEFERRED / REJECTED. The original verification note below is historical: it
+records an earlier consistency review and is not a claim that these decisions
+were independently revalidated by the current audit.
 
 ## Process (DECIDED by mission)
 
-- D01 DECIDED: read/research/document only; implementation forbidden until
-  explicit owner approval (still in force after this task).
+- D01 DECIDED (historical process gate): read/research/document only before
+  owner authorization. It was superseded for this audit by the explicit request
+  to audit, fix confirmed in-scope defects, and verify the checkout; it is not a
+  current prohibition on the authorized 2026-10-27 work.
 - D02 DECIDED: English documentation; exact identifiers; evidence labels.
 - D03 DECIDED: no endorsement claim before a certificate exists.
 
@@ -51,10 +57,13 @@ O08 exact two-minor window superseding the earlier "≥1 minor" draft).
   covering ordering, colours, byes, floats, validation, determinism, error
   semantics; **two-minor-release deprecation window** (security/critical
   exceptions only, documented); testable compatibility policy.
-- O09 OWNER DECISION: **tiebreak-core = future independent library**
-  (spec: `docs/spec/TIEBREAK_ARCHITECTURE.md`); independent of chess-manager;
-  serves pairing-core/chess-manager/future managers; NO implementation now;
-  NO premature tournament-core.
+- O09 OWNER DECISION (original): **tie-break calculation belongs in a
+  separate independent library**, not Pairing-Core; no shared tournament-core.
+  The separate `20kevit/tiebreak-core` project now exists (v1.2.0 was inspected
+  at commit `61491321d7886ab4abe1b7c64686dfce48d2c3dd`). It remains independent,
+  has no Pairing-Core runtime dependency, and does not provide the required
+  C.04.4.2 Burstein Index calculation. Current integration limits are in
+  `docs/spec/TIEBREAK_ARCHITECTURE.md`.
 - O10 OWNER DECISION (timeout/cancellation): **both native and external
   execution are bounded** — wall-clock timeout AND deterministic step budget;
   typed timeout error with diagnostics; reproducibility rules for timeouts
@@ -66,8 +75,11 @@ O08 exact two-minor window superseding the earlier "≥1 minor" draft).
 
 - D17 REJECTED: in-process GPL-family dependencies. D18 REJECTED: bundling
   javafo.jar. D19 REJECTED: one-abstraction-for-all-systems.
-- D20 DEFERRED (refined by O09): team systems, KO orchestration as features;
-  tie-break engine → specified as tiebreak-core, implementation deferred.
+- D20 DEFERRED (historical roadmap status; refined by O09): KO orchestration
+  remains outside current product scope. The separate tie-break library is no
+  longer merely deferred; `tiebreak-core` is a published independent project.
+  Pairing-Core still does not absorb its algorithms or provide general
+  standings/tie-break calculation.
 - D10–D16 (Stage-4 proposals) are SUPERSEDED by O01–O08/O10 finals above.
 
 ## Validation-wave confirmations (evidence-backed, no architecture change)
@@ -83,3 +95,19 @@ O08 exact two-minor window superseding the earlier "≥1 minor" draft).
 - BBP oracle pin: source build 8f9e3c5 (2026-07-30); live runs via BBP_EXE.
   JaVaFo live-verified: Rel. 2.2 Build 3223 (Dutch-2017 vintage per 092
   tag); BYO-only posture unchanged, nothing vendored.
+
+## Current audit addendum (2026-10-27)
+
+- The current authorized work is an independent audit and repair of the
+  pairing-only library; fixes are permitted for confirmed in-scope defects.
+- Published `v0.4.1` remains immutable. The working source version is
+  `0.4.2.dev0` and is not a release or FIDE evaluation.
+- Pairing-Core produces and validates pairings only. General tournament
+  management, standings, ratings, and tie-break calculations remain outside
+  the product boundary. A Burstein Index input is caller-supplied or declared
+  externally calculated, with provenance; Pairing-Core neither computes nor
+  independently certifies that value.
+- FIDE rule text, implementation interpretation, computational strategy,
+  caller policy, and unresolved limitations are separate evidence categories.
+  Engineering readiness, production suitability, formal evaluation, and
+  endorsement are separate verdicts in `docs/audit/COMPLETION_STANDARD.md`.

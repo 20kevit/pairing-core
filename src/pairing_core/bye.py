@@ -22,7 +22,7 @@ This module is stateless and deterministic.
 """
 from typing import List, Optional, Tuple
 
-from pairing_core.models import EnginePlayer
+from pairing_core.models import EnginePlayer, PairingCard
 
 
 # ═══════════════════════════════════════════════════════════════════

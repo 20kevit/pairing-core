@@ -2,17 +2,39 @@
 
 All notable changes to this project are recorded here. Versioning follows
 the five-axis model in `docs/spec/VERSIONING.md`; the library version below
-is the `pyproject.toml` version. Dates are commit dates (UTC).
+is the `pyproject.toml` version. Dates are release dates or audit snapshot
+dates as labelled; unreleased development entries are not release claims.
 
 ## [Unreleased]
 
-- New `examples/custom_provider.py`: worked third-party provider guide
-  (implement `EngineProvider`, declare `Capability`, register, select via
-  `pair_via`); runs from repo checkout and clean install; pinned by
-  `tests/test_release.py::test_examples_run_on_public_api`.
-- `tests/test_release.py` now also requires `examples/custom_provider.py`.
+No changes recorded yet.
 
-## [0.4.1] — 2026-10-03 (release candidate: committed on main, not yet tagged or published)
+## [0.4.2.dev0] — 2026-10-27 (unreleased development snapshot)
+
+- Audited the 2026 public request boundary: reject malformed/non-finite
+  player values, invalid counters and histories, and inconsistent round
+  metadata; validate complete roster coverage and core legality after engine
+  dispatch. Add versioned request/result serialization, provenance, and
+  deterministic SHA-256 digests for 2026 results.
+- Remove Pairing-Core's local Burstein Buchholz/Sonneborn-Berger formula.
+  Post-seeding Burstein requests now require complete caller/library-supplied
+  C.04 Index values and explicit provenance; C.07 values are not assumed
+  equivalent.
+- Isolate POSIX external-engine runs in process groups and terminate
+  descendants on timeout, output overflow, or cleanup; document the
+  Windows direct-child limitation and add a descendant-cleanup test.
+- Fix confirmed undefined-name/dead-code findings; add focused boundary,
+  process-cleanup, and exact Berger-table tests. Berger fixtures now compare
+  all published C.05 Annex 1 field sizes 3–16.
+- Expand the configured CI interpreter matrix to CPython 3.10–3.15, retain
+  the declared 3.10 compatibility floor with its upstream-EOL caveat, and
+  add a targeted Ruff undefined-name gate without mass-enabling legacy style
+  rules.
+- Reconcile current product, dependency, source-retrieval, tie-break-boundary,
+  security, and readiness documentation. Preserve prior FIDE reports as
+  visibly historical project records, not current independent evaluation.
+
+## [0.4.1] — 2026-10-04 (published to PyPI and GitHub; immutable)
 
 Product-hardening wave (patch: no public API or pairing-behavior change —
 v0.1.0 goldens and 0.4.0 outputs byte-identical):

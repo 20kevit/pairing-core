@@ -91,7 +91,7 @@ from pairing_core.canonical import (
     pair_canonical,
 )
 
-__version__ = "0.4.1"
+__version__ = "0.4.2.dev0"
 # Frozen-kernel reference marker (historical donor claim for the
 # pre-2026 Dutch formulation; kept byte-stable for consumers).
 # Current evidence posture: docs/CAPABILITY.md + conformance matrix.

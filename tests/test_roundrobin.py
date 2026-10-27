@@ -1,14 +1,17 @@
-"""Round-robin tests: Handbook goldens + structural properties.
+"""Round-robin tests: official Handbook tables + structural properties."""
 
-Golden tables verified line-by-line against FIDE Handbook C.05 Annex 1 rows
-as retrieved from the Handbook, FEDA, and ECF publications (even N 4..12).
-Provenance: docs/research/ROUND_ROBIN.md + wave differential notes.
-"""
+import json
+from pathlib import Path
 
 import pytest
 
 from pairing_core.errors import InvalidRequestError
 from pairing_core.roundrobin import round_robin
+
+
+BERGER_FIXTURE = Path(__file__).parent / "corpus" / "fide_official" / \
+    "berger_tables_c05.json"
+BERGER_DATA = json.loads(BERGER_FIXTURE.read_text(encoding="utf-8"))
 
 
 def _flat(schedule):
@@ -59,6 +62,24 @@ def test_12_players_exact():
     assert sched[5] == [(12, 9), (10, 8), (11, 7), (1, 6), (2, 5), (3, 4)]
     assert sched[10] == [(6, 12), (7, 5), (8, 4), (9, 3), (10, 2), (11, 1)]
     assert len(sched) == 11
+
+
+@pytest.mark.parametrize("n", range(3, 17))
+def test_all_published_berger_tables_exact(n):
+    """Compare every FIDE Annex 1 table from 3 through 16 players."""
+    assert BERGER_DATA["provenance"] == "official-example"
+    slots = n + (n % 2)
+    official = BERGER_DATA["tables"][str(slots)]
+    expected = []
+    for round_pairs in official:
+        expected_round = []
+        for white, black in round_pairs:
+            if n % 2 and slots in (white, black):
+                expected_round.append((black if white == slots else white, None))
+            else:
+                expected_round.append((white, black))
+        expected.append(expected_round)
+    assert _flat(round_robin(n)) == expected
 
 
 def _pairs(n, double=False, **kw):
@@ -112,11 +133,40 @@ def test_double_swaps_colors():
             assert {w1, b1} == {w2, b2} and (w1, b1) == (b2, w2)
 
 
-def test_double_reversal_option():
-    plain = _pairs(8, double=True)
-    rev = _pairs(8, double=True, reverse_last_two=True)
-    assert plain[:5] == rev[:5] and plain[5:7] != rev[5:7]
-    assert rev[5] == plain[6] and rev[6] == plain[5]
+@pytest.mark.parametrize("n", [3, 4, 6, 8, 10])
+def test_double_reversal_option_reverses_only_first_cycle_final_two(n):
+    plain = _pairs(n, double=True)
+    reversed_schedule = _pairs(n, double=True, reverse_last_two=True)
+    rounds_per_cycle = len(plain) // 2
+
+    assert reversed_schedule[:rounds_per_cycle - 2] == \
+        plain[:rounds_per_cycle - 2]
+    assert reversed_schedule[rounds_per_cycle - 2:rounds_per_cycle] == \
+        plain[rounds_per_cycle - 2:rounds_per_cycle][::-1]
+    assert reversed_schedule[rounds_per_cycle:] == plain[rounds_per_cycle:]
+
+
+def test_double_reversal_reduces_four_player_colour_streak():
+    def longest_streak(schedule, player):
+        sequence = []
+        for rnd in schedule:
+            for white, black in rnd:
+                if player == white:
+                    sequence.append("W")
+                elif player == black:
+                    sequence.append("B")
+        longest = current = 0
+        last = None
+        for colour in sequence:
+            current = current + 1 if colour == last else 1
+            longest = max(longest, current)
+            last = colour
+        return longest
+
+    plain = _pairs(4, double=True)
+    reversed_schedule = _pairs(4, double=True, reverse_last_two=True)
+    assert max(longest_streak(plain, p) for p in range(1, 5)) == 3
+    assert max(longest_streak(reversed_schedule, p) for p in range(1, 5)) == 2
 
 
 def test_two_players_and_errors():
