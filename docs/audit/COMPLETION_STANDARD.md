@@ -19,7 +19,7 @@ A single green test suite is not a universal readiness verdict. The following fi
 | Determinism/replay | Repeated calls, input reorder where semantically irrelevant, and at least two `PYTHONHASHSEED` values produce identical pairing and canonical result bytes. Versioned 2026 results include input/result SHA-256 digests and producer/ruleset provenance. |
 | Bounds/security | Pathological search returns within the declared deterministic step ceiling or a typed timeout. Adapter output is capped during collection; timeout, output overflow, and cleanup terminate the spawned process tree on platforms where process-group control is claimed. |
 | Packaging | Wheel and sdist build from a clean checkout; artifact metadata, `Requires-Python`, MIT text, source inclusion, and imports are checked in an isolated environment. A plain install has no runtime dependency unless a future change justifies and documents one. No v0.4.1 artifact is rebuilt or republished. |
-| Static/source checks | Source registry validator passes; `compileall` passes; targeted undefined-name lint is clean. Broad style modernization is not a release gate until repository-wide baseline debt is triaged. |
+| Static/source checks | Offline FIDE registry validation passes: source/supersession/rights metadata, available artifact checksums, real implementation symbols and tests, example-fixture provenance, internal links/anchors, generated-view row counts and registry hashes are checked by `tools/fide_evidence.py`. `compileall` and targeted undefined-name lint also pass. Broad style modernization is not a release gate until repository-wide baseline debt is triaged. |
 | Documentation | Public docs match package version, actual API fields, supported systems, product boundary, runtime dependencies, security posture, source effective dates, and limitations. Historical reports are visibly historical. |
 
 The current CI target is CPython 3.10–3.15. Python 3.10 is retained in
@@ -57,7 +57,7 @@ A system can be called **evidence-supported for a stated subset** only when its 
 - deterministic/performance/security evidence for the actual input-size envelope; and
 - a current limitation list that is reflected in runtime capability metadata and user documentation.
 
-A source that is complete does not imply implementation completeness. A test corpus derived from the implementation is not an independent oracle. “Evidence-supported” does not mean FIDE-approved or endorsed.
+The current project-maintained source/edition and clause-level inventory is navigable from [`docs/rules/fide/README.md`](../rules/fide/README.md); its unmapped/disputed entries and coverage counts remain visible. The first-pass registry is not asserted to be an exhaustive clause-by-clause mapping: grouped ranges and unmapped records remain open work. A source that is complete does not imply implementation completeness. A test corpus derived from the implementation is not an independent oracle. “Evidence-supported” does not mean FIDE-approved or endorsed.
 
 ## 4. Formal FIDE evaluation
 
@@ -73,7 +73,7 @@ A future integrating THP may include Pairing-Core as one component and seek eval
 
 Only a current, official FIDE record or written FIDE decision naming the exact product, version, and pairing system can change this verdict. An old endorsed pairing engine, the use of a named FIDE system, source citations, conformance tests, an application author's claim, or a successful local audit is not endorsement evidence.
 
-The official FIDE Endorsed Programs PDF retrieved for this audit is dated/vintaged 2022 and does not list Pairing-Core. That supports “not listed in the retrieved list”; it is not proof that no later decision exists.
+The retrieved 2022 FIDE Endorsed Programs PDF and the current C.02.04 THP table retrieved for this audit (effective 2026-03-01) do not list Pairing-Core. That supports “not listed in the retrieved lists”; it is not proof that no separate or later decision exists. See the source pages and bounded status notes in [`docs/rules/fide/SOURCE_INDEX.md`](../rules/fide/SOURCE_INDEX.md).
 
 ## 6. Release/revision reporting template
 

@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Validate FIDE sources, clause references and generated views (offline)
+        run: python3 tools/fide_evidence.py check
       - name: Install test tooling (runtime stays dependency-free)
         run: python3 -m pip install --upgrade pip && python3 -m pip install -e ".[test]"
       - name: Compile and targeted undefined-name gate

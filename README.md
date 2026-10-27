@@ -336,10 +336,10 @@ current readiness statements.
 > Pairing-Core does not claim FIDE endorsement, certification, approval,
 > blanket conformance, or formal FIDE evaluation.
 
-The official FIDE Endorsed Programs PDF retrieved for this audit does not
-list Pairing-Core. No later decision naming this product was found in the
-sources searched; this is not an exhaustive proof that no later decision
-exists. A successful local test suite is not a FIDE checker certificate.
+Pairing-Core is not listed in either the 2022 FIDE Endorsed Programs PDF or
+the C.02.04 THP table retrieved for this audit (effective 2026-03-01). This is
+bounded to those retrieved lists, not an exhaustive search for separate FIDE
+decisions. A successful local test suite is not a FIDE checker certificate.
 
 Known, material limits include:
 
@@ -442,9 +442,15 @@ Full policy and reporting:
   [`docs/spec/ENGINE_ABSTRACTION.md`](docs/spec/ENGINE_ABSTRACTION.md),
   [`docs/spec/DETERMINISM_CONTRACT.md`](docs/spec/DETERMINISM_CONTRACT.md),
   [`docs/audit/SEARCH_CEILING_POLICY.md`](docs/audit/SEARCH_CEILING_POLICY.md).
-- Evidence: [`docs/audit/FIDE_CONFORMANCE_MATRIX.md`](docs/audit/FIDE_CONFORMANCE_MATRIX.md),
-  [`docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md`](docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md),
-  [`docs/rules/fide/RULE_SOURCE_MATRIX.md`](docs/rules/fide/RULE_SOURCE_MATRIX.md).
+- FIDE evidence: [`docs/rules/fide/README.md`](docs/rules/fide/README.md),
+  [`clause index`](docs/rules/fide/CLAUSE_INDEX.md),
+  [`coverage dashboard`](docs/rules/fide/COVERAGE_DASHBOARD.md),
+  [`source index`](docs/rules/fide/SOURCE_INDEX.md),
+  [`source manifest`](docs/rules/fide/SOURCE_MANIFEST.md), and the
+  [`rule/source/code/test matrix`](docs/rules/fide/RULE_SOURCE_MATRIX.md).
+  The older [`FIDE conformance matrix`](docs/audit/FIDE_CONFORMANCE_MATRIX.md)
+  and [`closure report`](docs/audit/FIDE_CONFORMANCE_CLOSURE_REPORT.md) are
+  historical project evidence, not independent or current evaluation.
 - Process: [`CONTRIBUTING.md`](CONTRIBUTING.md),
   [`docs/spec/VERSIONING.md`](docs/spec/VERSIONING.md),
   [`docs/RELEASING.md`](docs/RELEASING.md),

@@ -50,17 +50,27 @@ them for current behavior.
 - `docs/RELEASING.md` — **authority** for the release procedure
   (manual; owner-only actions listed).
 
-## FIDE evidence and status
+## FIDE source, clause and evidence registry
 
-- `docs/audit/FIDE_CONFORMANCE_MATRIX.md` and
-  `FIDE_CONFORMANCE_CLOSURE_REPORT.md` — **historical project evidence**;
-  their prior conformance labels are not current independent evaluation.
-- `docs/audit/FIDE_CONFORMANCE_FINAL_REPORT.md` — hostile-audit wave report
-  (**historical**).
-- `docs/rules/fide/RULE_SOURCE_MATRIX.md` — rule → source → code → test
-  traceability.
-- `docs/rules/fide/SOURCE_MANIFEST.md` + `evidence/` — retrieved sources.
-- `docs/rules/fide/CURRENT_SYSTEM_CATALOG.md` — retrieved-system catalog.
+- `docs/rules/fide/README.md` — current registry navigation, scope, rights, and
+  offline editing/validation procedure.
+- `docs/rules/fide/COVERAGE_DASHBOARD.md` — current documentation/evidence
+  counts only; explicitly not a conformity or readiness score.
+- `docs/rules/fide/CLAUSE_INDEX.md` — stable clause IDs, source edition/section,
+  project paraphrases, and separate implementation/verification status.
+- `docs/rules/fide/RULE_SOURCE_MATRIX.md` — inspected implementation symbols,
+  named tests, and closure actions, including unmapped/disputed clauses.
+- `docs/rules/fide/SOURCE_INDEX.md` and `SOURCE_MANIFEST.md` — authority,
+  editions, retrieval metadata, checksums where verifiable, and redistribution
+  posture.
+- `docs/rules/fide/SYSTEM_COVERAGE.md` and `system-pages/` — per-system
+  navigable views; `source-pages/` provides per-document records.
+- `docs/rules/fide/registry/` — canonical JSON source, system, and clause
+  registries. Validate offline with `python tools/fide_evidence.py check`.
+- `docs/audit/FIDE_CONFORMANCE_MATRIX.md`,
+  `FIDE_CONFORMANCE_CLOSURE_REPORT.md`, and
+  `FIDE_CONFORMANCE_FINAL_REPORT.md` — **historical project evidence**; prior
+  conformance labels are not current independent evaluation.
 - `docs/DECISIONS.md` — original owner decisions plus the current audit addendum;
   older workflow/status entries are historical where marked.
 - `docs/OPEN_QUESTIONS.md` — historical v0.4.1 question snapshot;
@@ -86,7 +96,8 @@ a banner pointing at its current authority:
   `docs/spec/NON_FUNCTIONAL_REQUIREMENTS.md` (superseded/proposed design drafts)
 - `docs/spec/ROADMAP.md`, `docs/OPEN_QUESTIONS.md`,
   `docs/MASTER_SPECIFICATION.md` (dated v0.4.1/v0.4.0 snapshots)
-- `docs/rules/fide/CURRENT_STATUS.md`, `SYSTEM_COVERAGE.md`
+- `docs/rules/fide/CURRENT_STATUS.md` and prior research notes under
+  `docs/rules/fide/swiss/`, `extracted/`, and `evidence/`
 - `docs/audit/FIDE_REMAINING_ITEMS.md`
 - `docs/FINAL_CAPABILITY_AND_PROFESSIONALIZATION_REPORT.md`,
   `docs/FINAL_MASTER_WAVE_REPORT.md` (wave reports)
