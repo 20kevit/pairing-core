@@ -26,9 +26,9 @@ The current CI target is CPython 3.10–3.15. Python 3.10 is retained in
 `Requires-Python` and the CI matrix for compatibility, although upstream
 end-of-life was 2026-10-01; the library cannot provide interpreter security
 fixes. The configured matrix is not itself a pass: report only exact-revision
-runs that completed successfully. GitHub Actions run [40503648625](https://github.com/20kevit/pairing-core/actions/runs/40503648625)
+runs that completed successfully. GitHub Actions run [40504177884](https://github.com/20kevit/pairing-core/actions/runs/40504177884)
 passed all six CPython 3.10–3.15 jobs on commit
-`5da8ac472f4ad003f610fc56dbe87b07c549e384`. This is engineering-matrix
+`d311cf3e75843eec2e72862d3f3f162d59d9bc02`. This is engineering-matrix
 evidence only, not FIDE conformance. GitHub emitted non-blocking Node 20 and
 `ubuntu-latest` migration warnings for the runner/actions.
 
